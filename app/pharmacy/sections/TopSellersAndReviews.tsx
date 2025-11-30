@@ -99,7 +99,7 @@ export default function TopSellersAndReviews() {
   });
 
   return (
-    <div ref={ref} className="w-full px-6 py-12 space-y-12">
+    <div ref={ref} className="w-full px-6 py-12 space-y-12 text-black">
       {/* Top Sellers */}
       <motion.div
         initial="hidden"

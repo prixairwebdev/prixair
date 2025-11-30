@@ -58,7 +58,7 @@ const buttonItem: Variants = {
 
 export default function OurCategories() {
   return (
-    <div className="w-full py-10 bg-white flex flex-col items-center justify-center">
+    <div className="w-full py-10 bg-white flex flex-col items-center justify-center text-black">
       <h1 className="text-xl sm:text-2xl font-semibold mb-8">Our Categories</h1>
 
       <motion.div

@@ -22,7 +22,7 @@ function Nav() {
 
   const navItems = [
     { name: "Home", href: "/pharmacy" },
-    { name: "Shop", href: "/pharmacy/shop" },
+   
     { name: "About", href: "/pharmacy/about" },
     { name: "Contact", href: "/pharmacy/contact" },
   ];
@@ -45,7 +45,7 @@ function Nav() {
         <div className="flex items-center font-semibold">
           <Link href="/pharmacy" onClick={closeMobileMenu}>
             <Image
-              src="/pharmacylogo.png"
+              src="/pharmalogo.png"
               alt="Prixair Logo"
               width={150}
               height={150}

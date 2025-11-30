@@ -30,7 +30,7 @@ const itemVariants = {
 const BakedWithHeart = () => {
   return (
     <motion.section 
-      className="w-full bg-white py-16 px-4 md:px-12 p-10"
+      className="w-full bg-white py-16 px-4 md:px-12 p-10 text-black"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.3 }}

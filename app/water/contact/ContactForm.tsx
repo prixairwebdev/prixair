@@ -21,7 +21,7 @@ export default function ContactForm() {
   };
 
   return (
-    <section className="bg-white py-12 px-4">
+    <section className="bg-white py-12 px-4 text-black">
       <div className="max-w-xl mx-auto text-center">
         <h2 className="text-2xl font-semibold">Contact us</h2>
         <p className="text-sm text-gray-600 mt-2">

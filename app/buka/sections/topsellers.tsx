@@ -48,7 +48,7 @@ const item = {
 
 export default function TopSellers() {
   return (
-    <section className="w-full bg-white py-12 flex flex-col items-center sm:text-start">
+    <section className="w-full bg-white py-12 flex flex-col items-center sm:text-start text-black">
       <motion.h2 
         className="text-xl sm:text-2xl font-semibold mb-8 px-4 text-center sm:text-start"
         initial={{ opacity: 0, y: 20 }}

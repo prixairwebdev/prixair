@@ -58,7 +58,7 @@ const itemVariants: Variants = {
 
 const WaterProducts: FC = () => {
   return (
-    <div className="w-full">
+    <div className="w-full text-black ">
       {/* Banner */}
       <div className="relative w-full h-[300px] md:h-[320px]">
         <Image

@@ -8,17 +8,17 @@ const foods = [
   {
     name: "Prixair Buka",
     imageUrl: "/logos/buka.png",
-    href: "http://buka.prixair.net",
+    href: "/buka",
   },
   {
     name: "Toast Pan",
     imageUrl: "/logos/toastpan.png",
-    href: "#",
+    href: "/toastpan",
   },
   {
     name: "Gavi Confectionery",
     imageUrl: "/logos/gavi.png",
-    href: "http://gavi.prixair.net",
+    href: "/gavi",
   },
   {
     name: "Seaside Restaurant",
@@ -33,7 +33,7 @@ const foods = [
   {
     name: "Prixair Waters",
     imageUrl: "/logos/prixairwaters.png",
-    href: "#",
+    href: "/water",
   },
   {
     name: "Iyan Village",

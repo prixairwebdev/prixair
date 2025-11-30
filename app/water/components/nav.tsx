@@ -18,8 +18,7 @@ function Nav() {
   const navItems = [
     { name: "Home", href: "/water" },
     { name: "About us", href: "/water/about" },
-    { name: "Services", href: "/water/services" },
-    { name: "Projects", href: "/water/projects" },
+    { name: "Products", href: "/water/products" },
     { name: "Contact", href: "/water/contact" },
   ];
 
@@ -32,7 +31,7 @@ function Nav() {
 
   return (
     <nav
-      className={`flex items-center justify-between px-6 md:px-12 py-4 fixed top-0 left-0 w-full z-[60] transition-all duration-300 ${
+      className={`flex items-center justify-between px-6 md:px-12 py-3 fixed top-0 left-0 w-full z-[60] transition-all duration-300 ${
         isScrolled ? "bg-white shadow-md text-black" : "bg-white text-black"
       }`}
     >
@@ -40,10 +39,10 @@ function Nav() {
       <div className="flex items-center">
         <Link href="/water" onClick={closeMobileMenu}>
           <Image
-            src="/logowater.png"
+            src="/waterlogo.png"
             alt="Prixair Logo"
-            width={150}
-            height={50}
+            width={130}
+            height={40}
             className="cursor-pointer"
             priority
           />
@@ -68,7 +67,7 @@ function Nav() {
       <div className="hidden md:block">
         <Link
           href="/water/contact"
-          className="px-6 py-2.5 rounded-md bg-orange-400 hover:bg-orange-500 text-white font-semibold transition-colors shadow-md hover:shadow-lg"
+          className="px-5 py-2 rounded-md bg-orange-400 hover:bg-orange-500 text-white font-semibold transition-colors shadow-md hover:shadow-lg text-sm"
         >
           Contact us
         </Link>
@@ -87,7 +86,7 @@ function Nav() {
         >
           {mobileMenuOpen ? (
             <svg
-              className="h-6 w-6"
+              className="h-5 w-5"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -101,7 +100,7 @@ function Nav() {
             </svg>
           ) : (
             <svg
-              className="h-6 w-6"
+              className="h-5 w-5"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -125,15 +124,15 @@ function Nav() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "100%" }}
             transition={{ type: "tween", duration: 0.3 }}
-            className="md:hidden fixed inset-0 bg-black bg-opacity-95 z-40 pt-24 px-6 overflow-y-auto"
+            className="md:hidden fixed inset-0 bg-black bg-opacity-95 z-40 pt-20 px-6 overflow-y-auto"
           >
             <button
               onClick={closeMobileMenu}
-              className="absolute top-6 right-6 text-gray-300 hover:text-white transition-colors"
+              className="absolute top-5 right-6 text-gray-300 hover:text-white transition-colors"
               aria-label="Close menu"
             >
               <svg
-                className="h-8 w-8"
+                className="h-6 w-6"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -147,12 +146,12 @@ function Nav() {
               </svg>
             </button>
 
-            <ul className="space-y-4">
+            <ul className="space-y-3">
               {navItems.map((item) => (
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    className="block text-gray-300 hover:text-white text-lg py-3 border-b border-gray-800 transition-colors"
+                    className="block text-gray-300 hover:text-white text-base py-2 border-b border-gray-800 transition-colors"
                     onClick={closeMobileMenu}
                   >
                     {item.name}
@@ -161,10 +160,10 @@ function Nav() {
               ))}
 
               {/* Mobile CTA */}
-              <li className="pt-4">
+              <li className="pt-3">
                 <Link
                   href="/water/contact"
-                  className="inline-block w-full px-6 py-4 text-center text-white bg-orange-400 hover:bg-orange-500 rounded-lg font-semibold transition-colors"
+                  className="inline-block w-full px-5 py-3 text-center text-white bg-orange-400 hover:bg-orange-500 rounded-lg font-semibold transition-colors text-sm"
                   onClick={closeMobileMenu}
                 >
                   Contact us

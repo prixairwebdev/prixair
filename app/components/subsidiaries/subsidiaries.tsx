@@ -70,7 +70,7 @@ const businesses: Business[] = [
   {
     name: "Prixair Home",
     imageUrl: "/subsidiaries/prixairhome.jpg",
-    href: "/homes",
+    href: "/realestate",
   },
 ];
 

@@ -24,7 +24,7 @@ export default function RestaurantLocator() {
   };
 
   return (
-    <section className="py-12 px-4 bg-white text-center">
+    <section className="py-12 px-4 bg-white text-center text-black">
       <h2 className="text-xl sm:text-2xl font-semibold mb-2">
         Discover Our Restaurants Across Nigeria
       </h2>

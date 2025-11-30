@@ -69,22 +69,22 @@ export default function Footer() {
           </h3>
           <ul className="space-y-3 text-sm">
             <li>
-              <a href="/room" className="hover:text-[#FB6404] transition-colors">
+              <a href="/hotel/room" className="hover:text-[#FB6404] transition-colors">
                 Book a Room
               </a>
             </li>
             <li>
-              <a href="/room" className="hover:text-[#FB6404] transition-colors">
+              <a href="/hotel/room" className="hover:text-[#FB6404] transition-colors">
                 Check Availability
               </a>
             </li>
             <li>
-              <a href="/about" className="hover:text-[#FB6404] transition-colors">
+              <a href="/hotel/about" className="hover:text-[#FB6404] transition-colors">
                 Testimonials
               </a>
             </li>
             <li>
-              <a href="/gallery" className="hover:text-[#FB6404] transition-colors">
+              <a href="/hotel/gallery" className="hover:text-[#FB6404] transition-colors">
                 Gallery
               </a>
             </li>

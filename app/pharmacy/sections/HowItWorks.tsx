@@ -42,7 +42,7 @@ export default function HowItWorks() {
   });
 
   return (
-    <div className="w-full px-6 py-12 space-y-12">
+    <div className="w-full px-6 py-12 space-y-12 text-black">
       {/* How it Works Section */}
       <motion.div 
         initial={{ opacity: 0, y: 20 }}

@@ -93,7 +93,7 @@ export default function WhyChooseUsSection() {
 
         {/* Features Grid */}
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-black"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -117,7 +117,7 @@ export default function WhyChooseUsSection() {
       <div className="bg-gray-50 mt-16 py-16">
         <div className="container mx-auto px-6">
           <motion.div
-            className="text-center mb-12"
+            className="text-center mb-12 text-black"
             initial="hidden"
             whileInView="visible"
             variants={containerVariants}
@@ -142,7 +142,7 @@ export default function WhyChooseUsSection() {
               <motion.div
                 key={idx}
                 variants={itemVariants}
-                className="bg-white rounded-lg shadow p-6"
+                className="bg-white rounded-lg shadow p-6 text-black"
               >
                 <h4 className="font-semibold mb-2">{review.name}</h4>
                 <p className="text-gray-600 mb-4">{review.text}</p>

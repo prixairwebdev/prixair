@@ -50,7 +50,7 @@ const item = {
 
 export default function BukaValuesSection() {
   return (
-    <section className="w-full">
+    <section className="w-full text-black">
       {/* Top Values Section with black patterned background */}
       <div
         className="relative bg-black py-12 px-6 md:px-16"
