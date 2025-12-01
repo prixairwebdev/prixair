@@ -1,103 +1,170 @@
+"use client";
+import { motion } from "framer-motion";
+import { useState, MouseEvent } from "react";
+// import TeamSection from "./sections/TeamSection";
+import PhilosophySection from "./sections/PhilosophySection";
+import SubsidiariesSection from "./sections/SubsidiariesSection";
+import NewsRoomSection from "./sections/NewsRoomSection";
 import Image from "next/image";
+import Legacy from "./sections/legacy";
+import Nav from "./components/nav";
+import Footer from "./components/footer";
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [isInView, setIsInView] = useState({
+    hero: false,
+    legacy: false,
+  });
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  const [showPopup, setShowPopup] = useState(false); // show promo on load
+
+  // Animation variants
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const item = {
+    hidden: { opacity: 0, x: -50 },
+    show: { opacity: 1, x: 0, transition: { duration: 0.5 } },
+  };
+
+  const handleOutsideClick = () => {
+    setShowPopup(false);
+  };
+
+  const handleInsideClick = (e: MouseEvent) => {
+    e.stopPropagation();
+  };
+
+  return (
+    <>
+      <Nav />
+      {/* Promo Popup */}
+      {showPopup && (
+        <div
+          className="fixed inset-0 bg-black/30 z-50 flex items-center justify-center"
+          onClick={handleOutsideClick}
+        >
+          <div
+            className="relative bg-white rounded-lg overflow-hidden shadow-lg max-w-md w-full"
+            onClick={handleInsideClick}
           >
+            {/* Close Button */}
+            <button
+              onClick={() => setShowPopup(false)}
+              className="absolute top-2 right-3 text-black text-4xl font-bold hover:text-red-500"
+            >
+              ×
+            </button>
+
+            {/* Promo Image */}
             <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+              src="/prixairpromo.jpg" // Change to your promo image path
+              alt="New Branch Launch Promo"
+              width={500}
+              height={500}
+              className="w-full h-auto"
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+      )}
+
+      <div className="relative">
+        {/* Hero section */}
+        <section
+          className="relative h-screen w-full"
+          aria-label="Prixair Group Hero Section"
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+          {/* Background image with gradient overlay */}
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.7), rgba(0,0,0,0.3)), url('/landingpagebg.png')`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+            }}
+            role="img"
+            aria-label="Prixair Group corporate background"
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+
+          {/* Content container */}
+          <div className="relative z-10 h-full flex items-center justify-center sm:justify-start">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-24">
+              <motion.div
+                className="max-w-2xl lg:max-w-3xl xl:max-w-4xl"
+                variants={container}
+                initial="hidden"
+                animate={isInView.hero ? "show" : "hidden"}
+                onViewportEnter={() =>
+                  setIsInView((prev) => ({ ...prev, hero: true }))
+                }
+                onViewportLeave={() =>
+                  setIsInView((prev) => ({ ...prev, hero: false }))
+                }
+                viewport={{ once: false }}
+              >
+                <motion.h1
+                  className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-bold leading-tight tracking-tight text-white"
+                  variants={item}
+                >
+                  Defining Excellence Across Nigeria&apos;s Key Industries
+                </motion.h1>
+
+                <motion.p
+                  className="mt-4 sm:mt-6 text-sm sm:text-base md:text-lg text-gray-400/90 leading-relaxed max-w-3xl"
+                  variants={item}
+                >
+                  Since 2009, Prixair Group—under Ademola Banjo&apos;s leadership
+                  in Abuja has led innovation across real estate, hospitality,
+                  manufacturing, media, and mining with integrity and
+                  operational excellence.
+                </motion.p>
+
+                <motion.div
+                  className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4"
+                  variants={item}
+                >
+                  <button
+                    className="px-6 py-2 sm:px-8 sm:py-3 bg-[#FB6404] hover:bg-[#E55A00] text-white font-medium transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#FB6404] focus:ring-opacity-50"
+                    aria-label="Learn more about Prixair Group"
+                  >
+                    LEARN MORE
+                  </button>
+                </motion.div>
+              </motion.div>
+            </div>
+          </div>
+
+          {/* Scroll indicator */}
+          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10 animate-bounce">
+            <Image
+              src="/arrowdown.png"
+              alt="Scroll down indicator"
+              width={30}
+              height={40}
+              className="w-6 h-10"
+              priority
+            />
+          </div>
+        </section>
+
+        {/* Legacy section */}
+        <Legacy />
+
+        {/* Other sections */}
+        {/* <TeamSection /> */}
+        <PhilosophySection />
+        <SubsidiariesSection />
+        <NewsRoomSection />
+      </div>
+      <Footer />
+    </>
   );
 }
