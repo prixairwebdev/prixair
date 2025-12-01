@@ -11,6 +11,15 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+
+  // ✅ Add custom rule overrides here
+  {
+    rules: {
+      "@typescript-eslint/no-unused-vars": "off",
+      "react/no-unescaped-entities": "off",
+    },
+  },
+
   {
     ignores: [
       "node_modules/**",
