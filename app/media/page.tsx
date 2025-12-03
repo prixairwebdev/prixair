@@ -5,7 +5,8 @@ import Image from "next/image";
 import NewsRoomSection from "../sections/NewsRoomSection";
 import GallerySection from "./GallerySection";
 import PressReleaseSection from "./PressReleaseSection";
-
+import Footer from "../components/footer"
+import Nav from "../components/nav"
 function Page() {
   const [isInView, setIsInView] = useState({
     hero: false,
@@ -40,6 +41,7 @@ function Page() {
 
   return (
     <div>
+      <Nav/>
       {/* Hero section */}
       <section
         className="relative h-screen w-full"
@@ -158,6 +160,7 @@ function Page() {
           </motion.div>
         </motion.div>
       </section>
+      <Footer/>
     </div>
   );
 }
