@@ -7,6 +7,8 @@ import Ceoprofile from "./ceoprofile";
 import Management from "./management";
 import PhilosophySection from "../sections/PhilosophySection";
 import VisionMissionValues from "./VisionMissionValues";
+import Nav from "../components/nav";
+import Footer from "../components/footer"
 function Page() {
   const [isInView, setIsInView] = useState({
     hero: false,
@@ -33,6 +35,7 @@ function Page() {
 
   return (
     <div>
+<Nav/>
       {/* Hero section */}
       <section
         className="relative h-screen w-full"
@@ -104,6 +107,7 @@ function Page() {
       <Ceoprofile />
       <Management />
       <PhilosophySection />
+      <Footer/>
     </div>
   );
 }

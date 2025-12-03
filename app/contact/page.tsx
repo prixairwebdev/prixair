@@ -3,7 +3,8 @@
 import React, { useState } from "react";
 import { motion, easeOut } from "framer-motion";
 // import ReCAPTCHA from "react-google-recaptcha";
-
+import Nav from "../components/nav"
+import Footer from "../components/footer"
 const containerVariants = {
   hidden: {},
   show: {
@@ -97,6 +98,7 @@ function ContactPage() {
 
   return (
     <div className="w-full min-h-screen bg-gray-50 flex flex-col items-center pb-10">
+      <Nav/>
       <div className="w-full h-[80px] bg-black mb-8" />
 
       {/* Header */}
@@ -255,6 +257,7 @@ function ContactPage() {
           ></iframe>
         </motion.div>
       </motion.div>
+      <Footer/>
     </div>
   );
 }

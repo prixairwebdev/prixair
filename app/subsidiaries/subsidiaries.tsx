@@ -19,7 +19,7 @@ const businesses: Business[] = [
   {
     name: "Prixair Mining",
     imageUrl: "/subsidiaries/mining.png",
-    href: "https://resources.prixair.net/",
+    href: "/mining",
   },
   {
     name: "Prixair Resturants",
@@ -29,12 +29,12 @@ const businesses: Business[] = [
   {
     name: "Prixair Farms",
     imageUrl: "/subsidiaries/farm.png",
-    href: "http://farms.prixair.net",
+    href: "/farms",
   },
   {
     name: "Prixair Hotels",
     imageUrl: "/subsidiaries/hotel.png",
-    href: "http://hotel.prixair.net",
+    href: "/hotel",
   },
   {
     name: "Prixair Supermarket",
@@ -44,34 +44,33 @@ const businesses: Business[] = [
   {
     name: "Prixair Pharmacy",
     imageUrl: "/subsidiaries/pharmacy.jpg",
-    href: "http://pharmacy.prixair.net",
+    href: "/pharmacy",
   },
   {
     name: "Prixair Water",
     imageUrl: "/subsidiaries/water.png",
-    href: "http://water.prixair.net",
+    href: "/water",
   },
   {
     name: "Prixair Properties",
     imageUrl: "/subsidiaries/properties.png",
-    href: "http://properties.prixair.net",
+    href: "/homes",
   },
   {
     name: "Prixair Transport & Logistics",
     imageUrl: "/subsidiaries/logistics.jpg",
-    href: "http://logistics.prixair.net",
+    href: "/logistics",
   },
   {
     name: "Prixair Media",
     imageUrl: "/subsidiaries/media.jpg",
-    href: "/subsidiaries/#subsidiaries",
+    href: "/media",
   },
   {
     name: "Prixair Home",
     imageUrl: "/subsidiaries/prixairhome.jpg",
-    href: "/subsidiaries/#subsidiaries",
+    href: "/realestate",
   },
-
 ];
 
 const container = {

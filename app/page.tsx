@@ -131,12 +131,13 @@ export default function Home() {
                   className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4"
                   variants={item}
                 >
-                  <button
-                    className="px-6 py-2 sm:px-8 sm:py-3 bg-[#FB6404] hover:bg-[#E55A00] text-white font-medium transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#FB6404] focus:ring-opacity-50"
+                  <a
+                    href="/about"
+                    className="px-6 py-2 sm:px-8 sm:py-3 bg-[#FB6404] hover:bg-[#E55A00] text-white font-medium transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#FB6404] focus:ring-opacity-50 text-center"
                     aria-label="Learn more about Prixair Group"
                   >
                     LEARN MORE
-                  </button>
+                  </a>
                 </motion.div>
               </motion.div>
             </div>

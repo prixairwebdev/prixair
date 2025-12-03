@@ -3,7 +3,8 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Subsidiaries from "./subsidiaries";
-
+import Nav from "../components/nav"
+import Footer from "../components/footer"
 function Page() {  // Changed from 'page' to 'Page'
   const [isInView, setIsInView] = useState({
     hero: false,
@@ -28,6 +29,7 @@ function Page() {  // Changed from 'page' to 'Page'
 
   return (
     <div>
+      <Nav/>
       {/* Hero section */}
       <section
         className="relative h-screen w-full"
@@ -96,6 +98,7 @@ function Page() {  // Changed from 'page' to 'Page'
         </div>
       </section>
       <Subsidiaries/>
+      <Footer/>
     </div>
   );
 }
