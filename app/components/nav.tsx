@@ -23,6 +23,69 @@ function Nav() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const subsidiaries = [
+    {
+      name: "Prixair Oil & Gas ",
+      imageUrl: "/subsidiaries/oilandgas.png",
+      href: "/oil&gas",
+    },
+    {
+      name: "Prixair Mining",
+      imageUrl: "/subsidiaries/mining.png",
+      href: "/mining",
+    },
+    {
+      name: "Prixair Resturants",
+      imageUrl: "/subsidiaries/food.jpg",
+      href: "/food",
+    },
+    {
+      name: "Prixair Farms",
+      imageUrl: "/subsidiaries/farm.png",
+      href: "/farms",
+    },
+    {
+      name: "Prixair Hotels",
+      imageUrl: "/subsidiaries/hotel.png",
+      href: "/hotel",
+    },
+    {
+      name: "Prixair Supermarket",
+      imageUrl: "/supermarket.jpg",
+      href: "http://supermarket.prixair.net",
+    },
+    {
+      name: "Prixair Pharmacy",
+      imageUrl: "/subsidiaries/pharmacy.jpg",
+      href: "/pharmacy",
+    },
+    {
+      name: "Prixair Water",
+      imageUrl: "/subsidiaries/water.png",
+      href: "/water",
+    },
+    {
+      name: "Prixair Properties",
+      imageUrl: "/subsidiaries/properties.png",
+      href: "/homes",
+    },
+    {
+      name: "Prixair Transport & Logistics",
+      imageUrl: "/subsidiaries/logistics.jpg",
+      href: "/logistics",
+    },
+    {
+      name: "Prixair Media",
+      imageUrl: "/subsidiaries/media.jpg",
+      href: "/media",
+    },
+    {
+      name: "Prixair Home",
+      imageUrl: "/subsidiaries/prixairhome.jpg",
+      href: "/realestate",
+    },
+  ];
+
   const navItems = [
     { name: 'HOME', href: '/' },
     {
@@ -46,11 +109,7 @@ function Nav() {
     {
       name: 'SUBSIDIARIES',
       href: '/subsidiaries',
-      // dropdown: [
-      //   { name: 'Prixair Oil&Gas', href: '/subsidiaries' },
-      //   { name: 'Prixair Resources', href: '/subsidiaries' },
-      //   { name: 'Prixair Properties', href: '/subsidiaries' }
-      // ]
+      dropdown: true
     },
     { name: 'CONTACT', href: '/contact' }
   ];
@@ -61,6 +120,14 @@ function Nav() {
 
   const closeMobileMenu = () => {
     setMobileMenuOpen(false);
+    setActiveDropdown(null);
+  };
+
+  const handleMouseEnter = (itemName: string) => {
+    setActiveDropdown(itemName);
+  };
+
+  const handleMouseLeave = () => {
     setActiveDropdown(null);
   };
 
@@ -85,16 +152,25 @@ function Nav() {
           <li
             key={item.name}
             className="relative"
-            onMouseEnter={() => item.dropdown && toggleDropdown(item.name)}
-            onMouseLeave={() => item.dropdown && toggleDropdown(item.name)}
+            onMouseEnter={() => item.dropdown && handleMouseEnter(item.name)}
+            onMouseLeave={handleMouseLeave}
           >
-            <div className="flex items-center">
-              <Link
-                href={item.href}
-                className={`hover:text-[#FB6404]  font-medium text-sm lg:text-base transition-colors duration-200 ${isScrolled ? "text-black" : "text-gray-300 hover:text-white"}`}
-              >
-                {item.name}
-              </Link>
+            <div className="flex items-center cursor-pointer">
+              {item.dropdown ? (
+                <div 
+                  className={`hover:text-[#FB6404] font-medium text-sm lg:text-base transition-colors duration-200 ${isScrolled ? "text-black" : "text-gray-300 hover:text-white"}`}
+                  onClick={() => toggleDropdown(item.name)}
+                >
+                  {item.name}
+                </div>
+              ) : (
+                <Link
+                  href={item.href}
+                  className={`hover:text-[#FB6404] font-medium text-sm lg:text-base transition-colors duration-200 ${isScrolled ? "text-black" : "text-gray-300 hover:text-white"}`}
+                >
+                  {item.name}
+                </Link>
+              )}
               {item.dropdown && (
                 <motion.span
                   initial={{ rotate: 0 }}
@@ -115,18 +191,103 @@ function Nav() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.2 }}
-                  className={`absolute top-full left-0 mt-2 w-48 rounded-md shadow-lg py-1 z-50 ${isScrolled ? "bg-white" : "bg-gray-900"}`}
+                  onMouseEnter={() => handleMouseEnter(item.name)}
+                  onMouseLeave={handleMouseLeave}
+                  className={`absolute top-full left-0 mt-2 rounded-md shadow-lg py-1 z-50 ${isScrolled ? "bg-white" : "bg-gray-900"} ${
+                    item.name === 'SUBSIDIARIES' 
+                      ? 'w-64 max-h-[80vh] overflow-y-auto' 
+                      : 'w-48'
+                  }`}
                 >
-                  {item.dropdown.map((subItem) => (
-                    <Link
-                      key={subItem.name}
-                      href={subItem.href}
-                      className={`block px-4 py-2 text-sm hover:bg-opacity-10 hover:bg-[#FB6404] ${isScrolled ? "text-gray-700 hover:text-[#FB6404]" : "text-gray-300 hover:text-white"}`}
-                      onClick={closeMobileMenu}
-                    >
-                      {subItem.name}
-                    </Link>
-                  ))}
+                  {item.name === 'SUBSIDIARIES' ? (
+                    <div className="p-2">
+                      <div className="grid grid-cols-2 gap-2">
+                        {subsidiaries.map((subsidiary) => (
+                          <Link
+                            key={subsidiary.name}
+                            href={subsidiary.href}
+                            className={`flex flex-col items-center p-3 rounded-lg transition-all duration-200 hover:scale-[1.02] ${
+                              isScrolled 
+                                ? "hover:bg-gray-100 hover:text-[#FB6404]" 
+                                : "hover:bg-gray-800 hover:text-white"
+                            }`}
+                            onClick={closeMobileMenu}
+                          >
+                            <div className="w-12 h-12 mb-2 relative">
+                              <Image
+                                src={subsidiary.imageUrl}
+                                alt={subsidiary.name}
+                                fill
+                                className="object-cover rounded-full"
+                              />
+                            </div>
+                            <span className="text-xs font-medium text-center leading-tight">
+                              {subsidiary.name}
+                            </span>
+                          </Link>
+                        ))}
+                      </div>
+                      <Link
+                        href="/subsidiaries"
+                        className={`block mt-2 text-center px-4 py-2 text-sm rounded-md transition-colors duration-200 ${
+                          isScrolled
+                            ? "bg-[#FB6404] text-white hover:bg-[#E55A00]"
+                            : "bg-gray-800 text-white hover:bg-gray-700"
+                        }`}
+                        onClick={closeMobileMenu}
+                      >
+                        View All Subsidiaries
+                      </Link>
+                    </div>
+                  ) : item.name === 'ABOUT US' ? (
+                    <>
+                      <Link
+                        href="/about/#whoarewe"
+                        className={`block px-4 py-2 text-sm hover:bg-opacity-10 hover:bg-[#FB6404] ${isScrolled ? "text-gray-700 hover:text-[#FB6404]" : "text-gray-300 hover:text-white"}`}
+                        onClick={closeMobileMenu}
+                      >
+                        Who Are We
+                      </Link>
+                      <Link
+                        href="/about/#leadership"
+                        className={`block px-4 py-2 text-sm hover:bg-opacity-10 hover:bg-[#FB6404] ${isScrolled ? "text-gray-700 hover:text-[#FB6404]" : "text-gray-300 hover:text-white"}`}
+                        onClick={closeMobileMenu}
+                      >
+                        Leadership
+                      </Link>
+                      <Link
+                        href="/about/#philosophy"
+                        className={`block px-4 py-2 text-sm hover:bg-opacity-10 hover:bg-[#FB6404] ${isScrolled ? "text-gray-700 hover:text-[#FB6404]" : "text-gray-300 hover:text-white"}`}
+                        onClick={closeMobileMenu}
+                      >
+                        Philosophy
+                      </Link>
+                    </>
+                  ) : item.name === 'MEDIA' ? (
+                    <>
+                      <Link
+                        href="/media#news"
+                        className={`block px-4 py-2 text-sm hover:bg-opacity-10 hover:bg-[#FB6404] ${isScrolled ? "text-gray-700 hover:text-[#FB6404]" : "text-gray-300 hover:text-white"}`}
+                        onClick={closeMobileMenu}
+                      >
+                        News
+                      </Link>
+                      <Link
+                        href="/media#press"
+                        className={`block px-4 py-2 text-sm hover:bg-opacity-10 hover:bg-[#FB6404] ${isScrolled ? "text-gray-700 hover:text-[#FB6404]" : "text-gray-300 hover:text-white"}`}
+                        onClick={closeMobileMenu}
+                      >
+                        Press Releases
+                      </Link>
+                      <Link
+                        href="/media#gallery"
+                        className={`block px-4 py-2 text-sm hover:bg-opacity-10 hover:bg-[#FB6404] ${isScrolled ? "text-gray-700 hover:text-[#FB6404]" : "text-gray-300 hover:text-white"}`}
+                        onClick={closeMobileMenu}
+                      >
+                        Gallery
+                      </Link>
+                    </>
+                  ) : null}
                 </motion.div>
               )}
             </AnimatePresence>
@@ -194,9 +355,13 @@ function Nav() {
                       }
                     }}
                   >
-                    <Link href={item.href} onClick={closeMobileMenu}>
-                      {item.name}
-                    </Link>
+                    {item.dropdown ? (
+                      <span>{item.name}</span>
+                    ) : (
+                      <Link href={item.href} onClick={closeMobileMenu}>
+                        {item.name}
+                      </Link>
+                    )}
                     {item.dropdown && (
                       <motion.span
                         animate={{ rotate: activeDropdown === item.name ? 180 : 0 }}
@@ -210,24 +375,106 @@ function Nav() {
                   </div>
 
                   {item.dropdown && activeDropdown === item.name && (
-                    <motion.ul
+                    <motion.div
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: 'auto' }}
                       exit={{ opacity: 0, height: 0 }}
-                      className="pl-4 space-y-3 mt-2"
+                      className="pl-4 mt-2 overflow-hidden"
                     >
-                      {item.dropdown.map((subItem) => (
-                        <li key={subItem.name}>
+                      {item.name === 'SUBSIDIARIES' ? (
+                        <div className="space-y-3">
+                          <div className="grid grid-cols-2 gap-3">
+                            {subsidiaries.map((subsidiary) => (
+                              <Link
+                                key={subsidiary.name}
+                                href={subsidiary.href}
+                                className="flex flex-col items-center p-2 rounded-lg hover:bg-gray-800 transition-colors duration-200"
+                                onClick={closeMobileMenu}
+                              >
+                                <div className="w-10 h-10 mb-1 relative">
+                                  <Image
+                                    src={subsidiary.imageUrl}
+                                    alt={subsidiary.name}
+                                    fill
+                                    className="object-cover rounded-full"
+                                  />
+                                </div>
+                                <span className="text-xs text-gray-300 text-center leading-tight">
+                                  {subsidiary.name}
+                                </span>
+                              </Link>
+                            ))}
+                          </div>
                           <Link
-                            href={subItem.href}
-                            className="block text-gray-400 hover:text-white py-2 text-lg"
+                            href="/subsidiaries"
+                            className="block text-center px-4 py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors duration-200"
                             onClick={closeMobileMenu}
                           >
-                            {subItem.name}
+                            View All Subsidiaries
                           </Link>
-                        </li>
-                      ))}
-                    </motion.ul>
+                        </div>
+                      ) : item.name === 'ABOUT US' ? (
+                        <ul className="space-y-3">
+                          <li>
+                            <Link
+                              href="/about/#whoarewe"
+                              className="block text-gray-400 hover:text-white py-2 text-lg"
+                              onClick={closeMobileMenu}
+                            >
+                              Who Are We
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              href="/about/#leadership"
+                              className="block text-gray-400 hover:text-white py-2 text-lg"
+                              onClick={closeMobileMenu}
+                            >
+                              Leadership
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              href="/about/#philosophy"
+                              className="block text-gray-400 hover:text-white py-2 text-lg"
+                              onClick={closeMobileMenu}
+                            >
+                              Philosophy
+                            </Link>
+                          </li>
+                        </ul>
+                      ) : item.name === 'MEDIA' ? (
+                        <ul className="space-y-3">
+                          <li>
+                            <Link
+                              href="/media#news"
+                              className="block text-gray-400 hover:text-white py-2 text-lg"
+                              onClick={closeMobileMenu}
+                            >
+                              News
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              href="/media#press"
+                              className="block text-gray-400 hover:text-white py-2 text-lg"
+                              onClick={closeMobileMenu}
+                            >
+                              Press Releases
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              href="/media#gallery"
+                              className="block text-gray-400 hover:text-white py-2 text-lg"
+                              onClick={closeMobileMenu}
+                            >
+                              Gallery
+                            </Link>
+                          </li>
+                        </ul>
+                      ) : null}
+                    </motion.div>
                   )}
                 </li>
               ))}
