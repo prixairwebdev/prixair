@@ -98,12 +98,12 @@ function Nav() {
       ]
     },
     {
-      name: 'MEDIA',
-      href: '/media',
+      name: 'NEWS',
+      href: '/news',
       dropdown: [
-        {name: 'News', href: '/media#news'},
-        { name: 'Press Releases', href: '/media#press' },
-        { name: 'Gallery', href: '/media#gallery' }
+        {name: 'Latest News', href: '/news#latest'},
+        { name: 'Press Releases', href: '/news#press' },
+        { name: 'Gallery', href: '/news#gallery' }
       ]
     },
     {
@@ -263,24 +263,24 @@ function Nav() {
                         Philosophy
                       </Link>
                     </>
-                  ) : item.name === 'MEDIA' ? (
+                  ) : item.name === 'NEWS' ? (
                     <>
                       <Link
-                        href="/media#news"
+                        href="/news#latest"
                         className={`block px-4 py-2 text-sm hover:bg-opacity-10 hover:bg-[#FB6404] ${isScrolled ? "text-gray-700 hover:text-[#FB6404]" : "text-gray-300 hover:text-white"}`}
                         onClick={closeMobileMenu}
                       >
-                        News
+                        Latest News
                       </Link>
                       <Link
-                        href="/media#press"
+                        href="/news#press"
                         className={`block px-4 py-2 text-sm hover:bg-opacity-10 hover:bg-[#FB6404] ${isScrolled ? "text-gray-700 hover:text-[#FB6404]" : "text-gray-300 hover:text-white"}`}
                         onClick={closeMobileMenu}
                       >
                         Press Releases
                       </Link>
                       <Link
-                        href="/media#gallery"
+                        href="/news#gallery"
                         className={`block px-4 py-2 text-sm hover:bg-opacity-10 hover:bg-[#FB6404] ${isScrolled ? "text-gray-700 hover:text-[#FB6404]" : "text-gray-300 hover:text-white"}`}
                         onClick={closeMobileMenu}
                       >
@@ -443,20 +443,20 @@ function Nav() {
                             </Link>
                           </li>
                         </ul>
-                      ) : item.name === 'MEDIA' ? (
+                      ) : item.name === 'NEWS' ? (
                         <ul className="space-y-3">
                           <li>
                             <Link
-                              href="/media#news"
+                              href="/news#latest"
                               className="block text-gray-400 hover:text-white py-2 text-lg"
                               onClick={closeMobileMenu}
                             >
-                              News
+                              Latest News
                             </Link>
                           </li>
                           <li>
                             <Link
-                              href="/media#press"
+                              href="/news#pressrelease"
                               className="block text-gray-400 hover:text-white py-2 text-lg"
                               onClick={closeMobileMenu}
                             >
@@ -465,7 +465,7 @@ function Nav() {
                           </li>
                           <li>
                             <Link
-                              href="/media#gallery"
+                              href="/news#gallery"
                               className="block text-gray-400 hover:text-white py-2 text-lg"
                               onClick={closeMobileMenu}
                             >
