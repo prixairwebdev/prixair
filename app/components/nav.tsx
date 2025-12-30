@@ -52,7 +52,7 @@ function Nav() {
     {
       name: "Prixair Supermarket",
       imageUrl: "/supermarket.jpg",
-      href: "http://supermarket.prixair.net",
+    href: "/supermarket",
     },
     {
       name: "Prixair Pharmacy",
