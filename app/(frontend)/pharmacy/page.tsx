@@ -84,12 +84,14 @@ export default function Home() {
 
               <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 mt-6 sm:mt-8 justify-center sm:justify-start">
                 <motion.div variants={item}>
-                  <button
-                    className="px-6 py-3 sm:px-8 sm:py-3 bg-[#8AD52E] hover:bg-[#a8dd67] text-white font-medium  transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#FB6404] focus:ring-opacity-50 w-full sm:w-auto"
-                    aria-label="Start shopping at Prixair Pharmacy"
-                  >
-                    Start Shopping
-                  </button>
+                  <a href="/pharmacy/products">
+                    <button
+                      className="px-6 py-3 sm:px-8 sm:py-3 bg-[#8AD52E] hover:bg-[#a8dd67] text-white font-medium  transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#FB6404] focus:ring-opacity-50 w-full sm:w-auto"
+                      aria-label="Start shopping at Prixair Pharmacy"
+                    >
+                      Start Shopping
+                    </button>
+                  </a>
                 </motion.div>
                 <motion.div variants={item}>
                   <button

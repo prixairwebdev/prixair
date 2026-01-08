@@ -1,0 +1,108 @@
+import React from 'react';
+import { Product } from '../types/types';
+import { useCart } from '../../../components/CartContext';
+import { useWishlist } from '../contexts/WishlistContext';
+import Link from 'next/link';
+
+interface ProductCardProps {
+  product: Product;
+}
+
+export default function ProductCard({ product }: ProductCardProps) {
+  const { addItem } = useCart();
+  const { addToWishlist, isInWishlist, removeFromWishlist } = useWishlist();
+  const inWishlist = isInWishlist(product.id);
+
+  const handleAddToCart = () => {
+    addItem({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      qty: 1,
+      image: product.image,
+      stock: product.stock,
+      store: product.store,
+    });
+  };
+
+  const handleWishlistToggle = () => {
+    if (inWishlist) {
+      removeFromWishlist(product.id);
+    } else {
+      addToWishlist(product);
+    }
+  };
+
+  return (
+    <div className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
+      <Link href={`/supermarket/product/${product.id}`}>
+        <div className="relative h-48 bg-gray-100">
+          <img
+            src={product.image}
+            alt={product.name}
+            className="w-full h-full object-cover"
+          />
+          {product.stock < 10 && product.stock > 0 && (
+            <div className="absolute top-2 right-2 bg-orange-500 text-white text-xs px-2 py-1 rounded">
+              Only {product.stock} left
+            </div>
+          )}
+          {product.stock === 0 && (
+            <div className="absolute top-2 right-2 bg-red-600 text-white text-xs px-2 py-1 rounded">
+              Out of Stock
+            </div>
+          )}
+        </div>
+      </Link>
+
+      <div className="p-4">
+        <Link href={`/supermarket/product/${product.id}`}>
+          <h3 className="text-black font-semibold text-sm mb-1 hover:text-orange-600 line-clamp-2">
+            {product.name}
+          </h3>
+        </Link>
+        
+        <p className="text-gray-600 text-xs mb-2 line-clamp-2">{product.description}</p>
+
+        {product.rating && (
+          <div className="flex items-center gap-1 mb-2">
+            <div className="flex text-orange-400">
+              {[...Array(5)].map((_, i) => (
+                <span key={i}>
+                  {i < Math.floor(product.rating!) ? '★' : '☆'}
+                </span>
+              ))}
+            </div>
+            <span className="text-xs text-gray-500">({product.reviewCount})</span>
+          </div>
+        )}
+
+        <div className="flex items-center justify-between mb-3">
+          <span className="text-black font-bold text-lg">NGN {product.price.toFixed(2)}</span>
+          <span className="text-gray-500 text-xs">{product.category}</span>
+        </div>
+
+        <div className="flex gap-2">
+          <button
+            onClick={handleAddToCart}
+            disabled={product.stock === 0}
+            className="flex-1 bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-sm font-medium transition-colors"
+          >
+            {product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
+          </button>
+          <button
+            onClick={handleWishlistToggle}
+            className={`px-3 py-2 rounded border transition-colors ${
+              inWishlist
+                ? 'bg-red-50 border-red-300 text-red-600 hover:bg-red-100'
+                : 'bg-white border-gray-300 text-gray-600 hover:bg-gray-50'
+            }`}
+            title={inWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
+          >
+            {inWishlist ? '❤️' : '🤍'}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}

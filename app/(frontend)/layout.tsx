@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import PageWrapper from "./components/PageWrapper";
+import { CartProvider } from "../components/CartContext";
 
 export const metadata: Metadata = {
   title: "Prixair Group",
@@ -25,9 +26,11 @@ export default function RootLayout({
     <html lang="en" className={`${montserrat.variable} overflow-x-hidden scroll-smooth`}>
       <body 
         className="overflow-x-hidden bg-white font-sans" // font-sans will use Montserrat
-      >      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon" />
-
-        {children}
+      >
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon" />
+        <CartProvider>
+          {children}
+        </CartProvider>
       </body>
     </html>
   );
