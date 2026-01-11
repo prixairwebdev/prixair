@@ -81,20 +81,24 @@ export default function OrdersPage() {
 
                 <div className="border-t border-gray-200 pt-4 mb-4">
                   <div className="space-y-3">
-                    {order.items.map((item, idx) => (
+                    {order.items.map((item, idx) => {
+                      return (
                       <div key={idx} className="flex items-center gap-4">
-                        <img
-                          src={item.image || '/img/foodimg/placeholder.png'}
-                          alt={item.name}
-                          className="w-16 h-16 object-cover rounded"
-                        />
+                        {item.image && (
+                          <img
+                            src={item.image}
+                            alt={item.name}
+                            className="w-16 h-16 object-cover rounded"
+                          />
+                        )}
                         <div className="flex-1">
                           <h4 className="text-black font-medium">{item.name}</h4>
                           <p className="text-gray-500 text-sm">Quantity: {item.quantity}</p>
                         </div>
                         <p className="text-black font-semibold">NGN {(item.price * item.quantity).toFixed(2)}</p>
                       </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
 

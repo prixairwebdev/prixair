@@ -1,23 +1,23 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { dummyAddresses } from '../../data/dummy-data';
 import AddressCard from '../../components/AddressCard';
 import { Address } from '../../types/types';
+import { getAddresses, createAddress, updateAddress, deleteAddress } from '@/app/actions/addresses';
 
 export default function AddressesPage() {
   const { user } = useAuth();
   const router = useRouter();
-  const [addresses, setAddresses] = useState<Address[]>(
-    dummyAddresses.filter(addr => addr.userId === user?.id)
-  );
+  const [addresses, setAddresses] = useState<Address[]>([]);
+  const [loading, setLoading] = useState(true);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState({
-    name: user?.name || '',
-    phone: user?.phone || '',
+    name: '',
+    phone: '',
     street: '',
     city: '',
     state: '',
@@ -26,43 +26,100 @@ export default function AddressesPage() {
     type: 'both' as 'shipping' | 'billing' | 'both',
   });
 
-  if (!user) {
-    router.push('/supermarket/account/login');
-    return null;
-  }
+  const loadAddresses = useCallback(async () => {
+    if (!user) return;
+    try {
+      setLoading(true);
+      const data = await getAddresses();
+      setAddresses(data);
+    } catch (error) {
+      console.error('Failed to load addresses:', error);
+      alert('Failed to load addresses');
+    } finally {
+      setLoading(false);
+    }
+  }, [user]);
 
-  const handleAddAddress = (e: React.FormEvent) => {
-    e.preventDefault();
-    const newAddress: Address = {
-      id: `addr-${Date.now()}`,
-      userId: user.id,
-      ...formData,
-      isDefault: addresses.length === 0,
-    };
-    setAddresses([...addresses, newAddress]);
-    setShowAddForm(false);
-    setFormData({
+  useEffect(() => {
+    if (!user) {
+      router.push('/supermarket/account/login');
+      return;
+    }
+    // Initialize form with user data
+    setFormData(prev => ({
+      ...prev,
       name: user.name,
       phone: user.phone || '',
-      street: '',
-      city: '',
-      state: '',
-      zipCode: '',
-      country: 'Nigeria',
-      type: 'both',
-    });
+    }));
+    loadAddresses();
+  }, [user, router, loadAddresses]);
+
+  const handleAddAddress = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!user) return;
+
+    setSubmitting(true);
+    try {
+      const result = await createAddress({
+        ...formData,
+        isDefault: addresses.length === 0,
+      });
+
+      if (result.success) {
+        await loadAddresses();
+        setShowAddForm(false);
+        setFormData({
+          name: user.name,
+          phone: user.phone || '',
+          street: '',
+          city: '',
+          state: '',
+          zipCode: '',
+          country: 'Nigeria',
+          type: 'both',
+        });
+      } else {
+        alert(result.error || 'Failed to create address');
+      }
+    } catch (error) {
+      console.error('Error creating address:', error);
+      alert('An unexpected error occurred');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
-  const handleSetDefault = (id: string) => {
-    setAddresses(addresses.map(addr => ({
-      ...addr,
-      isDefault: addr.id === id,
-    })));
+  const handleSetDefault = async (id: string) => {
+    try {
+      const result = await updateAddress(id, { isDefault: true });
+      if (result.success) {
+        // Optimistically update or reload
+        await loadAddresses();
+      } else {
+        alert('Failed to set default address');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('An error occurred');
+    }
   };
 
-  const handleDelete = (id: string) => {
-    setAddresses(addresses.filter(addr => addr.id !== id));
+  const handleDelete = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this address?')) return;
+    try {
+      const result = await deleteAddress(id);
+      if (result.success) {
+        setAddresses(addresses.filter(a => a.id !== id));
+      } else {
+        alert('Failed to delete address');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('An error occurred');
+    }
   };
+
+  if (!user && loading) return <p className="p-8 text-center text-gray-500">Loading...</p>;
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4">
@@ -176,9 +233,10 @@ export default function AddressesPage() {
               <div className="flex gap-3">
                 <button
                   type="submit"
-                  className="bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition-colors font-semibold"
+                  disabled={submitting}
+                  className="bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition-colors font-semibold disabled:opacity-50"
                 >
-                  Save Address
+                  {submitting ? 'Saving...' : 'Save Address'}
                 </button>
                 <button
                   type="button"
@@ -192,7 +250,12 @@ export default function AddressesPage() {
           </div>
         )}
 
-        {addresses.length === 0 ? (
+        {loading ? (
+          <div className="text-center py-12">
+            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
+            <p className="mt-2 text-gray-500">Loading addresses...</p>
+          </div>
+        ) : addresses.length === 0 ? (
           <div className="bg-white rounded-lg shadow-sm p-12 text-center">
             <div className="text-6xl mb-4">📍</div>
             <h2 className="text-2xl font-bold text-black mb-2">No Addresses Saved</h2>

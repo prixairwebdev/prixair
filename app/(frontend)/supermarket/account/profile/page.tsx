@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { updateProfile, changePassword } from '@/app/actions/users';
 
 export default function ProfilePage() {
   const { user } = useAuth();
@@ -12,16 +13,73 @@ export default function ProfilePage() {
   const [name, setName] = useState(user?.name || '');
   const [phone, setPhone] = useState(user?.phone || '');
   const [email] = useState(user?.email || '');
+  const [saving, setSaving] = useState(false);
+
+  // Password change state
+  const [showPasswordForm, setShowPasswordForm] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [changingPassword, setChangingPassword] = useState(false);
 
   if (!user) {
     router.push('/supermarket/account/login');
     return null;
   }
 
-  const handleSave = () => {
-    // In a real app, this would update the user in the backend
-    setIsEditing(false);
-    alert('Profile updated successfully!');
+  const handleSave = async () => {
+    setSaving(true);
+    try {
+      const result = await updateProfile({ name, phone });
+      if (result.success) {
+        setIsEditing(false);
+        alert('Profile updated successfully!');
+        // Refresh to get updated user data
+        window.location.reload();
+      } else {
+        alert(result.error || 'Failed to update profile');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('An error occurred');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handlePasswordChange = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setPasswordError('');
+
+    if (newPassword !== confirmPassword) {
+      setPasswordError('New passwords do not match');
+      return;
+    }
+
+    if (newPassword.length < 6) {
+      setPasswordError('Password must be at least 6 characters');
+      return;
+    }
+
+    setChangingPassword(true);
+    try {
+      const result = await changePassword(currentPassword, newPassword);
+      if (result.success) {
+        alert('Password changed successfully!');
+        setShowPasswordForm(false);
+        setCurrentPassword('');
+        setNewPassword('');
+        setConfirmPassword('');
+      } else {
+        setPasswordError(result.error || 'Failed to change password');
+      }
+    } catch (error) {
+      console.error(error);
+      setPasswordError('An error occurred');
+    } finally {
+      setChangingPassword(false);
+    }
   };
 
   return (
@@ -96,9 +154,10 @@ export default function ProfilePage() {
               <div className="flex gap-3 pt-4">
                 <button
                   onClick={handleSave}
-                  className="bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition-colors font-semibold"
+                  disabled={saving}
+                  className="bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition-colors font-semibold disabled:opacity-50"
                 >
-                  Save Changes
+                  {saving ? 'Saving...' : 'Save Changes'}
                 </button>
                 <button
                   onClick={() => {
@@ -116,16 +175,76 @@ export default function ProfilePage() {
 
           <div className="mt-8 pt-8 border-t border-gray-200">
             <h2 className="text-xl font-bold text-black mb-4">Change Password</h2>
-            <button className="text-orange-600 hover:text-orange-700 font-medium">
-              Update Password →
-            </button>
-          </div>
-
-          <div className="mt-8 pt-8 border-t border-gray-200">
-            <h2 className="text-xl font-bold text-black mb-4">Account Actions</h2>
-            <button className="text-red-600 hover:text-red-700 font-medium">
-              Delete Account
-            </button>
+            {!showPasswordForm ? (
+              <button
+                onClick={() => setShowPasswordForm(true)}
+                className="text-orange-600 hover:text-orange-700 font-medium"
+              >
+                Update Password →
+              </button>
+            ) : (
+              <form onSubmit={handlePasswordChange} className="space-y-4">
+                {passwordError && (
+                  <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+                    {passwordError}
+                  </div>
+                )}
+                <div>
+                  <label className="block text-black font-medium mb-2">Current Password</label>
+                  <input
+                    type="password"
+                    value={currentPassword}
+                    onChange={(e) => setCurrentPassword(e.target.value)}
+                    className="w-full border border-gray-300 rounded-lg px-4 py-3 text-black focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-black font-medium mb-2">New Password</label>
+                  <input
+                    type="password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    className="w-full border border-gray-300 rounded-lg px-4 py-3 text-black focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    required
+                    minLength={6}
+                  />
+                </div>
+                <div>
+                  <label className="block text-black font-medium mb-2">Confirm New Password</label>
+                  <input
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="w-full border border-gray-300 rounded-lg px-4 py-3 text-black focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    required
+                    minLength={6}
+                  />
+                </div>
+                <div className="flex gap-3">
+                  <button
+                    type="submit"
+                    disabled={changingPassword}
+                    className="bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition-colors font-semibold disabled:opacity-50"
+                  >
+                    {changingPassword ? 'Changing...' : 'Change Password'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowPasswordForm(false);
+                      setCurrentPassword('');
+                      setNewPassword('');
+                      setConfirmPassword('');
+                      setPasswordError('');
+                    }}
+                    className="bg-gray-200 text-black px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors font-semibold"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            )}
           </div>
         </div>
       </div>

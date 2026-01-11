@@ -8,7 +8,12 @@ import { OrderProvider } from './contexts/OrderContext';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 
-export default function SupermarketLayout({ children }: { children: React.ReactNode }) {
+interface SupermarketLayoutProps {
+  children: React.ReactNode;
+  params?: Promise<Record<string, never>>;
+}
+
+export default function SupermarketLayout({ children }: SupermarketLayoutProps) {
   return (
     <AuthProvider>
       <CartProvider>

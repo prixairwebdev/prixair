@@ -15,10 +15,27 @@ type Args = {
   }>
 }
 
-export const generateMetadata = ({ params, searchParams }: Args): Promise<Metadata> =>
-  generatePageMetadata({ config, params, searchParams })
+export const generateMetadata = async ({ params, searchParams }: Args): Promise<Metadata> => {
+  // Await to prevent mutation errors, then wrap back into Promises for Payload
+  const resolvedParams = await params
+  const resolvedSearchParams = await searchParams
+  return generatePageMetadata({
+    config,
+    params: Promise.resolve(resolvedParams),
+    searchParams: Promise.resolve(resolvedSearchParams)
+  })
+}
 
-const Page = ({ params, searchParams }: Args) =>
-  RootPage({ config, params, searchParams, importMap })
+const Page = async ({ params, searchParams }: Args) => {
+  // Await to prevent mutation errors, then wrap back into Promises for Payload
+  const resolvedParams = await params
+  const resolvedSearchParams = await searchParams
+  return RootPage({
+    config,
+    params: Promise.resolve(resolvedParams),
+    searchParams: Promise.resolve(resolvedSearchParams),
+    importMap
+  })
+}
 
 export default Page

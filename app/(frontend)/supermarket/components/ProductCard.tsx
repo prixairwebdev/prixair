@@ -14,6 +14,13 @@ export default function ProductCard({ product }: ProductCardProps) {
   const inWishlist = isInWishlist(product.id);
 
   const handleAddToCart = () => {
+    const productId = String(product.id || '').trim();
+    if (!productId) {
+      console.error('Cannot add product to cart: missing ID', product);
+      alert('Error: Product information is invalid. Please refresh and try again.');
+      return;
+    }
+    
     addItem({
       id: product.id,
       name: product.name,

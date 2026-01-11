@@ -10,6 +10,7 @@ import { Categories } from "./collections/Categories";
 import { Products } from "./collections/Products";
 import { FlashSales } from "./collections/FlashSales";
 
+import { Addresses } from "./collections/Addresses";
 import { Users } from "./collections/Users";
 import { Media } from "./collections/Media";
 import { Orders } from "./collections/Orders";
@@ -24,7 +25,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Categories, Products, FlashSales, Orders],
+  collections: [Users, Media, Categories, Products, FlashSales, Orders, Addresses],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "",
   typescript: {

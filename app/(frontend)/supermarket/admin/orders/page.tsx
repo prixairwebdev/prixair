@@ -126,7 +126,7 @@ export default function AdminOrdersPage() {
                     {order.items.map((item, idx) => (
                       <div key={idx} className="flex items-center gap-3 text-sm">
                         <img
-                          src={item.image || '/img/foodimg/placeholder.png'}
+                          src={item.image}
                           alt={item.name}
                           className="w-10 h-10 object-cover rounded"
                         />

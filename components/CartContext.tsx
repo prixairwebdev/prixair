@@ -24,19 +24,27 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   const [items, setItems] = useState<CartItem[]>([]);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
     try {
       const raw = localStorage.getItem("prixair_cart");
       if (raw) setItems(JSON.parse(raw));
-    } catch (e) {}
+    } catch (e) {
+      console.error("Failed to load cart from local storage", e);
+    } finally {
+      setIsInitialized(true);
+    }
   }, []);
 
   useEffect(() => {
+    if (!isInitialized) return;
     try {
       localStorage.setItem("prixair_cart", JSON.stringify(items));
-    } catch (e) {}
-  }, [items]);
+    } catch (e) {
+      console.error("Failed to save cart to local storage", e);
+    }
+  }, [items, isInitialized]);
 
   const addItem = (item: CartItem, qty = 1) => {
     setItems((cur) => {

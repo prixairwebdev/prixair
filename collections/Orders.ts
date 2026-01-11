@@ -18,7 +18,7 @@ export const Orders: CollectionConfig = {
             required: true,
             fields: [
                 {
-                    name: 'productId',
+                    name: 'product_id',
                     type: 'text',
                     required: true,
                 },

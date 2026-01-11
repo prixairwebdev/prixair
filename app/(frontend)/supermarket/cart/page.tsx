@@ -51,7 +51,7 @@ export default function CartPage() {
                   {items.map((item) => (
                     <div key={item.id} className="flex gap-4 pb-4 border-b border-gray-200 last:border-0">
                       <img
-                        src={item.image || '/img/foodimg/placeholder.png'}
+                        src={item.image }
                         alt={item.name}
                         className="w-24 h-24 object-cover rounded"
                       />

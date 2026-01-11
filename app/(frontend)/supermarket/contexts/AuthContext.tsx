@@ -1,74 +1,112 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { User } from '../types/types';
-import { dummyUsers } from '../data/dummy-data';
+import { useRouter } from 'next/navigation';
 
 interface AuthContextType {
   user: User | null;
   login: (email: string, password: string) => Promise<boolean>;
   register: (name: string, email: string, password: string, phone?: string) => Promise<boolean>;
-  logout: () => void;
+  logout: () => Promise<void>;
   isAuthenticated: boolean;
+  loading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
-  useEffect(() => {
-    // Load user from localStorage on mount
+  const checkAuth = useCallback(async () => {
     try {
-      const savedUser = localStorage.getItem('prixair_user');
-      if (savedUser) {
-        setUser(JSON.parse(savedUser));
+      const res = await fetch('/api/users/me');
+      const data = await res.json();
+      if (data?.user) {
+        setUser(data.user);
+      } else {
+        setUser(null);
       }
-    } catch (e) {
-      console.error('Failed to load user from localStorage', e);
+    } catch (error) {
+      console.error('Failed to check auth status', error);
+      setUser(null);
+    } finally {
+      setLoading(false);
     }
   }, []);
 
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
+
   const login = async (email: string, password: string): Promise<boolean> => {
-    // Dummy authentication - check against dummy users
-    const foundUser = dummyUsers.find(u => u.email === email);
-    
-    if (foundUser) {
-      setUser(foundUser);
-      localStorage.setItem('prixair_user', JSON.stringify(foundUser));
-      return true;
+    try {
+      const res = await fetch('/api/users/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setUser(data.user);
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error('Login failed', error);
+      return false;
     }
-    
-    return false;
   };
 
   const register = async (name: string, email: string, password: string, phone?: string): Promise<boolean> => {
-    // Dummy registration - create new user
-    const newUser: User = {
-      id: `user-${Date.now()}`,
-      email,
-      name,
-      phone,
-      createdAt: new Date().toISOString(),
-    };
-    
-    setUser(newUser);
-    localStorage.setItem('prixair_user', JSON.stringify(newUser));
-    return true;
+    try {
+      const res = await fetch('/api/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+          phone,
+        }),
+      });
+
+      if (res.ok) {
+        // Automatically login after register
+        return login(email, password);
+      }
+      return false;
+    } catch (error) {
+      console.error('Registration failed', error);
+      return false;
+    }
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('prixair_user');
+  const logout = async () => {
+    try {
+      await fetch('/api/users/logout', { method: 'POST' });
+      setUser(null);
+      router.push('/supermarket/account/login');
+    } catch (error) {
+      console.error('Logout failed', error);
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ 
-      user, 
-      login, 
-      register, 
-      logout, 
-      isAuthenticated: !!user 
+    <AuthContext.Provider value={{
+      user,
+      login,
+      register,
+      logout,
+      isAuthenticated: !!user,
+      loading
     }}>
       {children}
     </AuthContext.Provider>

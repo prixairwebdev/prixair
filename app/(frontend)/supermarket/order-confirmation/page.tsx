@@ -52,7 +52,7 @@ export default async function OrderConfirmationPage({ searchParams }: OrderConfi
             {items.map((item, idx) => (
               <div key={idx} className="flex items-center gap-4 pb-3 border-b border-gray-200 last:border-0">
                 <img
-                  src={item.image || '/img/foodimg/placeholder.png'}
+                  src={item.image}
                   alt={item.name}
                   className="w-16 h-16 object-cover rounded"
                 />

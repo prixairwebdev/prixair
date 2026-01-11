@@ -1,24 +1,57 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useCart } from '@/components/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { dummyAddresses } from '../data/dummy-data';
+import { getAddresses } from '@/app/actions/addresses';
 import { Address } from '../types/types';
-import { PaystackButton } from 'react-paystack';
+import PaystackPop from '@paystack/inline-js';
 import { createOrder } from '@/app/actions/orders';
+import { useOrders } from '../contexts/OrderContext';
 
-export default function CheckoutPage() {
+interface CheckoutPageProps {
+  params?: Promise<Record<string, never>>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+}
+
+export default function CheckoutPage(props: CheckoutPageProps) {
   const { items, total, clear } = useCart();
   const { user } = useAuth();
+  const { refreshOrders } = useOrders();
   const router = useRouter();
-  const [selectedAddress, setSelectedAddress] = useState<Address | null>(
-    dummyAddresses.find(addr => addr.isDefault && addr.userId === user?.id) || null
-  );
+
+  // Initialize state with null, will be populated via useEffect
+  const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
+  const [userAddresses, setUserAddresses] = useState<Address[]>([]);
   const [paymentMethod, setPaymentMethod] = useState<'paystack' | 'paypal' | 'card'>('paystack');
   const [processing, setProcessing] = useState(false);
+
+  // Fetch user addresses
+  useEffect(() => {
+    async function fetchAddresses() {
+      if (user) {
+        try {
+          const addresses = await getAddresses();
+          setUserAddresses(addresses);
+        } catch (error) {
+          console.error("Failed to load addresses", error);
+        }
+      }
+    }
+    fetchAddresses();
+  }, [user]);
+
+  // Set default address when user loads or addresses change
+  useEffect(() => {
+    if (userAddresses.length > 0 && !selectedAddress) {
+      const defaultAddr = userAddresses.find(addr => addr.isDefault) || userAddresses[0] || null;
+      if (defaultAddr) {
+        setSelectedAddress(defaultAddr);
+      }
+    }
+  }, [userAddresses, selectedAddress]);
 
   if (!user) {
     // In a real app, you'd redirect to login or show a login modal
@@ -42,60 +75,99 @@ export default function CheckoutPage() {
     );
   }
 
-  const userAddresses = dummyAddresses.filter(addr => addr.userId === user.id);
   const orderTotal = total();
 
   // Paystack Config
   const publicKey = process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY || 'pk_test_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'; // Replace with env var
-  const componentProps = {
-    email: user.email,
-    amount: Math.round(orderTotal * 100), // Paystack expects amount in kobo
-    metadata: {
-      name: user.name,
-      phone: user.phone || '',
-    },
-    publicKey,
-    text: "Pay Now",
-    onSuccess: (reference: any) => handlePaystackSuccess(reference),
-    onClose: () => alert("Wait! You need to pay to order."),
-  };
 
-  const handlePaystackSuccess = async (reference: any) => {
+  const handlePaystackPayment = () => {
     if (!selectedAddress) {
       alert('Please select a shipping address');
       return;
     }
 
+    const paystack = new PaystackPop();
+    paystack.newTransaction({
+      key: publicKey,
+      email: user.email,
+      amount: Math.round(orderTotal * 100), // Paystack expects amount in kobo
+      metadata: {
+        name: user.name,
+        phone: user.phone || '',
+      },
+      onSuccess: (transaction: any) => {
+        handlePaystackSuccess(transaction);
+      },
+      onCancel: () => {
+        alert("Wait! You need to pay to order.");
+      },
+    });
+  };
+
+
+  const handlePaystackSuccess = async (reference: any) => {
     setProcessing(true);
+
+    const validItems = items.filter(item => {
+      const itemId = String(item.id || '').trim();
+      if (!itemId) {
+        console.warn('Skipping item without ID:', item);
+        return false;
+      }
+      return true;
+    });
+
+    if (validItems.length === 0) {
+      alert('Error: No valid items in cart');
+      setProcessing(false);
+      return;
+    }
+
+    if (validItems.length < items.length) {
+      console.warn(`Filtered out ${items.length - validItems.length} items without valid IDs`);
+    }
 
     const orderData = {
       userId: user.id,
-      items: items.map(item => ({
-        productId: item.id,
-        name: item.name,
-        price: item.price,
-        quantity: item.qty,
-        image: item.image,
-      })),
+      items: validItems.map(item => {
+        let imageUrl = '';
+        if (typeof item.image === 'string') {
+          imageUrl = item.image;
+        } else if (item.image && typeof item.image === 'object' && 'url' in item.image) {
+          imageUrl = item.image.url;
+        }
+        return {
+          product_id: item.id,
+          name: item.name,
+          price: item.price,
+          quantity: item.qty,
+          image: imageUrl,
+        };
+      }),
       total: orderTotal,
-      status: 'pending' as const, // Explicitly cast literal
+      status: 'pending' as const,
       shippingAddress: {
-        name: selectedAddress.name,
-        phone: selectedAddress.phone,
-        street: selectedAddress.street,
-        city: selectedAddress.city,
-        state: selectedAddress.state,
-        zipCode: selectedAddress.zipCode,
-        country: selectedAddress.country,
+        name: selectedAddress!.name,
+        phone: selectedAddress!.phone,
+        street: selectedAddress!.street,
+        city: selectedAddress!.city,
+        state: selectedAddress!.state,
+        zipCode: selectedAddress!.zipCode,
+        country: selectedAddress!.country,
       },
       paymentMethod: 'paystack' as const,
       paymentReference: reference.reference,
     };
+    
+    console.log('Items in cart:', items);
+    console.log('Valid items being ordered:', validItems);
+    console.log('Order data to be sent:', orderData);
 
     const result = await createOrder(orderData);
 
     if (result.success && result.order) {
       clear();
+      await refreshOrders();
       router.push(`/supermarket/order-confirmation?orderId=${result.order.id}`);
     } else {
       alert('Failed to create order. Please contact support.');
@@ -188,22 +260,32 @@ export default function CheckoutPage() {
               <h2 className="text-xl font-bold text-black mb-4">Order Summary</h2>
 
               <div className="space-y-3 mb-4 max-h-64 overflow-y-auto">
-                {items.map(item => (
-                  <div key={item.id} className="flex gap-3">
-                    <img
-                      src={item.image || '/img/foodimg/placeholder.png'}
-                      alt={item.name}
-                      className="w-16 h-16 object-cover rounded"
-                    />
-                    <div className="flex-1">
-                      <h4 className="text-black font-medium text-sm line-clamp-2">{item.name}</h4>
-                      <p className="text-gray-500 text-xs">Qty: {item.qty}</p>
-                      <p className="text-orange-600 font-semibold text-sm">
-                        NGN {(item.price * item.qty).toFixed(2)}
-                      </p>
+                {items.map(item => {
+                  const imageUrl = typeof item.image === 'string' 
+                    ? item.image 
+                    : (item.image && typeof item.image === 'object' && 'url' in item.image 
+                      ? item.image.url 
+                      : null);
+                  
+                  return (
+                    <div key={item.id} className="flex gap-3">
+                      {imageUrl && (
+                        <img
+                          src={imageUrl}
+                          alt={item.name}
+                          className="w-16 h-16 object-cover rounded"
+                        />
+                      )}
+                      <div className="flex-1">
+                        <h4 className="text-black font-medium text-sm line-clamp-2">{item.name}</h4>
+                        <p className="text-gray-500 text-xs">Qty: {item.qty}</p>
+                        <p className="text-orange-600 font-semibold text-sm">
+                          NGN {(item.price * item.qty).toFixed(2)}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
 
               <div className="border-t border-gray-200 pt-4 space-y-2 mb-4">
@@ -228,19 +310,16 @@ export default function CheckoutPage() {
                 </div>
               </div>
 
-              {selectedAddress && paymentMethod === 'paystack' ? (
-                <PaystackButton
-                  {...componentProps}
-                  className="w-full bg-orange-500 text-white py-4 rounded-lg hover:bg-orange-600 transition-colors font-semibold text-lg mb-3"
-                />
-              ) : (
-                <button
-                  disabled
-                  className="w-full bg-gray-300 text-white py-4 rounded-lg cursor-not-allowed font-semibold text-lg mb-3"
-                >
-                  Select Address to Pay
-                </button>
-              )}
+              <button
+                onClick={handlePaystackPayment}
+                disabled={!selectedAddress || processing}
+                className={`w-full text-white py-4 rounded-lg font-semibold text-lg mb-3 transition-colors ${!selectedAddress || processing
+                  ? 'bg-gray-300 cursor-not-allowed'
+                  : 'bg-orange-500 hover:bg-orange-600'
+                  }`}
+              >
+                {processing ? 'Processing...' : 'Pay Now'}
+              </button>
 
               <div className="text-center text-sm text-gray-500">
                 <p>🔒 Secure Checkout</p>
