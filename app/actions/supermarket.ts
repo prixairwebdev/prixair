@@ -82,5 +82,49 @@ export async function getFlashSale(): Promise<FlashSale | null> {
         return result.docs[0] as unknown as FlashSale
     }
 
+
     return null
+}
+
+export async function getProduct(id: string): Promise<Product | null> {
+    const payload = await getPayload({ config })
+
+    try {
+        const result = await payload.findByID({
+            collection: 'products',
+            id,
+            depth: 2,
+        })
+
+        return result as unknown as Product
+    } catch (error) {
+        console.error(`Error fetching product with id ${id}:`, error)
+        return null
+    }
+}
+
+export async function getRelatedProducts(categoryId: string, currentId: string, limit = 4): Promise<Product[]> {
+    const payload = await getPayload({ config })
+
+    const result = await payload.find({
+        collection: 'products',
+        where: {
+            and: [
+                {
+                    category: {
+                        equals: categoryId,
+                    },
+                },
+                {
+                    id: {
+                        not_equals: currentId,
+                    },
+                },
+            ],
+        },
+        limit,
+        depth: 1,
+    })
+
+    return result.docs as unknown as Product[]
 }

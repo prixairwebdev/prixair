@@ -1,17 +1,19 @@
-"use client";
 
 import React from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useOrders } from '../contexts/OrderContext';
+import { getOrder } from '@/app/actions/orders';
 
-export default function OrderConfirmationPage() {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const orderId = searchParams.get('orderId');
-  const { getOrderById } = useOrders();
-  
-  const order = orderId ? getOrderById(orderId) : null;
+interface OrderConfirmationPageProps {
+  searchParams: Promise<{
+    orderId?: string;
+  }>
+}
+
+export const dynamic = 'force-dynamic';
+
+export default async function OrderConfirmationPage({ searchParams }: OrderConfirmationPageProps) {
+  const { orderId } = await searchParams;
+  const order = orderId ? await getOrder(orderId) : null;
 
   if (!order) {
     return (
@@ -26,6 +28,10 @@ export default function OrderConfirmationPage() {
     );
   }
 
+  // Cast things appropriately or handle potential type mismatches from Payload return
+  const items = order.items as any[];
+  const shippingAddress = order.shippingAddress as any;
+
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">
       <div className="max-w-3xl mx-auto">
@@ -36,13 +42,14 @@ export default function OrderConfirmationPage() {
           <p className="text-lg text-black">
             Order Number: <span className="font-bold text-orange-600">{order.id}</span>
           </p>
+          <p className="text-sm text-gray-500 mt-2">Reference: {order.paymentReference}</p>
         </div>
 
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
           <h2 className="text-xl font-bold text-black mb-4">Order Details</h2>
-          
+
           <div className="space-y-3 mb-4">
-            {order.items.map((item, idx) => (
+            {items.map((item, idx) => (
               <div key={idx} className="flex items-center gap-4 pb-3 border-b border-gray-200 last:border-0">
                 <img
                   src={item.image || '/img/foodimg/placeholder.png'}
@@ -69,11 +76,11 @@ export default function OrderConfirmationPage() {
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
           <h2 className="text-xl font-bold text-black mb-4">Shipping Information</h2>
           <div className="text-gray-700">
-            <p className="font-semibold text-black">{order.shippingAddress.name}</p>
-            <p>{order.shippingAddress.phone}</p>
-            <p>{order.shippingAddress.street}</p>
-            <p>{order.shippingAddress.city}, {order.shippingAddress.state} {order.shippingAddress.zipCode}</p>
-            <p>{order.shippingAddress.country}</p>
+            <p className="font-semibold text-black">{shippingAddress.name}</p>
+            <p>{shippingAddress.phone}</p>
+            <p>{shippingAddress.street}</p>
+            <p>{shippingAddress.city}, {shippingAddress.state} {shippingAddress.zipCode}</p>
+            <p>{shippingAddress.country}</p>
           </div>
         </div>
 

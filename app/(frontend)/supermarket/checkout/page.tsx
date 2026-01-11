@@ -3,36 +3,64 @@
 import React, { useState } from 'react';
 import { useCart } from '@/components/CartContext';
 import { useAuth } from '../contexts/AuthContext';
-import { useOrders } from '../contexts/OrderContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { dummyAddresses } from '../data/dummy-data';
 import { Address } from '../types/types';
+import { PaystackButton } from 'react-paystack';
+import { createOrder } from '@/app/actions/orders';
 
 export default function CheckoutPage() {
   const { items, total, clear } = useCart();
   const { user } = useAuth();
-  const { createOrder } = useOrders();
   const router = useRouter();
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(
     dummyAddresses.find(addr => addr.isDefault && addr.userId === user?.id) || null
   );
-  const [paymentMethod, setPaymentMethod] = useState<'paypal' | 'card'>('paypal');
+  const [paymentMethod, setPaymentMethod] = useState<'paystack' | 'paypal' | 'card'>('paystack');
   const [processing, setProcessing] = useState(false);
 
   if (!user) {
-    router.push('/supermarket/account/login');
-    return null;
+    // In a real app, you'd redirect to login or show a login modal
+    // For now, let's assume if we are here we might have context or just redirect
+    // But since this is client side, we should safely handle null user
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p>Please <Link href="/supermarket/account/login" className="text-orange-600">login</Link> to continue.</p>
+      </div>
+    );
   }
 
   if (items.length === 0) {
-    router.push('/supermarket/cart');
-    return null;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="mb-4">Your cart is empty.</p>
+          <Link href="/supermarket" className="text-orange-600">Go Shopping</Link>
+        </div>
+      </div>
+    );
   }
 
   const userAddresses = dummyAddresses.filter(addr => addr.userId === user.id);
+  const orderTotal = total();
 
-  const handlePlaceOrder = async () => {
+  // Paystack Config
+  const publicKey = process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY || 'pk_test_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'; // Replace with env var
+  const componentProps = {
+    email: user.email,
+    amount: Math.round(orderTotal * 100), // Paystack expects amount in kobo
+    metadata: {
+      name: user.name,
+      phone: user.phone || '',
+    },
+    publicKey,
+    text: "Pay Now",
+    onSuccess: (reference: any) => handlePaystackSuccess(reference),
+    onClose: () => alert("Wait! You need to pay to order."),
+  };
+
+  const handlePaystackSuccess = async (reference: any) => {
     if (!selectedAddress) {
       alert('Please select a shipping address');
       return;
@@ -40,10 +68,7 @@ export default function CheckoutPage() {
 
     setProcessing(true);
 
-    // Simulate payment processing
-    await new Promise(resolve => setTimeout(resolve, 2000));
-
-    const order = createOrder({
+    const orderData = {
       userId: user.id,
       items: items.map(item => ({
         productId: item.id,
@@ -52,15 +77,32 @@ export default function CheckoutPage() {
         quantity: item.qty,
         image: item.image,
       })),
-      total: total(),
-      status: 'processing',
-      shippingAddress: selectedAddress,
-      paymentMethod,
-    });
+      total: orderTotal,
+      status: 'pending' as const, // Explicitly cast literal
+      shippingAddress: {
+        name: selectedAddress.name,
+        phone: selectedAddress.phone,
+        street: selectedAddress.street,
+        city: selectedAddress.city,
+        state: selectedAddress.state,
+        zipCode: selectedAddress.zipCode,
+        country: selectedAddress.country,
+      },
+      paymentMethod: 'paystack' as const,
+      paymentReference: reference.reference,
+    };
 
-    clear();
-    router.push(`/supermarket/order-confirmation?orderId=${order.id}`);
+    const result = await createOrder(orderData);
+
+    if (result.success && result.order) {
+      clear();
+      router.push(`/supermarket/order-confirmation?orderId=${result.order.id}`);
+    } else {
+      alert('Failed to create order. Please contact support.');
+      setProcessing(false);
+    }
   };
+
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4">
@@ -91,8 +133,8 @@ export default function CheckoutPage() {
                       key={address.id}
                       onClick={() => setSelectedAddress(address)}
                       className={`border-2 rounded-lg p-4 cursor-pointer transition-colors ${selectedAddress?.id === address.id
-                          ? 'border-orange-500 bg-orange-50'
-                          : 'border-gray-200 hover:border-gray-300'
+                        ? 'border-orange-500 bg-orange-50'
+                        : 'border-gray-200 hover:border-gray-300'
                         }`}
                     >
                       <div className="flex items-start justify-between">
@@ -122,42 +164,20 @@ export default function CheckoutPage() {
 
               <div className="space-y-3">
                 <div
-                  onClick={() => setPaymentMethod('paypal')}
-                  className={`border-2 rounded-lg p-4 cursor-pointer transition-colors ${paymentMethod === 'paypal'
-                      ? 'border-orange-500 bg-orange-50'
-                      : 'border-gray-200 hover:border-gray-300'
+                  onClick={() => setPaymentMethod('paystack')}
+                  className={`border-2 rounded-lg p-4 cursor-pointer transition-colors ${paymentMethod === 'paystack'
+                    ? 'border-orange-500 bg-orange-50'
+                    : 'border-gray-200 hover:border-gray-300'
                     }`}
                 >
                   <div className="flex items-center gap-3">
                     <div className="text-2xl">💳</div>
                     <div>
-                      <h3 className="text-black font-semibold">PayPal</h3>
-                      <p className="text-gray-600 text-sm">Pay with your PayPal account</p>
+                      <h3 className="text-black font-semibold">Paystack</h3>
+                      <p className="text-gray-600 text-sm">Pay securely with Paystack</p>
                     </div>
                   </div>
                 </div>
-
-                <div
-                  onClick={() => setPaymentMethod('card')}
-                  className={`border-2 rounded-lg p-4 cursor-pointer transition-colors ${paymentMethod === 'card'
-                      ? 'border-orange-500 bg-orange-50'
-                      : 'border-gray-200 hover:border-gray-300'
-                    }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="text-2xl">💳</div>
-                    <div>
-                      <h3 className="text-black font-semibold">Credit/Debit Card</h3>
-                      <p className="text-gray-600 text-sm">Pay with your card</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                <p className="text-sm text-blue-800">
-                  💡 <strong>Demo Mode:</strong> Payment integration will be connected to your PayPal account later.
-                </p>
               </div>
             </div>
           </div>
@@ -189,7 +209,7 @@ export default function CheckoutPage() {
               <div className="border-t border-gray-200 pt-4 space-y-2 mb-4">
                 <div className="flex justify-between text-gray-700">
                   <span>Subtotal</span>
-                  <span>NGN {total().toFixed(2)}</span>
+                  <span>NGN {orderTotal.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-gray-700">
                   <span>Shipping</span>
@@ -204,17 +224,23 @@ export default function CheckoutPage() {
               <div className="border-t border-gray-200 pt-4 mb-6">
                 <div className="flex justify-between text-xl font-bold">
                   <span className="text-black">Total</span>
-                  <span className="text-orange-600">NGN {total().toFixed(2)}</span>
+                  <span className="text-orange-600">NGN {orderTotal.toFixed(2)}</span>
                 </div>
               </div>
 
-              <button
-                onClick={handlePlaceOrder}
-                disabled={processing || !selectedAddress}
-                className="w-full bg-orange-500 text-white py-4 rounded-lg hover:bg-orange-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors font-semibold text-lg mb-3"
-              >
-                {processing ? 'Processing...' : 'Place Order'}
-              </button>
+              {selectedAddress && paymentMethod === 'paystack' ? (
+                <PaystackButton
+                  {...componentProps}
+                  className="w-full bg-orange-500 text-white py-4 rounded-lg hover:bg-orange-600 transition-colors font-semibold text-lg mb-3"
+                />
+              ) : (
+                <button
+                  disabled
+                  className="w-full bg-gray-300 text-white py-4 rounded-lg cursor-not-allowed font-semibold text-lg mb-3"
+                >
+                  Select Address to Pay
+                </button>
+              )}
 
               <div className="text-center text-sm text-gray-500">
                 <p>🔒 Secure Checkout</p>
