@@ -5,6 +5,10 @@ import { buildConfig } from "payload";
 import { fileURLToPath } from "url";
 import sharp from "sharp";
 
+import { Categories } from "./collections/Categories";
+import { Products } from "./collections/Products";
+import { FlashSales } from "./collections/FlashSales";
+
 import { Users } from "./collections/Users";
 import { Media } from "./collections/Media";
 
@@ -18,7 +22,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media],
+  collections: [Users, Media, Categories, Products, FlashSales],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "",
   typescript: {

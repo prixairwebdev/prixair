@@ -33,12 +33,15 @@ export default function ProductCard({ product }: ProductCardProps) {
     }
   };
 
+  const imageUrl = typeof product.image === 'string' ? product.image : (product.image as any)?.url;
+  const categoryName = typeof product.category === 'string' ? product.category : (product.category as any)?.name;
+
   return (
     <div className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
       <Link href={`/supermarket/product/${product.id}`}>
         <div className="relative h-48 bg-gray-100">
           <img
-            src={product.image}
+            src={imageUrl}
             alt={product.name}
             className="w-full h-full object-cover"
           />
@@ -62,9 +65,9 @@ export default function ProductCard({ product }: ProductCardProps) {
           </h3>
         </Link>
 
-        <p className="text-gray-600 text-xs mb-2 line-clamp-2">{product.description}</p>
+        {product.description && <p className="text-gray-600 text-xs mb-2 line-clamp-2">{product.description}</p>}
 
-        {product.rating && (
+        {typeof product.rating === 'number' && (
           <div className="flex items-center gap-1 mb-2">
             <div className="flex text-orange-400">
               {[...Array(5)].map((_, i) => (
@@ -79,7 +82,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         <div className="flex items-center justify-between mb-3">
           <span className="text-black font-bold text-lg">NGN {product.price.toFixed(2)}</span>
-          <span className="text-gray-500 text-xs">{product.category}</span>
+          <span className="text-gray-500 text-xs">{categoryName}</span>
         </div>
 
         <div className="flex gap-2">
@@ -93,8 +96,8 @@ export default function ProductCard({ product }: ProductCardProps) {
           <button
             onClick={handleWishlistToggle}
             className={`px-3 py-2 rounded border transition-colors ${inWishlist
-                ? 'bg-red-50 border-red-300 text-red-600 hover:bg-red-100'
-                : 'bg-white border-gray-300 text-gray-600 hover:bg-gray-50'
+              ? 'bg-red-50 border-red-300 text-red-600 hover:bg-red-100'
+              : 'bg-white border-gray-300 text-gray-600 hover:bg-gray-50'
               }`}
             title={inWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
           >

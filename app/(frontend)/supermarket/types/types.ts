@@ -9,10 +9,10 @@ export interface User {
 export interface Product {
   id: string;
   name: string;
-  description: string;
+  description?: string;
   price: number;
-  image: string;
-  category: string;
+  image: string | any; // Allow Media object
+  category: string | any; // Allow Category object
   stock: number;
   rating?: number;
   reviewCount?: number;
