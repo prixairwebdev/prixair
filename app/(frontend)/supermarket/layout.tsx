@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { CartProvider } from '../../components/CartContext';
+import { CartProvider } from '@/components/CartContext';
 import { AuthProvider } from './contexts/AuthContext';
 import { WishlistProvider } from './contexts/WishlistContext';
 import { OrderProvider } from './contexts/OrderContext';
@@ -25,3 +25,5 @@ export default function SupermarketLayout({ children }: { children: React.ReactN
     </AuthProvider>
   );
 }
+
+

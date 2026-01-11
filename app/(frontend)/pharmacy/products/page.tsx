@@ -1,8 +1,8 @@
 "use client";
 
 import React from 'react';
-import { dummyProducts } from '../../supermarket/data/dummy-data';
-import ProductCard from '../../supermarket/components/ProductCard';
+import { dummyProducts } from '@/app/(frontend)/supermarket/data/dummy-data';
+import ProductCard from '@/app/(frontend)/supermarket/components/ProductCard';
 import Link from 'next/link';
 
 export default function PharmacyProductsPage() {

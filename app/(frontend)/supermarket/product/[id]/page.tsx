@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { dummyProducts, dummyReviews } from '../../data/dummy-data';
-import { useCart } from '../../../../components/CartContext';
+import { useCart } from '@/components/CartContext';
 import { useWishlist } from '../../contexts/WishlistContext';
 import Link from 'next/link';
 import ReviewCard from '../../components/ReviewCard';
@@ -90,7 +90,7 @@ export default function ProductDetailPage() {
               <span className="text-sm text-gray-500">{product.category}</span>
             </div>
             <h1 className="text-3xl font-bold text-black mb-3">{product.name}</h1>
-            
+
             {product.rating && (
               <div className="flex items-center gap-2 mb-4">
                 <div className="flex text-orange-400 text-lg">
@@ -163,11 +163,10 @@ export default function ProductDetailPage() {
               </button>
               <button
                 onClick={handleWishlistToggle}
-                className={`px-6 py-4 rounded-lg border-2 transition-colors ${
-                  isInWishlist(product.id)
+                className={`px-6 py-4 rounded-lg border-2 transition-colors ${isInWishlist(product.id)
                     ? 'bg-red-50 border-red-300 text-red-600 hover:bg-red-100'
                     : 'bg-white border-gray-300 text-gray-600 hover:bg-gray-50'
-                }`}
+                  }`}
               >
                 {isInWishlist(product.id) ? '❤️' : '🤍'}
               </button>

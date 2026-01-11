@@ -1,6 +1,6 @@
 import React from 'react';
 import { Product } from '../types/types';
-import { useCart } from '../../../components/CartContext';
+import { useCart } from '@/components/CartContext';
 import { useWishlist } from '../contexts/WishlistContext';
 import Link from 'next/link';
 
@@ -61,7 +61,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             {product.name}
           </h3>
         </Link>
-        
+
         <p className="text-gray-600 text-xs mb-2 line-clamp-2">{product.description}</p>
 
         {product.rating && (
@@ -92,11 +92,10 @@ export default function ProductCard({ product }: ProductCardProps) {
           </button>
           <button
             onClick={handleWishlistToggle}
-            className={`px-3 py-2 rounded border transition-colors ${
-              inWishlist
+            className={`px-3 py-2 rounded border transition-colors ${inWishlist
                 ? 'bg-red-50 border-red-300 text-red-600 hover:bg-red-100'
                 : 'bg-white border-gray-300 text-gray-600 hover:bg-gray-50'
-            }`}
+              }`}
             title={inWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
           >
             {inWishlist ? '❤️' : '🤍'}

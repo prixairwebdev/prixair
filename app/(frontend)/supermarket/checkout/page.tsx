@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { useCart } from '../../../components/CartContext';
+import { useCart } from '@/components/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useOrders } from '../contexts/OrderContext';
 import { useRouter } from 'next/navigation';
@@ -73,7 +73,7 @@ export default function CheckoutPage() {
             {/* Shipping Address */}
             <div className="bg-white rounded-lg shadow-sm p-6">
               <h2 className="text-xl font-bold text-black mb-4">Shipping Address</h2>
-              
+
               {userAddresses.length === 0 ? (
                 <div className="text-center py-8">
                   <p className="text-gray-600 mb-4">No saved addresses</p>
@@ -90,11 +90,10 @@ export default function CheckoutPage() {
                     <div
                       key={address.id}
                       onClick={() => setSelectedAddress(address)}
-                      className={`border-2 rounded-lg p-4 cursor-pointer transition-colors ${
-                        selectedAddress?.id === address.id
+                      className={`border-2 rounded-lg p-4 cursor-pointer transition-colors ${selectedAddress?.id === address.id
                           ? 'border-orange-500 bg-orange-50'
                           : 'border-gray-200 hover:border-gray-300'
-                      }`}
+                        }`}
                     >
                       <div className="flex items-start justify-between">
                         <div>
@@ -120,15 +119,14 @@ export default function CheckoutPage() {
             {/* Payment Method */}
             <div className="bg-white rounded-lg shadow-sm p-6">
               <h2 className="text-xl font-bold text-black mb-4">Payment Method</h2>
-              
+
               <div className="space-y-3">
                 <div
                   onClick={() => setPaymentMethod('paypal')}
-                  className={`border-2 rounded-lg p-4 cursor-pointer transition-colors ${
-                    paymentMethod === 'paypal'
+                  className={`border-2 rounded-lg p-4 cursor-pointer transition-colors ${paymentMethod === 'paypal'
                       ? 'border-orange-500 bg-orange-50'
                       : 'border-gray-200 hover:border-gray-300'
-                  }`}
+                    }`}
                 >
                   <div className="flex items-center gap-3">
                     <div className="text-2xl">💳</div>
@@ -141,11 +139,10 @@ export default function CheckoutPage() {
 
                 <div
                   onClick={() => setPaymentMethod('card')}
-                  className={`border-2 rounded-lg p-4 cursor-pointer transition-colors ${
-                    paymentMethod === 'card'
+                  className={`border-2 rounded-lg p-4 cursor-pointer transition-colors ${paymentMethod === 'card'
                       ? 'border-orange-500 bg-orange-50'
                       : 'border-gray-200 hover:border-gray-300'
-                  }`}
+                    }`}
                 >
                   <div className="flex items-center gap-3">
                     <div className="text-2xl">💳</div>

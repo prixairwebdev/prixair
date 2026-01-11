@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { useCart } from '../../../components/CartContext';
+import { useCart } from '@/components/CartContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
@@ -55,7 +55,7 @@ export default function CartPage() {
                         alt={item.name}
                         className="w-24 h-24 object-cover rounded"
                       />
-                      
+
                       <div className="flex-1">
                         <Link
                           href={`/supermarket/product/${item.id}`}

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useCart } from "../../../../components/CartContext";
+import { useCart } from "@/components/CartContext";
 import { useWishlist } from "../../contexts/WishlistContext";
 import { useAuth } from "../../contexts/AuthContext";
 import { useState } from "react";
