@@ -8,7 +8,6 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { getAddresses } from '@/app/actions/addresses';
 import { Address } from '../types/types';
-// import PaystackPop from '@paystack/inline-js';
 import { createOrder } from '@/app/actions/orders';
 import { useOrders } from '../contexts/OrderContext';
 
