@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef } from 'react';
+import Image from 'next/image';
 
 interface ImageUploadProps {
   value: string;
@@ -121,11 +122,12 @@ export default function ImageUpload({ value, onChange, label = 'Product Image' }
 
       {/* Image Preview */}
       {previewUrl && (
-        <div className="relative inline-block">
-          <img
+        <div className="relative w-full max-w-xs h-48">
+          <Image
             src={previewUrl}
             alt="Preview"
-            className="w-full max-w-xs h-48 object-cover rounded-lg border-2 border-gray-200"
+            fill
+            className="object-cover rounded-lg border-2 border-gray-200"
           />
           <button
             type="button"

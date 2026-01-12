@@ -1,5 +1,5 @@
 
-import { getProduct, getRelatedProducts } from '@/app/actions/supermarket';
+import { getProduct, getRelatedProducts, Product } from '@/app/actions/supermarket';
 import ProductDetails from './ProductDetails';
 import Link from 'next/link';
 
@@ -31,9 +31,9 @@ export default async function ProductDetailPage({ params }: PageProps) {
   // Fetch related products
   const categoryId = typeof product.category === 'string'
     ? product.category
-    : (product.category as any)?.id; // Assuming Category object has an id
+    : product.category?.id;
 
-  let relatedProducts: any[] = [];
+  let relatedProducts: Product[] = [];
   if (categoryId) {
     relatedProducts = await getRelatedProducts(categoryId, product.id);
   }

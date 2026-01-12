@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Facebook, Instagram, Youtube, Linkedin, Twitter } from "lucide-react";
 
 const Footer = () => {
@@ -7,7 +8,9 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-12 px-6 lg:px-12">
         {/* Logo & About */}
         <div>
-          <img src="/farmlogo.png" alt="PrixairFarm Logo" className="h-10 mb-4" />
+          <div className="relative h-10 w-auto mb-4" style={{ width: '150px' }}>
+            <Image src="/farmlogo.png" alt="PrixairFarm Logo" fill className="object-contain" />
+          </div>
           <p className="text-sm mb-6">
             Nurturing the land, feeding the future. Farm-fresh produce, poultry, and more — grown with care right here in Prixair Farms.
           </p>

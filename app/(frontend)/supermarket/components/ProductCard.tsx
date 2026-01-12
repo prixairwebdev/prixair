@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { Product } from '../types/types';
 import { useCart } from '@/components/CartContext';
 import { useWishlist } from '../contexts/WishlistContext';
@@ -40,17 +41,18 @@ export default function ProductCard({ product }: ProductCardProps) {
     }
   };
 
-  const imageUrl = typeof product.image === 'string' ? product.image : (product.image as any)?.url;
-  const categoryName = typeof product.category === 'string' ? product.category : (product.category as any)?.name;
+  const imageUrl = typeof product.image === 'string' ? product.image : product.image.url;
+  const categoryName = typeof product.category === 'string' ? product.category : product.category.name;
 
   return (
     <div className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
       <Link href={`/supermarket/product/${product.id}`}>
         <div className="relative h-48 bg-gray-100">
-          <img
-            src={imageUrl}
+          <Image
+            src={imageUrl || ''}
             alt={product.name}
-            className="w-full h-full object-cover"
+            fill
+            className="object-cover"
           />
           {product.stock < 10 && product.stock > 0 && (
             <div className="absolute top-2 right-2 bg-orange-500 text-white text-xs px-2 py-1 rounded">

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useRef, useEffect, useState } from 'react';
+import Image from 'next/image';
 import { motion, useAnimation, Variants, cubicBezier } from 'framer-motion';
 
 // Animation
@@ -46,7 +47,9 @@ const Footer = () => {
           animate={controls}
         >
           <div className="mb-4">
-            <img src="/laundrylogo.png" alt="Logo" className="h-10 mb-3" />
+            <div className="relative h-10 w-auto mb-3" style={{ width: '150px' }}>
+              <Image src="/laundrylogo.png" alt="Logo" fill className="object-contain" />
+            </div>
             <p className="text-sm text-gray-300">Clean Clothes. Clean Life.</p>
           </div>
           <div className="mt-6">

@@ -48,14 +48,12 @@ export default function ProductDetails({ product, relatedProducts }: ProductDeta
         if (isInWishlist(product.id)) {
             removeFromWishlist(product.id);
         } else {
-            // Need to cast or ensure Product type matches what Wishlist expects
-            // The types should be compatible as we updated types.ts earlier to be flexible
-            addToWishlist(product as any);
+            addToWishlist(product);
         }
     };
 
-    const imageUrl = typeof product.image === 'string' ? product.image : (product.image as any)?.url;
-    const categoryName = typeof product.category === 'string' ? product.category : (product.category as any)?.name;
+    const imageUrl = typeof product.image === 'string' ? product.image : product.image.url;
+    const categoryName = typeof product.category === 'string' ? product.category : product.category.name;
     const currentStock = product.stock ?? 0;
 
     return (
@@ -208,7 +206,7 @@ export default function ProductDetails({ product, relatedProducts }: ProductDeta
                             {relatedProducts.map(relatedProduct => {
                                 const relatedImageUrl = typeof relatedProduct.image === 'string'
                                     ? relatedProduct.image
-                                    : (relatedProduct.image as any)?.url;
+                                    : relatedProduct.image?.url;
 
                                 return (
                                     <Link key={relatedProduct.id} href={`/supermarket/product/${relatedProduct.id}`}>

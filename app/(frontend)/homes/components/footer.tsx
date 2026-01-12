@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { FaXTwitter, FaFacebookF, FaInstagram, FaYoutube, FaPinterestP, FaLinkedinIn } from "react-icons/fa6";
 
 export default function Footer() {
@@ -7,7 +8,9 @@ export default function Footer() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
         {/* Left Section */}
         <div className="max-w-sm">
-          <img src="/redonelogo.png" alt="Prixair Group" className="h-10 mb-4" />
+          <div className="relative h-10 w-auto mb-4" style={{ width: '150px' }}>
+            <Image src="/redonelogo.png" alt="Prixair Group" fill className="object-contain" />
+          </div>
           <p className="text-sm leading-relaxed text-gray-300">
             We are a trading company that specializes in the retailing of one-of-a-kind building
             construction finishing and interior furnishing materials.

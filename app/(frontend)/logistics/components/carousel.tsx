@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import Link from 'next/link';
+import Image from 'next/image';
 
 type Business = {
   name: string;
@@ -87,11 +88,12 @@ export default function BusinessCarousel({
             >
               <Link href={business.href} passHref>
                 <div className="group relative block overflow-hidden rounded-xl shadow-md hover:shadow-lg transition-all duration-300 h-full">
-                  <div className="aspect-w-16 aspect-h-9 bg-gray-100">
-                    <img
+                  <div className="aspect-w-16 aspect-h-9 bg-gray-100 relative h-48 md:h-56">
+                    <Image
                       src={business.imageUrl}
                       alt={business.name}
-                      className="object-cover w-full h-48 md:h-56"
+                      fill
+                      className="object-cover"
                     />
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">

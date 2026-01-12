@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { dummyProducts } from '../../data/dummy-data';
 import { Product } from '../../types/types';
 import ProductEditModal from '../../components/ProductEditModal';
@@ -85,11 +86,14 @@ export default function ManageStockPage() {
                   <tr key={product.id} className="border-b border-gray-200 hover:bg-gray-50">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <img
-                          src={product.image}
-                          alt={product.name}
-                          className="w-12 h-12 object-cover rounded"
-                        />
+                        <div className="relative w-12 h-12">
+                          <Image
+                            src={typeof product.image === 'string' ? product.image : product.image.url || ''}
+                            alt={product.name}
+                            fill
+                            className="object-cover rounded"
+                          />
+                        </div>
                         <span className="text-black font-medium">{product.name}</span>
                       </div>
                     </td>

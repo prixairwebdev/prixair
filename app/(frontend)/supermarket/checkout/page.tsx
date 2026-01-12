@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { useCart } from '@/components/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useRouter } from 'next/navigation';
@@ -11,12 +12,19 @@ import PaystackPop from '@paystack/inline-js';
 import { createOrder } from '@/app/actions/orders';
 import { useOrders } from '../contexts/OrderContext';
 
-interface CheckoutPageProps {
-  params?: Promise<Record<string, never>>;
-  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+interface PaystackTransaction {
+  reference: string;
+  status: string;
+  [key: string]: string | number | boolean | undefined;
 }
 
-export default function CheckoutPage(props: CheckoutPageProps) {
+interface PaystackReference {
+  reference: string;
+  status?: string;
+  [key: string]: string | number | boolean | undefined;
+}
+
+export default function CheckoutPage(): React.ReactNode {
   const { items, total, clear } = useCart();
   const { user } = useAuth();
   const { refreshOrders } = useOrders();
@@ -94,8 +102,8 @@ export default function CheckoutPage(props: CheckoutPageProps) {
       metadata: {
         name: user.name,
         phone: user.phone || '',
-      },
-      onSuccess: (transaction: any) => {
+      } as Record<string, string>,
+      onSuccess: (transaction: PaystackTransaction) => {
         handlePaystackSuccess(transaction);
       },
       onCancel: () => {
@@ -105,7 +113,7 @@ export default function CheckoutPage(props: CheckoutPageProps) {
   };
 
 
-  const handlePaystackSuccess = async (reference: any) => {
+  const handlePaystackSuccess = async (reference: PaystackReference) => {
     setProcessing(true);
 
     const validItems = items.filter(item => {
@@ -134,7 +142,7 @@ export default function CheckoutPage(props: CheckoutPageProps) {
         if (typeof item.image === 'string') {
           imageUrl = item.image;
         } else if (item.image && typeof item.image === 'object' && 'url' in item.image) {
-          imageUrl = item.image.url;
+          imageUrl = (item.image as Record<string, string>).url;
         }
         return {
           product_id: item.id,
@@ -264,16 +272,18 @@ export default function CheckoutPage(props: CheckoutPageProps) {
                   const imageUrl = typeof item.image === 'string' 
                     ? item.image 
                     : (item.image && typeof item.image === 'object' && 'url' in item.image 
-                      ? item.image.url 
+                      ? (item.image as Record<string, string>).url 
                       : null);
                   
                   return (
                     <div key={item.id} className="flex gap-3">
                       {imageUrl && (
-                        <img
+                        <Image
                           src={imageUrl}
                           alt={item.name}
-                          className="w-16 h-16 object-cover rounded"
+                          width={64}
+                          height={64}
+                          className="object-cover rounded"
                         />
                       )}
                       <div className="flex-1">

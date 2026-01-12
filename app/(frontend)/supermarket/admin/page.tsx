@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { dummyProducts } from './../data/dummy-data';
 import { dummyOrders } from './../data/dummy-data';
 
@@ -82,14 +83,17 @@ export default function AdminDashboard() {
               {lowStockProducts.slice(0, 5).map((product) => (
                 <div key={product.id} className="flex items-center justify-between p-4 bg-orange-50 border border-orange-200 rounded-lg">
                   <div className="flex items-center gap-4">
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="w-12 h-12 object-cover rounded"
-                    />
+                    <div className="relative w-12 h-12">
+                      <Image
+                        src={typeof product.image === 'string' ? product.image : product.image.url || ''}
+                        alt={product.name}
+                        fill
+                        className="object-cover rounded"
+                      />
+                    </div>
                     <div>
                       <h4 className="text-black font-semibold">{product.name}</h4>
-                      <p className="text-gray-600 text-sm">{product.category}</p>
+                      <p className="text-gray-600 text-sm">{typeof product.category === 'string' ? product.category : product.category?.name}</p>
                     </div>
                   </div>
                   <div className="text-right">

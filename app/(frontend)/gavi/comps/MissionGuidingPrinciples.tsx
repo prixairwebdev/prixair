@@ -1,5 +1,6 @@
 // components/MissionGuidingPrinciples.tsx
 import React from 'react';
+import Image from 'next/image';
 
 const MissionGuidingPrinciples: React.FC = () => {
   return (
@@ -22,12 +23,14 @@ const MissionGuidingPrinciples: React.FC = () => {
           </p>
         </div>
         <div className="lg:w-1/2 flex justify-center">
-          {/* Image of croissants - Replace with your actual image component or img tag */}
-          <img
-            src="/images/croissants.jpg" // Update with your image path
-            alt="Delicious croissants"
-            className="rounded-lg shadow-lg max-w-full h-auto"
-          />
+          <div className="relative w-full max-w-md h-auto aspect-square">
+            <Image
+              src="/images/croissants.jpg"
+              alt="Delicious croissants"
+              fill
+              className="rounded-lg shadow-lg object-cover"
+            />
+          </div>
         </div>
       </section>
 

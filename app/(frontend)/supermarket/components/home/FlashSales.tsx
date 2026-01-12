@@ -13,16 +13,23 @@ function formatTime(targetDate: string) {
   return `${hours.toString().padStart(2, '0')}h : ${minutes.toString().padStart(2, '0')}m : ${seconds.toString().padStart(2, '0')}s`;
 }
 
+interface FlashSaleProduct {
+  id: string;
+  name: string;
+  price: number;
+  image?: { url: string } | string;
+}
+
 export function FlashSales({ data }: { data: FlashSale | null }) {
   if (!data || !data.isActive) {
     return null; // Or return a placeholder / hide section
   }
 
   // Handle products which can be strings (IDs) or Product objects depending on depth
-  const products = data.products.map((p: any) => {
+  const products = data.products.map((p: FlashSaleProduct | string) => {
     // Basic normalization if needed, assuming depth is sufficient
     return p;
-  });
+  }) as FlashSaleProduct[];
 
   return (
     <section>
@@ -32,12 +39,12 @@ export function FlashSales({ data }: { data: FlashSale | null }) {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
-        {products.map((p: any) => (
-          <div key={p.id || p.name} className="bg-white rounded-xl shadow-sm p-4">
+        {products.map((p: FlashSaleProduct) => (
+          <div key={p.id} className="bg-white rounded-xl shadow-sm p-4">
             <div className="h-32 bg-gray-100 rounded mb-3 overflow-hidden relative">
               {p.image && (
                 <img
-                  src={p.image.url || p.image}
+                  src={typeof p.image === 'string' ? p.image : p.image.url}
                   alt={p.name}
                   className="w-full h-full object-cover"
                 />

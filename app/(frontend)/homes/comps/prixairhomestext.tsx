@@ -1,14 +1,19 @@
+import Image from 'next/image';
+
 const PrixairIntro: React.FC = () => {
   return (
     <section className="bg-gradient-to-r from-orange-500 to-orange-600 text-white py-20 px-6 text-center">
       <div className="max-w-4xl mx-auto">
         {/* Logo */}
         <div className="mb-8 flex justify-center">
-          <img 
-            src="/redonelogo.png" 
-            alt="Prixair Homes Logo" 
-            className="h-16 md:h-20 object-contain"
-          />
+          <div className="relative h-16 md:h-20 w-auto" style={{ width: '150px' }}>
+            <Image 
+              src="/redonelogo.png" 
+              alt="Prixair Homes Logo" 
+              fill
+              className="object-contain"
+            />
+          </div>
         </div>
         
       

@@ -1,3 +1,20 @@
+export interface Media {
+  id: string;
+  alt: string;
+  url?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+}
+
+export interface Category {
+  id: string;
+  name: string;
+  slug?: string;
+}
+
 export interface User {
   id: string;
   email: string;
@@ -11,8 +28,8 @@ export interface Product {
   name: string;
   description?: string;
   price: number;
-  image: string | any; // Allow Media object
-  category: string | any; // Allow Category object
+  image: string | Media;
+  category: string | Category;
   stock: number;
   rating?: number;
   reviewCount?: number;

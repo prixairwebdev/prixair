@@ -15,6 +15,7 @@ import { CartProvider } from "@/components/CartContext";
 const montserrat = Montserrat({
   subsets: ['latin'],
   variable: '--font-montserrat',
+  display: 'optional',
 });
 
 export default function RootLayout({

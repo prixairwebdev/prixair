@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import Image from 'next/image';
 import { useAuth } from '../../contexts/AuthContext';
 import { useOrders } from '../../contexts/OrderContext';
 import { useRouter } from 'next/navigation';
@@ -85,10 +86,12 @@ export default function OrdersPage() {
                       return (
                       <div key={idx} className="flex items-center gap-4">
                         {item.image && (
-                          <img
+                          <Image
                             src={item.image}
                             alt={item.name}
-                            className="w-16 h-16 object-cover rounded"
+                            width={64}
+                            height={64}
+                            className="object-cover rounded"
                           />
                         )}
                         <div className="flex-1">

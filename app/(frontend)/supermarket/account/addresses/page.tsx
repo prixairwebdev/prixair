@@ -221,7 +221,7 @@ export default function AddressesPage() {
                 <label className="block text-black font-medium mb-2">Address Type</label>
                 <select
                   value={formData.type}
-                  onChange={(e) => setFormData({ ...formData, type: e.target.value as any })}
+                  onChange={(e) => setFormData({ ...formData, type: e.target.value as 'shipping' | 'billing' | 'both' })}
                   className="w-full border border-gray-300 rounded-lg px-4 py-2 text-black"
                 >
                   <option value="both">Shipping & Billing</option>

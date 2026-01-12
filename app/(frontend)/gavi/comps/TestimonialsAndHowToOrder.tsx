@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 
 interface Review {
   name: string;
@@ -87,11 +88,14 @@ const TestimonialsAndHowToOrder: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
             {/* Step 1 */}
             <div className="bg-white shadow-md p-6">
-              <img
-                src="/notebook.png"
-                alt="Browse menu"
-                className="w-16 mx-auto mb-4"
-              />
+              <div className="relative w-16 h-16 mx-auto mb-4">
+                <Image
+                  src="/notebook.png"
+                  alt="Browse menu"
+                  fill
+                  className="object-contain"
+                />
+              </div>
               <h3 className="font-semibold text-gray-800 mb-2">
                 Browse the Menu
               </h3>
@@ -103,11 +107,14 @@ const TestimonialsAndHowToOrder: React.FC = () => {
 
             {/* Step 2 */}
             <div className="bg-white shadow-md p-6">
-              <img
-                src="/cart.png"
-                alt="Add to Cart"
-                className="w-16 mx-auto mb-4"
-              />
+              <div className="relative w-16 h-16 mx-auto mb-4">
+                <Image
+                  src="/cart.png"
+                  alt="Add to Cart"
+                  fill
+                  className="object-contain"
+                />
+              </div>
               <h3 className="font-semibold text-gray-800 mb-2">
                 Add to Cart & Pay
               </h3>
@@ -119,11 +126,14 @@ const TestimonialsAndHowToOrder: React.FC = () => {
 
             {/* Step 3 */}
             <div className="bg-white shadow-md p-6">
-              <img
-                src="/vehicle.png"
-                alt="Delivery"
-                className="w-16 mx-auto mb-4"
-              />
+              <div className="relative w-16 h-16 mx-auto mb-4">
+                <Image
+                  src="/vehicle.png"
+                  alt="Delivery"
+                  fill
+                  className="object-contain"
+                />
+              </div>
               <h3 className="font-semibold text-gray-800 mb-2">Get It Fresh!</h3>
               <p className="text-gray-600 text-sm">
                 Pick up from our store or enjoy fast delivery. Always warm,

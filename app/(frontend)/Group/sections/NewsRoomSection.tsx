@@ -2,7 +2,7 @@
 import { motion, useAnimation, easeIn, easeOut } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useState, useEffect } from "react";
-// import Image from "next/image";
+import Image from "next/image";
 import Link from "next/link";
 
 interface NewsItem {
@@ -144,9 +144,10 @@ export default function NewsRoomSection() {
                 onFocus={() => setHovered(true)}
                 onBlur={() => setHovered(false)}
               >
-                <img
+                <Image
                   src={mainNews.image}
                   alt={`Featured news: ${mainNews.title}`}
+                  fill
                   className={`object-cover transition-transform duration-500 ${hovered ? "scale-105" : ""}`}
                   sizes="(max-width: 1024px) 100vw, 60vw"
                 />
@@ -201,10 +202,10 @@ export default function NewsRoomSection() {
                 >
                   <div className="flex gap-3 sm:gap-4 items-center cursor-pointer hover:bg-gray-50 p-2 sm:p-3 rounded-lg transition-colors duration-200">
                     <div className="w-24 sm:w-28 h-20 sm:h-24 relative flex-shrink-0 overflow-hidden">
-                      <img
+                      <Image
                         src={news.image}
                         alt={`News thumbnail: ${news.title}`}
-                      
+                        fill
                         className="object-cover"
                         sizes="(max-width: 640px) 100px, 120px"
                       />

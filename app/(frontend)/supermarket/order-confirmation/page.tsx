@@ -28,9 +28,8 @@ export default async function OrderConfirmationPage({ searchParams }: OrderConfi
     );
   }
 
-  // Cast things appropriately or handle potential type mismatches from Payload return
-  const items = order.items as any[];
-  const shippingAddress = order.shippingAddress as any;
+  const items = order.items;
+  const shippingAddress = order.shippingAddress;
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">

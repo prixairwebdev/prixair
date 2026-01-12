@@ -59,7 +59,7 @@ const seed = async () => {
 
     // 3. Create Products
     console.log('Creating Products...')
-    const products = [
+    const products: Array<{ name: string; price: number; category: string; store: 'supermarket' | 'bakery' | 'pharmacy' }> = [
         { name: 'Apple', price: 1.20, category: 'Fruits & Vegetables', store: 'supermarket' },
         { name: 'Banana', price: 0.80, category: 'Fruits & Vegetables', store: 'supermarket' },
         { name: 'Milk', price: 2.50, category: 'Dairy & Eggs', store: 'supermarket' },
@@ -88,7 +88,7 @@ const seed = async () => {
                     price: p.price,
                     category: catDoc.id,
                     image: mediaDoc.id,
-                    store: p.store as any,
+                    store: p.store,
                     description: `Fresh ${p.name}`,
                     stock: 100,
                     rating: 4.5,

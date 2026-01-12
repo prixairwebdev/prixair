@@ -132,7 +132,7 @@ export default function AdminProductsPage() {
                   <label className="block text-black font-medium mb-2">Store</label>
                   <select
                     value={formData.store}
-                    onChange={(e) => setFormData({ ...formData, store: e.target.value as any })}
+                    onChange={(e) => setFormData({ ...formData, store: e.target.value as 'supermarket' | 'bakery' | 'pharmacy' })}
                     className="w-full border border-gray-300 rounded-lg px-4 py-2 text-black"
                   >
                     <option value="supermarket">Supermarket</option>

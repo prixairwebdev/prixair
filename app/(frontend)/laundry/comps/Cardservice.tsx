@@ -1,5 +1,6 @@
 // components/LaundryService.tsx
 import React from "react";
+import Image from "next/image";
 import { motion, useAnimation, cubicBezier } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 
@@ -132,13 +133,14 @@ const LaundryService = () => {
           h-48 sm:h-60 md:h-72 lg:h-80 xl:h-[380px]
           flex-shrink-0
           order-1 lg:order-2
+          relative
         "
       >
-        <img
+        <Image
           src="/laundry.png"
           alt="Laundry Service"
+          fill
           className="
-            w-full h-full 
             object-cover 
             rounded-lg shadow-lg
             hover:shadow-xl transition-shadow

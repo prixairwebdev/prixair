@@ -1,9 +1,38 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { Order } from '../types/types';
 import { getUserOrders } from '@/app/actions/orders';
 import { useAuth } from './AuthContext';
+
+interface CMSOrderItem {
+  product_id: string;
+  name: string;
+  price: number;
+  quantity: number;
+  image?: string | { url: string };
+}
+
+interface CMSOrder {
+  id: string;
+  user: string | { id: string };
+  items: CMSOrderItem[];
+  total: number;
+  status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
+  shippingAddress?: {
+    name?: string;
+    phone?: string;
+    street?: string;
+    city?: string;
+    state?: string;
+    zipCode?: string;
+    country?: string;
+  };
+  paymentMethod: 'paypal' | 'card';
+  trackingNumber?: string;
+  createdAt: string;
+  updatedAt: string;
+}
 
 interface OrderContextType {
   orders: Order[];
@@ -19,7 +48,7 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const refreshOrders = async () => {
+  const refreshOrders = useCallback(async () => {
     if (!user || !user.id) {
       setOrders([]);
       return;
@@ -28,10 +57,10 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
     setIsLoading(true);
     try {
       const fetchedOrders = await getUserOrders(user.id);
-      const transformedOrders = fetchedOrders.map((order: any) => ({
+      const transformedOrders = fetchedOrders.map((order: CMSOrder) => ({
         id: order.id,
         userId: typeof order.user === 'string' ? order.user : order.user?.id,
-        items: (order.items || []).map((item: any) => {
+        items: (order.items || []).map((item: CMSOrderItem) => {
           let imageUrl = '';
           if (typeof item.image === 'string') {
             imageUrl = item.image;
@@ -73,11 +102,11 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [user?.id]);
 
   useEffect(() => {
     refreshOrders();
-  }, [user?.id]);
+  }, [user?.id, refreshOrders]);
 
   const getOrderById = (orderId: string) => {
     return orders.find(order => order.id === orderId);

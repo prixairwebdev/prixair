@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 
 interface MenuItem {
@@ -81,11 +82,14 @@ const MenuSection: React.FC = () => {
               className="bg-white shadow-md"
               variants={itemVariants}
             >
-              <img
-                src={item.image}
-                alt={item.name}
-                className="w-full h-48 object-cover"
-              />
+              <div className="relative w-full h-48">
+                <Image
+                  src={item.image}
+                  alt={item.name}
+                  fill
+                  className="object-cover"
+                />
+              </div>
               <div className="p-4">
                 <h3 className="text-gray-800 font-medium">{item.name}</h3>
                 <p className="text-gray-700 text-sm mb-3">{item.price}</p>
@@ -122,11 +126,14 @@ const MenuSection: React.FC = () => {
               className="bg-white shadow-md"
               variants={itemVariants}
             >
-              <img
-                src={item.image}
-                alt={item.name}
-                className="w-full h-48 object-cover"
-              />
+              <div className="relative w-full h-48">
+                <Image
+                  src={item.image}
+                  alt={item.name}
+                  fill
+                  className="object-cover"
+                />
+              </div>
               <div className="p-4">
                 <h3 className="text-gray-800 font-medium">{item.name}</h3>
                 <p className="text-gray-700 text-sm mb-3">{item.price}</p>

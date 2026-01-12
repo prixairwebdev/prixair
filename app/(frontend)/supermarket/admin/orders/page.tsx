@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { dummyOrders } from '../../data/dummy-data';
 import { Order } from '../../types/types';
 
@@ -125,11 +126,14 @@ export default function AdminOrdersPage() {
                   <div className="space-y-2">
                     {order.items.map((item, idx) => (
                       <div key={idx} className="flex items-center gap-3 text-sm">
-                        <img
-                          src={item.image}
-                          alt={item.name}
-                          className="w-10 h-10 object-cover rounded"
-                        />
+                        <div className="relative w-10 h-10">
+                          <Image
+                            src={item.image || ''}
+                            alt={item.name}
+                            fill
+                            className="object-cover rounded"
+                          />
+                        </div>
                         <div className="flex-1">
                           <p className="text-black font-medium">{item.name}</p>
                           <p className="text-gray-500">Qty: {item.quantity} × NGN {item.price.toFixed(2)}</p>

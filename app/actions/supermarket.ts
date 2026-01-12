@@ -3,7 +3,17 @@
 import { getPayload } from 'payload'
 import config from '@payload-config'
 
-// Temporary types until generation runs
+export interface Media {
+    id: string
+    alt: string
+    url?: string | null
+    filename?: string | null
+    mimeType?: string | null
+    filesize?: number | null
+    width?: number | null
+    height?: number | null
+}
+
 export interface Category {
     id: string
     name: string
@@ -16,7 +26,7 @@ export interface Product {
     description?: string
     price: number
     stock?: number
-    image: any // Media
+    image: string | Media
     category: Category | string
     store: 'supermarket' | 'pharmacy' | 'bakery'
     rating?: number
