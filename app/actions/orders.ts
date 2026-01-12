@@ -3,10 +3,12 @@
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { revalidatePath } from 'next/cache'
+import { shipdayService } from '../(frontend)/supermarket/lib/shipday'
 
 // Define Order type based on our collection
 export type OrderData = {
     userId: string
+    customerEmail?: string
     items: {
         product_id: string
         name: string
@@ -34,11 +36,11 @@ export async function createOrder(data: OrderData) {
 
     try {
         console.log('Creating order with data:', JSON.stringify(data, null, 2))
-        
+
         if (!data.items || data.items.length === 0) {
             throw new Error('No items in order')
         }
-        
+
         const validatedItems = data.items.filter((item, index) => {
             const productId = String(item.product_id || '').trim();
             if (!productId) {
@@ -79,7 +81,7 @@ export async function createOrder(data: OrderData) {
         if (validatedItems.length < data.items.length) {
             console.warn(`Filtered out ${data.items.length - validatedItems.length} invalid items`)
         }
-        
+
         const order = await payload.create({
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             collection: 'orders' as any,
@@ -93,6 +95,41 @@ export async function createOrder(data: OrderData) {
                 paymentReference: data.paymentReference,
             },
         })
+
+        // Sync with Shipday
+        try {
+            console.log('Syncing order with Shipday:', order.id);
+            const shipdayDelivery = await shipdayService.createDelivery({
+                orderNumber: String(order.id),
+                customerName: data.shippingAddress.name,
+                customerPhone: data.shippingAddress.phone,
+                customerEmail: data.customerEmail,
+                customerAddress: `${data.shippingAddress.street}, ${data.shippingAddress.city}, ${data.shippingAddress.state}, ${data.shippingAddress.zipCode}, ${data.shippingAddress.country}`,
+                orderValue: data.total,
+                items: validatedItems.map(item => ({
+                    name: item.name,
+                    price: item.price,
+                    quantity: item.quantity,
+                })),
+            });
+
+            // Update order with Shipday info
+            await payload.update({
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                collection: 'orders' as any,
+                id: order.id,
+                data: {
+                    shipdayId: shipdayDelivery.orderId,
+                    shipdayStatus: shipdayDelivery.status,
+                },
+            });
+
+            console.log('Order successfully synced with Shipday');
+        } catch (shipdayError) {
+            console.error('Failed to sync with Shipday, but order was created:', shipdayError);
+            // We don't throw here to avoid failing the whole order creation
+            // but we might want to flag it for manual retry
+        }
 
         revalidatePath('/supermarket/account/orders')
         return { success: true, order }

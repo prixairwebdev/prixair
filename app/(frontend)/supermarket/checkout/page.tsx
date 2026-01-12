@@ -154,6 +154,7 @@ export default function CheckoutPage(): React.ReactNode {
       }),
       total: orderTotal,
       status: 'pending' as const,
+      customerEmail: user.email,
       shippingAddress: {
         name: selectedAddress!.name,
         phone: selectedAddress!.phone,
@@ -166,7 +167,7 @@ export default function CheckoutPage(): React.ReactNode {
       paymentMethod: 'paystack' as const,
       paymentReference: reference.reference,
     };
-    
+
     console.log('Items in cart:', items);
     console.log('Valid items being ordered:', validItems);
     console.log('Order data to be sent:', orderData);
@@ -269,12 +270,12 @@ export default function CheckoutPage(): React.ReactNode {
 
               <div className="space-y-3 mb-4 max-h-64 overflow-y-auto">
                 {items.map(item => {
-                  const imageUrl = typeof item.image === 'string' 
-                    ? item.image 
-                    : (item.image && typeof item.image === 'object' && 'url' in item.image 
-                      ? (item.image as Record<string, string>).url 
+                  const imageUrl = typeof item.image === 'string'
+                    ? item.image
+                    : (item.image && typeof item.image === 'object' && 'url' in item.image
+                      ? (item.image as Record<string, string>).url
                       : null);
-                  
+
                   return (
                     <div key={item.id} className="flex gap-3">
                       {imageUrl && (

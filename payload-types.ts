@@ -241,6 +241,8 @@ export interface Order {
     country: string;
   };
   user?: (number | null) | User;
+  shipdayId?: string | null;
+  shipdayStatus?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -468,6 +470,8 @@ export interface OrdersSelect<T extends boolean = true> {
         country?: T;
       };
   user?: T;
+  shipdayId?: T;
+  shipdayStatus?: T;
   updatedAt?: T;
   createdAt?: T;
 }

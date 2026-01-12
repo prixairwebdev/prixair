@@ -1,120 +1,114 @@
-// Shipday API Integration Placeholder
-// This file will be used to integrate with Shipday for delivery management
+import Shipday from 'shipday';
+import OrderInfoRequest from 'shipday/integration/order/request/order.info.request.js';
+import OrderItem from 'shipday/integration/order/request/order.item.js';
 
 export interface ShipdayConfig {
   apiKey: string;
-  baseUrl: string;
 }
 
 export interface DeliveryTask {
-  orderId: string;
+  orderNumber: string;
   customerName: string;
   customerPhone: string;
-  deliveryAddress: string;
+  customerEmail?: string;
+  customerAddress: string;
   orderValue: number;
   deliveryInstructions?: string;
+  items: {
+    name: string;
+    price: number;
+    quantity: number;
+  }[];
 }
 
 export interface ShipdayDelivery {
-  id: string;
   orderId: string;
-  status: 'pending' | 'assigned' | 'picked_up' | 'delivered' | 'cancelled';
+  status: string;
   trackingUrl?: string;
-  estimatedDeliveryTime?: string;
 }
 
 export class ShipdayService {
-  private config: ShipdayConfig;
+  private client: Shipday;
+  private pickupDetails = {
+    name: 'Prixair Supermarket',
+    address: 'Plot 688, Markus Kangye Blvd, Off Oladipo Diya Way, Gaduwa, Abuja.',
+    phone: '08181888892'
+  };
 
   constructor(config: ShipdayConfig) {
-    this.config = config;
+    this.client = new Shipday(config.apiKey, 10000);
   }
 
-  /**
-   * Create a delivery task in Shipday
-   * TODO: Implement actual Shipday API call
-   */
   async createDelivery(task: DeliveryTask): Promise<ShipdayDelivery> {
-    console.log('Creating Shipday delivery for order:', task.orderId);
-    
-    // Dummy implementation
-    const delivery: ShipdayDelivery = {
-      id: `SHIPDAY-${Date.now()}`,
-      orderId: task.orderId,
-      status: 'pending',
-      trackingUrl: `https://shipday.com/track/SHIPDAY-${Date.now()}`,
-      estimatedDeliveryTime: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(),
-    };
+    console.log('Creating Shipday delivery for order:', task.orderNumber);
 
-    // TODO: Make actual API call to Shipday
-    // const response = await fetch(`${this.config.baseUrl}/deliveries`, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Authorization': `Bearer ${this.config.apiKey}`,
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(task),
-    // });
+    try {
+      const orderInfoRequest = new OrderInfoRequest(
+        task.orderNumber,
+        task.customerName,
+        task.customerAddress,
+        task.customerEmail || 'no-email@prixair.com',
+        task.customerPhone,
+        this.pickupDetails.name,
+        this.pickupDetails.address
+      );
 
-    return delivery;
+      orderInfoRequest.setRestaurantPhoneNumber(this.pickupDetails.phone);
+      orderInfoRequest.setTotalOrderCost(task.orderValue);
+      if (task.deliveryInstructions) {
+        orderInfoRequest.setDeliveryInstruction(task.deliveryInstructions);
+      }
+
+      const orderItems = task.items.map(item => {
+        return new OrderItem(
+          item.name,
+          item.price,
+          item.quantity
+        );
+      });
+
+      orderInfoRequest.setOrderItems(orderItems);
+
+      const response = await this.client.orderService.insertOrder(orderInfoRequest);
+
+      console.log('Shipday order created:', response);
+
+      return {
+        orderId: response.orderId.toString(),
+        status: 'pending', // Initial status
+        trackingUrl: `https://track.shipday.com/${response.orderId}`
+      };
+    } catch (error) {
+      console.error('Shipday API Error:', error);
+      throw error;
+    }
   }
 
   /**
    * Get delivery status
-   * TODO: Implement actual Shipday API call
    */
-  async getDeliveryStatus(deliveryId: string): Promise<ShipdayDelivery> {
-    console.log('Getting Shipday delivery status for:', deliveryId);
-    
-    // Dummy implementation
-    return {
-      id: deliveryId,
-      orderId: 'ORD-2024-001',
-      status: 'assigned',
-      trackingUrl: `https://shipday.com/track/${deliveryId}`,
-      estimatedDeliveryTime: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString(),
-    };
-  }
-
-  /**
-   * Cancel a delivery
-   * TODO: Implement actual Shipday API call
-   */
-  async cancelDelivery(deliveryId: string): Promise<boolean> {
-    console.log('Cancelling Shipday delivery:', deliveryId);
-    
-    // Dummy implementation
-    return true;
-  }
-
-  /**
-   * Update delivery instructions
-   * TODO: Implement actual Shipday API call
-   */
-  async updateDeliveryInstructions(deliveryId: string, instructions: string): Promise<boolean> {
-    console.log('Updating Shipday delivery instructions:', deliveryId, instructions);
-    
-    // Dummy implementation
-    return true;
+  async getDeliveryStatus(orderId: string) {
+    console.log('Getting Shipday delivery status for:', orderId);
+    try {
+      const order = await this.client.orderService.getOrderDetails(orderId);
+      return order;
+    } catch (error) {
+      console.error('Shipday API Error:', error);
+      throw error;
+    }
   }
 
   /**
    * Get tracking URL for a delivery
    */
-  getTrackingUrl(deliveryId: string): string {
-    return `https://shipday.com/track/${deliveryId}`;
+  getTrackingUrl(orderId: string): string {
+    return `https://track.shipday.com/${orderId}`;
   }
 }
 
-// Environment variables placeholders
-// Add these to your .env.local file:
-// SHIPDAY_API_KEY=your_api_key_here
-// SHIPDAY_BASE_URL=https://api.shipday.com/v1
-
 export const getShipdayConfig = (): ShipdayConfig => {
   return {
-    apiKey: process.env.SHIPDAY_API_KEY || 'demo_api_key',
-    baseUrl: process.env.SHIPDAY_BASE_URL || 'https://api.shipday.com/v1',
+    apiKey: process.env.SHIPDAY_API_KEY || '',
   };
 };
 

@@ -121,5 +121,21 @@ export const Orders: CollectionConfig = {
             type: 'relationship',
             relationTo: 'users',
         },
+        {
+            name: 'shipdayId',
+            type: 'text',
+            admin: {
+                position: 'sidebar',
+                readOnly: true,
+            },
+        },
+        {
+            name: 'shipdayStatus',
+            type: 'text',
+            admin: {
+                position: 'sidebar',
+                readOnly: true,
+            },
+        },
     ],
 };
