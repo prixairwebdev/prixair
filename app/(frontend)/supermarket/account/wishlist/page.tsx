@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useWishlist } from '../../contexts/WishlistContext';
 import { useRouter } from 'next/navigation';
@@ -12,8 +12,13 @@ export default function WishlistPage() {
   const { items } = useWishlist();
   const router = useRouter();
 
+  useEffect(() => {
+    if (!user) {
+      router.push('/supermarket/account/login');
+    }
+  }, [user, router]);
+
   if (!user) {
-    router.push('/supermarket/account/login');
     return null;
   }
 

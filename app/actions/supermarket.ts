@@ -45,7 +45,8 @@ export async function getSupermarketProducts(limit = 8): Promise<Product[]> {
     const payload = await getPayload({ config })
 
     const result = await payload.find({
-        collection: 'products',
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        collection: 'products' as any,
         where: {
             store: {
                 equals: 'supermarket',
@@ -62,7 +63,8 @@ export async function getCategories(): Promise<Category[]> {
     const payload = await getPayload({ config })
 
     const result = await payload.find({
-        collection: 'categories',
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        collection: 'categories' as any,
         limit: 100,
         pagination: false,
         sort: 'name',
@@ -75,7 +77,8 @@ export async function getFlashSale(): Promise<FlashSale | null> {
     const payload = await getPayload({ config })
 
     const result = await payload.find({
-        collection: 'flash-sales',
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        collection: 'flash-sales' as any,
         where: {
             isActive: {
                 equals: true,
@@ -101,7 +104,8 @@ export async function getProduct(id: string): Promise<Product | null> {
 
     try {
         const result = await payload.findByID({
-            collection: 'products',
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        collection: 'products' as any,
             id,
             depth: 2,
         })
@@ -117,7 +121,8 @@ export async function getRelatedProducts(categoryId: string, currentId: string, 
     const payload = await getPayload({ config })
 
     const result = await payload.find({
-        collection: 'products',
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        collection: 'products' as any,
         where: {
             and: [
                 {

@@ -15,10 +15,13 @@ export default function ManageStockPage() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
-  const filteredProducts = products.filter(p =>
-    p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    p.category.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredProducts = products.filter(p => {
+    const categoryName = typeof p.category === 'string' ? p.category : p.category.name;
+    return (
+      p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      categoryName.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  });
 
   const handleUpdateStock = (productId: string) => {
     setProducts(products.map(p =>
@@ -30,7 +33,7 @@ export default function ManageStockPage() {
 
   const startEditing = (product: Product) => {
     setEditingId(product.id);
-    setEditStock(product.stock);
+    setEditStock(product.stock || 0);
   };
 
   const handleEditProduct = (product: Product) => {
@@ -97,7 +100,9 @@ export default function ManageStockPage() {
                         <span className="text-black font-medium">{product.name}</span>
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-gray-700">{product.category}</td>
+                    <td className="px-6 py-4 text-gray-700">
+                      {typeof product.category === 'string' ? product.category : product.category.name}
+                    </td>
                     <td className="px-6 py-4 text-black font-semibold">NGN {product.price.toFixed(2)}</td>
                     <td className="px-6 py-4">
                       {editingId === product.id ? (
@@ -110,20 +115,20 @@ export default function ManageStockPage() {
                         />
                       ) : (
                         <span className={`font-semibold ${
-                          product.stock === 0 ? 'text-red-600' :
-                          product.stock < 10 ? 'text-orange-600' :
+                          (product.stock || 0) === 0 ? 'text-red-600' :
+                          (product.stock || 0) < 10 ? 'text-orange-600' :
                           'text-green-600'
                         }`}>
-                          {product.stock}
+                          {product.stock ?? 0}
                         </span>
                       )}
                     </td>
                     <td className="px-6 py-4">
-                      {product.stock === 0 ? (
+                      {(product.stock || 0) === 0 ? (
                         <span className="px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs font-semibold">
                           Out of Stock
                         </span>
-                      ) : product.stock < 10 ? (
+                      ) : (product.stock || 0) < 10 ? (
                         <span className="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-xs font-semibold">
                           Low Stock
                         </span>

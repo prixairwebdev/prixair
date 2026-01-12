@@ -119,7 +119,20 @@ export default function AddressesPage() {
     }
   };
 
-  if (!user && loading) return <p className="p-8 text-center text-gray-500">Loading...</p>;
+  if (!user) {
+    return null;
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
+          <p className="mt-2 text-gray-500">Loading addresses...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4">

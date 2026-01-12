@@ -1,6 +1,7 @@
 "use client";
 
-import { FlashSale } from "@/app/actions/supermarket";
+import { FlashSale, Product } from "@/app/actions/supermarket";
+import Image from "next/image";
 
 function formatTime(targetDate: string) {
   const diff = new Date(targetDate).getTime() - new Date().getTime();
@@ -13,23 +14,14 @@ function formatTime(targetDate: string) {
   return `${hours.toString().padStart(2, '0')}h : ${minutes.toString().padStart(2, '0')}m : ${seconds.toString().padStart(2, '0')}s`;
 }
 
-interface FlashSaleProduct {
-  id: string;
-  name: string;
-  price: number;
-  image?: { url: string } | string;
-}
-
 export function FlashSales({ data }: { data: FlashSale | null }) {
   if (!data || !data.isActive) {
     return null; // Or return a placeholder / hide section
   }
 
   // Handle products which can be strings (IDs) or Product objects depending on depth
-  const products = data.products.map((p: FlashSaleProduct | string) => {
-    // Basic normalization if needed, assuming depth is sufficient
-    return p;
-  }) as FlashSaleProduct[];
+  // We filter to ensure we only have Product objects for rendering
+  const products = data.products.filter((p): p is Product => typeof p !== 'string');
 
   return (
     <section>
@@ -39,21 +31,28 @@ export function FlashSales({ data }: { data: FlashSale | null }) {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
-        {products.map((p: FlashSaleProduct) => (
-          <div key={p.id} className="bg-white rounded-xl shadow-sm p-4">
-            <div className="h-32 bg-gray-100 rounded mb-3 overflow-hidden relative">
-              {p.image && (
-                <img
-                  src={typeof p.image === 'string' ? p.image : p.image.url}
-                  alt={p.name}
-                  className="w-full h-full object-cover"
-                />
-              )}
+        {products.map((p) => {
+          const imageUrl = typeof p.image === 'string' 
+            ? p.image 
+            : (p.image?.url || '/placeholder.png');
+
+          return (
+            <div key={p.id} className="bg-white rounded-xl shadow-sm p-4">
+              <div className="h-32 bg-gray-100 rounded mb-3 overflow-hidden relative">
+                {imageUrl && (
+                  <Image
+                    src={imageUrl}
+                    alt={p.name}
+                    fill
+                    className="object-cover"
+                  />
+                )}
+              </div>
+              <h4 className="text-sm font-medium line-clamp-2">{p.name}</h4>
+              <p className="text-orange-500 font-bold">₦{p.price?.toLocaleString()}</p>
             </div>
-            <h4 className="text-sm font-medium line-clamp-2">{p.name}</h4>
-            <p className="text-orange-500 font-bold">₦{p.price?.toLocaleString()}</p>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </section>
   );

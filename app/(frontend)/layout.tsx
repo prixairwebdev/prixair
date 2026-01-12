@@ -29,7 +29,6 @@ export default function RootLayout({
         className="overflow-x-hidden bg-white font-sans" // font-sans will use Montserrat
         suppressHydrationWarning
       >
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon" />
         <CartProvider>
           {children}
         </CartProvider>

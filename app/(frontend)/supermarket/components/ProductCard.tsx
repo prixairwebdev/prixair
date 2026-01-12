@@ -14,6 +14,11 @@ export default function ProductCard({ product }: ProductCardProps) {
   const { addToWishlist, isInWishlist, removeFromWishlist } = useWishlist();
   const inWishlist = isInWishlist(product.id);
 
+  const imageUrl = typeof product.image === 'string' 
+    ? product.image 
+    : (product.image?.url || '/placeholder.png');
+  const categoryName = typeof product.category === 'string' ? product.category : product.category.name;
+
   const handleAddToCart = () => {
     const productId = String(product.id || '').trim();
     if (!productId) {
@@ -27,7 +32,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       name: product.name,
       price: product.price,
       qty: 1,
-      image: product.image,
+      image: imageUrl,
       stock: product.stock,
       store: product.store,
     });
@@ -41,9 +46,6 @@ export default function ProductCard({ product }: ProductCardProps) {
     }
   };
 
-  const imageUrl = typeof product.image === 'string' ? product.image : product.image.url;
-  const categoryName = typeof product.category === 'string' ? product.category : product.category.name;
-
   return (
     <div className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
       <Link href={`/supermarket/product/${product.id}`}>
@@ -54,12 +56,12 @@ export default function ProductCard({ product }: ProductCardProps) {
             fill
             className="object-cover"
           />
-          {product.stock < 10 && product.stock > 0 && (
+          {typeof product.stock === 'number' && product.stock < 10 && product.stock > 0 && (
             <div className="absolute top-2 right-2 bg-orange-500 text-white text-xs px-2 py-1 rounded">
               Only {product.stock} left
             </div>
           )}
-          {product.stock === 0 && (
+          {typeof product.stock === 'number' && product.stock === 0 && (
             <div className="absolute top-2 right-2 bg-red-600 text-white text-xs px-2 py-1 rounded">
               Out of Stock
             </div>

@@ -3,7 +3,7 @@
 import { getPayload } from 'payload'
 import config from '@/payload.config'
 import { headers } from 'next/headers'
-import { Address } from '../(frontend)/types/types'
+import { Address } from '../(frontend)/supermarket/types/types'
 
 // Helper to get authorized user
 async function getUser() {
@@ -18,7 +18,8 @@ export async function getAddresses() {
 
     const payload = await getPayload({ config })
     const { docs } = await payload.find({
-        collection: 'addresses',
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        collection: 'addresses' as any,
         where: {
             user: {
                 equals: user.id,
@@ -51,7 +52,8 @@ export async function createAddress(data: Omit<Address, 'id' | 'userId'>) {
     // If new address is default, unset other defaults
     if (data.isDefault) {
         await payload.update({
-            collection: 'addresses',
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            collection: 'addresses' as any,
             where: {
                 user: { equals: user.id },
             },
@@ -63,7 +65,8 @@ export async function createAddress(data: Omit<Address, 'id' | 'userId'>) {
 
     try {
         const result = await payload.create({
-            collection: 'addresses',
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            collection: 'addresses' as any,
             data: {
                 ...data,
                 user: user.id,
@@ -86,7 +89,8 @@ export async function updateAddress(id: string, data: Partial<Omit<Address, 'id'
     // If setting as default, unset others first
     if (data.isDefault) {
         await payload.update({
-            collection: 'addresses',
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            collection: 'addresses' as any,
             where: {
                 user: { equals: user.id },
                 id: { not_equals: id },
@@ -99,7 +103,8 @@ export async function updateAddress(id: string, data: Partial<Omit<Address, 'id'
 
     try {
         const result = await payload.update({
-            collection: 'addresses',
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            collection: 'addresses' as any,
             id,
             data,
         })
@@ -119,7 +124,8 @@ export async function deleteAddress(id: string) {
 
     try {
         await payload.delete({
-            collection: 'addresses',
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            collection: 'addresses' as any,
             id,
         })
         return { success: true }

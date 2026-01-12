@@ -56,7 +56,7 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
 
     setIsLoading(true);
     try {
-      const fetchedOrders = await getUserOrders(user.id);
+      const fetchedOrders = await getUserOrders(user.id) as unknown as CMSOrder[];
       const transformedOrders = fetchedOrders.map((order: CMSOrder) => ({
         id: order.id,
         userId: typeof order.user === 'string' ? order.user : order.user?.id,
@@ -102,7 +102,7 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
     } finally {
       setIsLoading(false);
     }
-  }, [user?.id]);
+  }, [user]);
 
   useEffect(() => {
     refreshOrders();

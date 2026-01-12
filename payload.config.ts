@@ -3,20 +3,17 @@ import { s3Storage } from '@payloadcms/storage-s3';
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import path from "path";
 import { buildConfig } from "payload";
-import { fileURLToPath } from "url";
 import sharp from "sharp";
 
-import { Categories } from "./collections/Categories";
-import { Products } from "./collections/Products";
-import { FlashSales } from "./collections/FlashSales";
+import { Categories } from "./collections/Categories.ts";
+import { Products } from "./collections/Products.ts";
+import { FlashSales } from "./collections/FlashSales.ts";
+import { Addresses } from "./collections/Addresses.ts";
+import { Users } from "./collections/Users.ts";
+import { Media } from "./collections/Media.ts";
+import { Orders } from "./collections/Orders.ts";
 
-import { Addresses } from "./collections/Addresses";
-import { Users } from "./collections/Users";
-import { Media } from "./collections/Media";
-import { Orders } from "./collections/Orders";
-
-const filename = fileURLToPath(import.meta.url);
-const dirname = path.dirname(filename);
+const dirname = path.resolve(process.cwd());
 
 export default buildConfig({
   admin: {

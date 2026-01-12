@@ -63,7 +63,7 @@ export default function ProductEditModal({ product, isOpen, onClose, onSave }: P
             </div>
 
             <CategoryDropdown
-              value={formData.category}
+              value={typeof formData.category === 'string' ? formData.category : (formData.category?.id || '')}
               onChange={(category) => setFormData({ ...formData, category })}
               required
             />
@@ -119,7 +119,7 @@ export default function ProductEditModal({ product, isOpen, onClose, onSave }: P
           </div>
 
           <ImageUpload
-            value={formData.image}
+            value={typeof formData.image === 'string' ? formData.image : (formData.image?.url || '')}
             onChange={(image) => setFormData({ ...formData, image })}
           />
 

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -23,8 +23,13 @@ export default function ProfilePage() {
   const [passwordError, setPasswordError] = useState('');
   const [changingPassword, setChangingPassword] = useState(false);
 
+  useEffect(() => {
+    if (!user) {
+      router.push('/supermarket/account/login');
+    }
+  }, [user, router]);
+
   if (!user) {
-    router.push('/supermarket/account/login');
     return null;
   }
 

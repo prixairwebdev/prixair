@@ -7,7 +7,7 @@ import { dummyProducts } from './../data/dummy-data';
 import { dummyOrders } from './../data/dummy-data';
 
 export default function AdminDashboard() {
-  const lowStockProducts = dummyProducts.filter((p) => p.stock < 10);
+  const lowStockProducts = dummyProducts.filter((p) => (p.stock ?? 0) < 10);
   const recentOrders = dummyOrders.slice(0, 5);
   const totalProducts = dummyProducts.length;
   const totalOrders = dummyOrders.length;
@@ -97,7 +97,7 @@ export default function AdminDashboard() {
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-orange-600 font-bold">{product.stock} left</p>
+                    <p className="text-orange-600 font-bold">{product.stock ?? 0} left</p>
                     <p className="text-gray-500 text-sm">NGN {product.price.toFixed(2)}</p>
                   </div>
                 </div>

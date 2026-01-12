@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useCart } from '@/components/CartContext';
 import { useWishlist } from '../../contexts/WishlistContext';
 import Link from 'next/link';
+import Image from 'next/image';
 import ReviewCard from '../../components/ReviewCard';
 import { Product } from '@/app/actions/supermarket';
 import { dummyReviews } from '../../data/dummy-data';
@@ -37,7 +38,7 @@ export default function ProductDetails({ product, relatedProducts }: ProductDeta
             name: product.name,
             price: product.price,
             qty: quantity,
-            image: product.image,
+            image: imageUrl || undefined,
             stock: currentStock,
             store: product.store,
         });
@@ -75,11 +76,13 @@ export default function ProductDetails({ product, relatedProducts }: ProductDeta
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
                     {/* Product Image */}
                     <div>
-                        <div className="bg-gray-100 rounded-lg overflow-hidden mb-4">
-                            <img
-                                src={imageUrl}
+                        <div className="bg-gray-100 rounded-lg overflow-hidden mb-4 relative h-96">
+                            <Image
+                                src={imageUrl || ''}
                                 alt={product.name}
-                                className="w-full h-96 object-cover"
+                                fill
+                                className="object-cover"
+                                priority
                             />
                         </div>
                     </div>
@@ -211,11 +214,12 @@ export default function ProductDetails({ product, relatedProducts }: ProductDeta
                                 return (
                                     <Link key={relatedProduct.id} href={`/supermarket/product/${relatedProduct.id}`}>
                                         <div className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
-                                            <div className="h-40 bg-gray-100">
-                                                <img
-                                                    src={relatedImageUrl}
+                                            <div className="h-40 bg-gray-100 relative">
+                                                <Image
+                                                    src={relatedImageUrl || ''}
                                                     alt={relatedProduct.name}
-                                                    className="w-full h-full object-cover"
+                                                    fill
+                                                    className="object-cover"
                                                 />
                                             </div>
                                             <div className="p-3">

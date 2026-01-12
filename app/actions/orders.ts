@@ -12,7 +12,7 @@ export type OrderData = {
         name: string
         price: number
         quantity: number
-        image?: string
+        image?: string | { url: string }
     }[]
     total: number
     status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled'
@@ -81,7 +81,8 @@ export async function createOrder(data: OrderData) {
         }
         
         const order = await payload.create({
-            collection: 'orders',
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            collection: 'orders' as any,
             data: {
                 user: data.userId,
                 items: validatedItems,
@@ -107,7 +108,8 @@ export async function getOrder(id: string) {
 
     try {
         const order = await payload.findByID({
-            collection: 'orders',
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            collection: 'orders' as any,
             id,
             depth: 1,
         })
@@ -124,7 +126,8 @@ export async function getUserOrders(userId: string) {
 
     try {
         const result = await payload.find({
-            collection: 'orders',
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            collection: 'orders' as any,
             where: {
                 user: {
                     equals: userId,

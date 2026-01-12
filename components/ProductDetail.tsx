@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import Image from "next/image";
 import { useCart } from "./CartContext";
 
 type Product = {
@@ -18,7 +19,14 @@ export default function ProductDetail({ product }: { product: Product }) {
   return (
     <div style={{ padding: 16 }}>
       <div style={{ display: "flex", gap: 20 }}>
-        <img src={product.image || "/images/placeholder.png"} alt={product.name} style={{ width: 220, height: 220, objectFit: "cover", borderRadius: 8 }} />
+        <div style={{ position: "relative", width: 220, height: 220, flexShrink: 0 }}>
+          <Image
+            src={product.image || "/images/placeholder.png"}
+            alt={product.name}
+            fill
+            style={{ objectFit: "cover", borderRadius: 8 }}
+          />
+        </div>
         <div>
           <h2>{product.name}</h2>
           <div style={{ fontWeight: 700, marginBottom: 8 }}>GHS {product.price.toFixed(2)}</div>

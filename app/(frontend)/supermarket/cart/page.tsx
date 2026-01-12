@@ -4,6 +4,7 @@ import React from 'react';
 import { useCart } from '@/components/CartContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function CartPage() {
   const { items, removeItem, updateQty, total, clear } = useCart();
@@ -50,11 +51,14 @@ export default function CartPage() {
                 <div className="space-y-4">
                   {items.map((item) => (
                     <div key={item.id} className="flex gap-4 pb-4 border-b border-gray-200 last:border-0">
-                      <img
-                        src={item.image }
-                        alt={item.name}
-                        className="w-24 h-24 object-cover rounded"
-                      />
+                      <div className="relative w-24 h-24 flex-shrink-0">
+                        <Image
+                          src={item.image || ''}
+                          alt={item.name}
+                          fill
+                          className="object-cover rounded"
+                        />
+                      </div>
 
                       <div className="flex-1">
                         <Link

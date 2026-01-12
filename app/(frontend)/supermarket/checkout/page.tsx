@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { getAddresses } from '@/app/actions/addresses';
 import { Address } from '../types/types';
-import PaystackPop from '@paystack/inline-js';
+// import PaystackPop from '@paystack/inline-js';
 import { createOrder } from '@/app/actions/orders';
 import { useOrders } from '../contexts/OrderContext';
 
@@ -88,12 +88,13 @@ export default function CheckoutPage(): React.ReactNode {
   // Paystack Config
   const publicKey = process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY || 'pk_test_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'; // Replace with env var
 
-  const handlePaystackPayment = () => {
+  const handlePaystackPayment = async () => {
     if (!selectedAddress) {
       alert('Please select a shipping address');
       return;
     }
 
+    const PaystackPop = (await import('@paystack/inline-js')).default;
     const paystack = new PaystackPop();
     paystack.newTransaction({
       key: publicKey,

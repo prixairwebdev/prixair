@@ -30,7 +30,7 @@ export interface Product {
   price: number;
   image: string | Media;
   category: string | Category;
-  stock: number;
+  stock?: number;
   rating?: number;
   reviewCount?: number;
   store: 'supermarket' | 'bakery' | 'pharmacy';

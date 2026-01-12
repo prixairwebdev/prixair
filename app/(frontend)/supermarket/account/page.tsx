@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -11,8 +11,13 @@ export default function AccountPage() {
   const { orders } = useOrders();
   const router = useRouter();
 
+  useEffect(() => {
+    if (!user) {
+      router.push('/supermarket/account/login');
+    }
+  }, [user, router]);
+
   if (!user) {
-    router.push('/supermarket/account/login');
     return null;
   }
 

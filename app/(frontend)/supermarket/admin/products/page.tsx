@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { dummyProducts } from '../../data/dummy-data';
 import { Product } from '../../types/types';
 import ImageUpload from '../../components/ImageUpload';
@@ -172,18 +173,23 @@ export default function AdminProductsPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {products.map(product => (
               <div key={product.id} className="border border-gray-200 rounded-lg p-4">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-40 object-cover rounded mb-3"
-                />
+                <div className="relative w-full h-40 mb-3">
+                  <Image
+                    src={typeof product.image === 'string' ? product.image : product.image.url || ''}
+                    alt={product.name}
+                    fill
+                    className="object-cover rounded"
+                  />
+                </div>
                 <h3 className="text-black font-semibold mb-1">{product.name}</h3>
                 <p className="text-gray-600 text-sm mb-2 line-clamp-2">{product.description}</p>
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-orange-600 font-bold">NGN {product.price.toFixed(2)}</span>
                   <span className="text-gray-500 text-sm">Stock: {product.stock}</span>
                 </div>
-                <p className="text-gray-500 text-xs mb-3">{product.category} • {product.store}</p>
+                <p className="text-gray-500 text-xs mb-3">
+                  {typeof product.category === 'string' ? product.category : product.category.name} • {product.store}
+                </p>
                 <button
                   onClick={() => handleDeleteProduct(product.id)}
                   className="w-full bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors text-sm font-medium"

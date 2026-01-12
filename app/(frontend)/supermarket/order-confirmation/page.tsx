@@ -1,6 +1,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { getOrder } from '@/app/actions/orders';
 
 interface OrderConfirmationPageProps {
@@ -9,11 +10,35 @@ interface OrderConfirmationPageProps {
   }>
 }
 
+interface OrderItem {
+  product_id: string;
+  name: string;
+  price: number;
+  quantity: number;
+  image?: string;
+}
+
+interface OrderDetails {
+  id: string;
+  paymentReference?: string;
+  items: OrderItem[];
+  total: number;
+  shippingAddress: {
+    name: string;
+    phone: string;
+    street: string;
+    city: string;
+    state: string;
+    zipCode: string;
+    country: string;
+  };
+}
+
 export const dynamic = 'force-dynamic';
 
 export default async function OrderConfirmationPage({ searchParams }: OrderConfirmationPageProps) {
   const { orderId } = await searchParams;
-  const order = orderId ? await getOrder(orderId) : null;
+  const order = orderId ? await getOrder(orderId) as unknown as OrderDetails : null;
 
   if (!order) {
     return (
@@ -50,11 +75,14 @@ export default async function OrderConfirmationPage({ searchParams }: OrderConfi
           <div className="space-y-3 mb-4">
             {items.map((item, idx) => (
               <div key={idx} className="flex items-center gap-4 pb-3 border-b border-gray-200 last:border-0">
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className="w-16 h-16 object-cover rounded"
-                />
+                <div className="relative w-16 h-16 flex-shrink-0">
+                  <Image
+                    src={item.image || ''}
+                    alt={item.name}
+                    fill
+                    className="object-cover rounded"
+                  />
+                </div>
                 <div className="flex-1">
                   <h3 className="text-black font-medium">{item.name}</h3>
                   <p className="text-gray-500 text-sm">Quantity: {item.quantity}</p>
