@@ -1,85 +1,125 @@
 'use client';
-import { motion, Variants } from "framer-motion";
-import Backedwithheart from "../gavi/comps/Backedwithheart";
-import FindGaviSection from "../gavi/comps/FindGaviSection";
-import MenuSection from "../gavi/comps/MenuSection";
-import TestimonialsAndHowToOrder from "../gavi/comps/TestimonialsAndHowToOrder";
+import BrandHero from "../components/brand/BrandHero";
+import BrandInfo from "../components/brand/BrandInfo";
+import BrandMenu from "../components/brand/BrandMenu";
+import BrandLocation from "../components/brand/BrandLocation";
+import BrandTestimonials from "../components/brand/BrandTestimonials";
+import BrandHowToOrder from "../components/brand/BrandHowToOrder";
 
-// Animation variants (TypeScript-compliant)
-const container: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.15,
-    },
+const bestSellers = [
+  { 
+    name: "Classic Avocado Toast", 
+    price: "₦4,500", 
+    image: "/croissants.png",
+    description: "Smashed avocado, cherry tomatoes, and poached egg on sourdough."
   },
-};
+  { 
+    name: "Cinnamon French Toast", 
+    price: "₦3,800", 
+    image: "/foodimg/bestsellers/croissant.png",
+    description: "Brioche soaked in vanilla custard, served with maple syrup and berries."
+  },
+  { 
+    name: "Spicy Tuna Melt", 
+    price: "₦4,200", 
+    image: "/foodimg/dailyspecials/sandwich.png",
+    description: "Zesty tuna salad with melted cheddar on toasted rustic bread."
+  },
+  { 
+    name: "Honey Walnut Toast", 
+    price: "₦3,500", 
+    image: "/foodimg/bestsellers/cookies.png",
+    description: "Creamy whipped ricotta, walnuts, and a drizzle of local honey."
+  },
+];
 
-const item: Variants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: [0.42, 0, 0.58, 1] as [number, number, number, number], // Explicitly type as cubic bezier
-    },
+const dailySpecials = [
+  { 
+    name: "Smoked Salmon Toast", 
+    price: "₦5,500", 
+    image: "/foodimg/bestsellers/sourdough.png",
+    description: "Premium smoked salmon, cream cheese, capers, and red onions."
   },
-};
+  { 
+    name: "Berry Mascarpone", 
+    price: "₦4,000", 
+    image: "/foodimg/bestsellers/cupcakes.png",
+    description: "Sweet mascarpone spread with seasonal berries and mint."
+  },
+  { 
+    name: "Garlic Mushroom", 
+    price: "₦4,200", 
+    image: "/foodimg/dailyspecials/meatpie.png",
+    description: "Sautéed wild mushrooms with garlic butter and thyme."
+  },
+  { 
+    name: "Nutella Banana", 
+    price: "₦3,500", 
+    image: "/foodimg/dailyspecials/chocolatecake.png",
+    description: "Thick cut toast with Nutella, bananas, and toasted hazelnuts."
+  },
+];
+
+const reviews = [
+  {
+    name: "Sarah L.",
+    text: "The Avocado Toast here is life-changing! The sourdough is perfectly crunchy.",
+    rating: 5,
+  },
+  {
+    name: "David O.",
+    text: "Mornings start here. The French Toast is the best in Abuja, hands down.",
+    rating: 5,
+  },
+  {
+    name: "Joy A.",
+    text: "Love the variety of toppings. There's always something new and delicious to try!",
+    rating: 5,
+  },
+];
 
 const ToastPanLanding = () => {
   return (
-    <>
-    <section
-  className="relative bg-cover bg-center bg-no-repeat min-h-screen flex items-center justify-center text-center px-6 py-20
-    bg-[url('/logos/toastpan.png')]"
->
-        <div className="absolute inset-0 bg-white/60" /> {/* Added overlay for readability since it uses logo as bg */}
-        <motion.div
-          className="relative z-10 text-black max-w-2xl"
-          variants={container}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.5 }}
-        >
-          <motion.h1
-            className="text-4xl md:text-5xl font-bold mb-4"
-            variants={item}
-          >
-            Toast Pan: Savor the Crunch.
-          </motion.h1>
-          <motion.p
-            className="text-gray-700 text-sm mb-8"
-            variants={item}
-          >
-            Golden, crispy, and filled with love. Discover the art of the perfect toast with Toast Pan.
-          </motion.p>
-          <motion.div
-            className="flex font-bold justify-center gap-4"
-            variants={item}
-          >
-            <motion.button
-              className="bg-[#373435] text-white px-6 py-2 rounded-full hover:bg-gray-800 transition"
-              variants={item}
-            >
-              Order Now
-            </motion.button>
-            <motion.button
-              className="border border-gray-700 text-black px-6 py-2 rounded-full bg-white hover:bg-white hover:text-black transition"
-              variants={item}
-            >
-              View Menu
-            </motion.button>
-          </motion.div>
-        </motion.div>
-      </section>
-      <Backedwithheart />
-      <MenuSection />
-      <TestimonialsAndHowToOrder />
-      <FindGaviSection />
-    </>
+    <div className="overflow-hidden">
+      <BrandHero 
+        title={
+          <>Savor the <span className="text-[#B5D04E]">Crunch</span>, <br /> Feel the <span className="text-[#F3A35C]">Heart</span>.</>
+        }
+        subtitle="Golden, crispy, and filled with love. Discover the craft behind the perfect toast with Toast Pan."
+        tagline="The Ultimate Toast Experience"
+        bgImage="/logos/toatspanbg.png"
+        primaryColor="#B5D04E"
+        secondaryColor="#F3A35C"
+      />
+
+      <BrandInfo 
+        title="Toasted to Perfection"
+        description="At Toast Pan, we believe the best things in life are simple. We take artisan bread, fresh local ingredients, and plenty of passion to create the most satisfying toasted meals you've ever tasted. From savory melts to sweet breakfast delights, every slice is a masterpiece."
+        image="/croissants.png"
+        imageAlt="Gourmet Toast"
+        buttonText="Our Story"
+      />
+
+      <BrandMenu 
+        bestSellers={bestSellers}
+        dailySpecials={dailySpecials}
+        accentColor="#B5D04E"
+      />
+
+      <BrandTestimonials 
+        reviews={reviews}
+        accentColor="#F3A35C"
+      />
+
+      <BrandLocation 
+        brandName="Toast Pan"
+        accentColor="#F3A35C"
+      />
+
+      <BrandHowToOrder 
+        primaryColor="#B5D04E"
+      />
+    </div>
   );
 };
 

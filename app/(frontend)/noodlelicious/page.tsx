@@ -1,85 +1,125 @@
 'use client';
-import { motion, Variants } from "framer-motion";
-import Backedwithheart from "../gavi/comps/Backedwithheart";
-import FindGaviSection from "../gavi/comps/FindGaviSection";
-import MenuSection from "../gavi/comps/MenuSection";
-import TestimonialsAndHowToOrder from "../gavi/comps/TestimonialsAndHowToOrder";
+import BrandHero from "../components/brand/BrandHero";
+import BrandInfo from "../components/brand/BrandInfo";
+import BrandMenu from "../components/brand/BrandMenu";
+import BrandLocation from "../components/brand/BrandLocation";
+import BrandTestimonials from "../components/brand/BrandTestimonials";
+import BrandHowToOrder from "../components/brand/BrandHowToOrder";
 
-// Animation variants (TypeScript-compliant)
-const container: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.15,
-    },
+const bestSellers = [
+  { 
+    name: "Singapore Noodles", 
+    price: "₦4,800", 
+    image: "/foodimg/dailyspecials/sandwich.png", // Placeholder
+    description: "Thin rice noodles stir-fried with curry powder, vegetables, and shrimp."
   },
-};
+  { 
+    name: "Spicy Beef Ramen", 
+    price: "₦5,500", 
+    image: "/foodimg/dailyspecials/chocolatecake.png", // Placeholder
+    description: "Rich beef broth with tender slices of beef, noodles, and a soft-boiled egg."
+  },
+  { 
+    name: "Chicken Stir-Fry", 
+    price: "₦4,200", 
+    image: "/foodimg/bestsellers/croissant.png", // Placeholder
+    description: "Wok-tossed noodles with succulent chicken and a medley of fresh vegetables."
+  },
+  { 
+    name: "Prawn Hakka Noodles", 
+    price: "₦5,800", 
+    image: "/foodimg/dailyspecials/meatpie.png", // Placeholder
+    description: "Classic Indo-Chinese style noodles with juicy prawns and bell peppers."
+  },
+];
 
-const item: Variants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: [0.42, 0, 0.58, 1] as [number, number, number, number], // Explicitly type as cubic bezier
-    },
+const dailySpecials = [
+  { 
+    name: "Teriyaki Tofu Noodles", 
+    price: "₦3,800", 
+    image: "/foodimg/bestsellers/cookies.png", // Placeholder
+    description: "Crispy tofu and noodles tossed in a sweet and savory teriyaki sauce."
   },
-};
+  { 
+    name: "Seafood Chow Mein", 
+    price: "₦6,500", 
+    image: "/foodimg/bestsellers/sourdough.png", // Placeholder
+    description: "Stir-fried wheat noodles with a variety of fresh seafood and vegetables."
+  },
+  { 
+    name: "Pad Thai Special", 
+    price: "₦5,200", 
+    image: "/foodimg/dailyspecials/agege.png", // Placeholder
+    description: "Classic Thai rice noodles with peanuts, bean sprouts, and your choice of protein."
+  },
+  { 
+    name: "Garlic Butter Noodles", 
+    price: "₦3,500", 
+    image: "/foodimg/bestsellers/cupcakes.png", // Placeholder
+    description: "Simple yet delicious noodles tossed in a rich garlic butter sauce."
+  },
+];
+
+const reviews = [
+  {
+    name: "Kelvin R.",
+    text: "Best noodles I've ever had! The Singapore Noodles are absolutely delicious.",
+    rating: 5,
+  },
+  {
+    name: "Moji S.",
+    text: "Fast service and great portions. The Spicy Beef Ramen is my personal favorite.",
+    rating: 5,
+  },
+  {
+    name: "Victor B.",
+    text: "I love the variety on the menu. Everything tastes fresh and authentic!",
+    rating: 5,
+  },
+];
 
 const NoodleliciousLanding = () => {
   return (
-    <>
-    <section
-  className="relative bg-cover bg-center bg-no-repeat min-h-screen flex items-center justify-center text-center px-6 py-20
-    bg-[url('/logos/noodlel.png')]"
->
-        <div className="absolute inset-0 bg-white/60" />
-        <motion.div
-          className="relative z-10 text-black max-w-2xl"
-          variants={container}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.5 }}
-        >
-          <motion.h1
-            className="text-4xl md:text-5xl font-bold mb-4"
-            variants={item}
-          >
-            Noodlelicious: Slurp the Goodness.
-          </motion.h1>
-          <motion.p
-            className="text-gray-700 text-sm mb-8"
-            variants={item}
-          >
-            The ultimate noodle experience. Stir-fried, saucy, and absolutely delicious.
-          </motion.p>
-          <motion.div
-            className="flex font-bold justify-center gap-4"
-            variants={item}
-          >
-            <motion.button
-              className="bg-[#373435] text-white px-6 py-2 rounded-full hover:bg-gray-800 transition"
-              variants={item}
-            >
-              Order Now
-            </motion.button>
-            <motion.button
-              className="border border-gray-700 text-black px-6 py-2 rounded-full bg-white hover:bg-white hover:text-black transition"
-              variants={item}
-            >
-              View Menu
-            </motion.button>
-          </motion.div>
-        </motion.div>
-      </section>
-      <Backedwithheart />
-      <MenuSection />
-      <TestimonialsAndHowToOrder />
-      <FindGaviSection />
-    </>
+    <div className="overflow-hidden">
+      <BrandHero 
+        title={
+          <>Noodlelicious: <br /><span className="text-[#F3A35C]">Slurp</span> the Goodness.</>
+        }
+        subtitle="The ultimate noodle experience. Stir-fried, saucy, and absolutely delicious."
+        tagline="Noodle Excellence"
+        bgImage="/logos/noodlel.png"
+        primaryColor="#F3A35C"
+        secondaryColor="#373435"
+      />
+
+      <BrandInfo 
+        title="Noodle Artistry"
+        description="At Noodlelicious, we're obsessed with the perfect strand. From traditional hand-pulled styles to modern stir-fry favorites, our noodles are prepared fresh with vibrant ingredients and bold sauces. Experience the joy of a perfectly balanced bowl, made just the way you like it."
+        image="/fastfoodicons.png"
+        imageAlt="Gourmet Noodle Bowl"
+        buttonText="Our Craft"
+      />
+
+      <BrandMenu 
+        bestSellers={bestSellers}
+        dailySpecials={dailySpecials}
+        accentColor="#F3A35C"
+      />
+
+      <BrandTestimonials 
+        reviews={reviews}
+        accentColor="#F3A35C"
+      />
+
+      <BrandLocation 
+        brandName="Noodlelicious"
+        accentColor="#F3A35C"
+      />
+
+      <BrandHowToOrder 
+        primaryColor="#F3A35C"
+      />
+    </div>
   );
 };
 
