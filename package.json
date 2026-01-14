@@ -1,28 +1,39 @@
 {
   "name": "prixair",
   "version": "0.1.0",
+  "type": "module",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
+    "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "seed": "npx tsx scripts/seed.ts"
   },
   "dependencies": {
+    "@payloadcms/db-postgres": "^3.70.0",
+    "@payloadcms/next": "^3.70.0",
+    "@payloadcms/richtext-lexical": "^3.70.0",
+    "@payloadcms/storage-s3": "^3.70.0",
+    "@paystack/inline-js": "^2.22.7",
     "framer-motion": "^12.23.24",
+    "graphql": "^16.12.0",
     "lucide-react": "^0.545.0",
-    "next": "^16.0.10",
+    "next": "15.5.7",
+    "payload": "^3.70.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-dropzone": "^14.3.8",
     "react-icons": "^5.5.0",
     "react-intersection-observer": "^10.0.0",
-    "react-swipeable": "^7.0.2"
+    "react-swipeable": "^7.0.2",
+    "shipday": "^1.1.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@types/paystack__inline-js": "^1.0.2",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
