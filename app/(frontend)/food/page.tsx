@@ -23,12 +23,12 @@ const foods = [
   {
     name: "Seaside Restaurant",
     imageUrl: "/logos/seaside.png",
-    href: "#",
+    href: "/seaside",
   },
   {
     name: "Noodlel!cious",
     imageUrl: "/logos/noodlel.png",
-    href: "#",
+    href: "/noodlelicious",
   },
   {
     name: "Prixair Waters",
@@ -38,7 +38,7 @@ const foods = [
   {
     name: "Iyan Village",
     imageUrl: "/logos/iyanvillage.png",
-    href: "#",
+    href: "/iyanvillage",
   },
 ];
 

@@ -165,6 +165,7 @@ export default function BusinessGrid() {
 
       {businesses.length > 9 && (
         <div className="flex justify-center mt-8">
+          
           <button
             onClick={toggleShowAll}
             className="px-6 py-3 self-end text-4xl text-orange-400 rounded-lg  transition-colors duration-300"
