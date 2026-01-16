@@ -10,25 +10,25 @@ const bestSellers = [
   { 
     name: "Classic Avocado Toast", 
     price: "₦4,500", 
-    image: "/croissants.png",
+    image: "/toastpanimg/toastpan7.jpeg",
     description: "Smashed avocado, cherry tomatoes, and poached egg on sourdough."
   },
   { 
     name: "Cinnamon French Toast", 
     price: "₦3,800", 
-    image: "/foodimg/bestsellers/croissant.png",
+    image: "/toastpanimg/toastpan2.jpeg",
     description: "Brioche soaked in vanilla custard, served with maple syrup and berries."
   },
   { 
     name: "Spicy Tuna Melt", 
     price: "₦4,200", 
-    image: "/foodimg/dailyspecials/sandwich.png",
+    image: "/toastpanimg/toastpan3.jpeg",
     description: "Zesty tuna salad with melted cheddar on toasted rustic bread."
   },
   { 
     name: "Honey Walnut Toast", 
     price: "₦3,500", 
-    image: "/foodimg/bestsellers/cookies.png",
+    image: "/toastpanimg/toastpan4.jpeg",
     description: "Creamy whipped ricotta, walnuts, and a drizzle of local honey."
   },
 ];
@@ -37,25 +37,25 @@ const dailySpecials = [
   { 
     name: "Smoked Salmon Toast", 
     price: "₦5,500", 
-    image: "/foodimg/bestsellers/sourdough.png",
+    image: "/toastpanimg/toastpan5.jpeg",
     description: "Premium smoked salmon, cream cheese, capers, and red onions."
   },
   { 
     name: "Berry Mascarpone", 
     price: "₦4,000", 
-    image: "/foodimg/bestsellers/cupcakes.png",
+    image: "/toastpanimg/toastpan6.jpeg",
     description: "Sweet mascarpone spread with seasonal berries and mint."
   },
   { 
     name: "Garlic Mushroom", 
     price: "₦4,200", 
-    image: "/foodimg/dailyspecials/meatpie.png",
+    image: "/toastpanimg/toastpan7.jpeg",
     description: "Sautéed wild mushrooms with garlic butter and thyme."
   },
   { 
     name: "Nutella Banana", 
     price: "₦3,500", 
-    image: "/foodimg/dailyspecials/chocolatecake.png",
+    image: "/toastpanimg/toastpan8.jpeg",
     description: "Thick cut toast with Nutella, bananas, and toasted hazelnuts."
   },
 ];
@@ -87,7 +87,7 @@ const ToastPanLanding = () => {
         }
         subtitle="Golden, crispy, and filled with love. Discover the craft behind the perfect toast with Toast Pan."
         tagline="The Ultimate Toast Experience"
-        bgImage="/logos/toatspanbg.png"
+        bgImage="/toastpanimg/toastpan12.jpeg"
         primaryColor="#B5D04E"
         secondaryColor="#F3A35C"
       />
@@ -95,7 +95,7 @@ const ToastPanLanding = () => {
       <BrandInfo 
         title="Toasted to Perfection"
         description="At Toast Pan, we believe the best things in life are simple. We take artisan bread, fresh local ingredients, and plenty of passion to create the most satisfying toasted meals you've ever tasted. From savory melts to sweet breakfast delights, every slice is a masterpiece."
-        image="/croissants.png"
+        image="/toastpanimg/toastpan3.jpeg"
         imageAlt="Gourmet Toast"
         buttonText="Our Story"
       />
