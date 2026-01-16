@@ -10,25 +10,25 @@ const bestSellers = [
   { 
     name: "Singapore Noodles", 
     price: "₦4,800", 
-    image: "/foodimg/dailyspecials/sandwich.png", // Placeholder
+    image: "/noodlelicious/noodle1.jpeg", // Placeholder
     description: "Thin rice noodles stir-fried with curry powder, vegetables, and shrimp."
   },
   { 
     name: "Spicy Beef Ramen", 
     price: "₦5,500", 
-    image: "/foodimg/dailyspecials/chocolatecake.png", // Placeholder
+    image: "/noodlelicious/noodle2.jpeg", // Placeholder
     description: "Rich beef broth with tender slices of beef, noodles, and a soft-boiled egg."
   },
   { 
     name: "Chicken Stir-Fry", 
     price: "₦4,200", 
-    image: "/foodimg/bestsellers/croissant.png", // Placeholder
+    image: "/noodlelicious/noodle3.jpeg", // Placeholder
     description: "Wok-tossed noodles with succulent chicken and a medley of fresh vegetables."
   },
   { 
     name: "Prawn Hakka Noodles", 
     price: "₦5,800", 
-    image: "/foodimg/dailyspecials/meatpie.png", // Placeholder
+    image: "/noodlelicious/noodle4.jpeg", // Placeholder
     description: "Classic Indo-Chinese style noodles with juicy prawns and bell peppers."
   },
 ];
@@ -37,25 +37,25 @@ const dailySpecials = [
   { 
     name: "Teriyaki Tofu Noodles", 
     price: "₦3,800", 
-    image: "/foodimg/bestsellers/cookies.png", // Placeholder
+    image: "/noodlelicious/noodle5.jpeg", // Placeholder
     description: "Crispy tofu and noodles tossed in a sweet and savory teriyaki sauce."
   },
   { 
     name: "Seafood Chow Mein", 
     price: "₦6,500", 
-    image: "/foodimg/bestsellers/sourdough.png", // Placeholder
+    image: "/noodlelicious/noodle6.jpeg", // Placeholder
     description: "Stir-fried wheat noodles with a variety of fresh seafood and vegetables."
   },
   { 
     name: "Pad Thai Special", 
     price: "₦5,200", 
-    image: "/foodimg/dailyspecials/agege.png", // Placeholder
+    image: "/noodlelicious/noodle7.jpeg", // Placeholder
     description: "Classic Thai rice noodles with peanuts, bean sprouts, and your choice of protein."
   },
   { 
     name: "Garlic Butter Noodles", 
     price: "₦3,500", 
-    image: "/foodimg/bestsellers/cupcakes.png", // Placeholder
+    image: "/noodlelicious/noodle9.jpeg", // Placeholder
     description: "Simple yet delicious noodles tossed in a rich garlic butter sauce."
   },
 ];
@@ -95,7 +95,7 @@ const NoodleliciousLanding = () => {
       <BrandInfo 
         title="Noodle Artistry"
         description="At Noodlelicious, we're obsessed with the perfect strand. From traditional hand-pulled styles to modern stir-fry favorites, our noodles are prepared fresh with vibrant ingredients and bold sauces. Experience the joy of a perfectly balanced bowl, made just the way you like it."
-        image="/fastfoodicons.png"
+        image="/noodlelicious/noodle4.jpeg"
         imageAlt="Gourmet Noodle Bowl"
         buttonText="Our Craft"
       />
