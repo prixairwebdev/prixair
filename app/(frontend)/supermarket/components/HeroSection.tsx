@@ -32,7 +32,7 @@ export function HeroSection() {
 
           {/* CTA */}
           <Link
-            href="/shop"
+            href="/supermarket/products"
             className="inline-block bg-black text-white px-6 py-3 rounded-md font-medium hover:bg-gray-900 transition"
           >
             Start Shopping

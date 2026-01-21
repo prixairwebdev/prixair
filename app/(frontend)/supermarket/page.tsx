@@ -38,7 +38,7 @@ export default function SupermarketPage() {
 
   return (
     <main className="bg-gray-50 min-h-screen">
-      <div className="px-6 py-6 grid grid-cols-1 md:grid-cols-[260px_1fr] gap-6">
+      <div className="px-4 md:px-6 py-4 md:py-6 grid grid-cols-1 md:grid-cols-[260px_1fr] gap-4 md:gap-6">
         <CategorySidebar />
 
         <div className="space-y-8">

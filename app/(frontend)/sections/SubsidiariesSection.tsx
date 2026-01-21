@@ -1,6 +1,6 @@
 "use client";
 
-import Subsidiares from "../components/subsidiaries/subsidiaries";
+import Subsidiares from "../subsidiaries/subsidiaries";
 
 export default function SubsidiariesSection() {
   return (

@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ProductCard from '../components/ProductCard';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { Product, Category } from '@/app/actions/supermarket';
 
 interface ProductsListProps {
@@ -11,9 +12,18 @@ interface ProductsListProps {
 }
 
 export default function ProductsList({ products, categories: initialCategories }: ProductsListProps) {
+    const searchParams = useSearchParams();
     const [selectedCategory, setSelectedCategory] = useState<string>('All');
     const [sortBy, setSortBy] = useState<string>('name');
     const [searchQuery, setSearchQuery] = useState('');
+
+    useEffect(() => {
+        const query = searchParams.get('q');
+        const category = searchParams.get('category');
+        
+        if (query) setSearchQuery(query);
+        if (category) setSelectedCategory(category);
+    }, [searchParams]);
 
     // Combine 'All' with the categories passed from props
     // We map initialCategories to their names, or use the derived categories strategy if preferred.

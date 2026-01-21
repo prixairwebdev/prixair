@@ -1,11 +1,34 @@
 "use client";
 
-import { FaCalendarAlt, FaUserFriends, FaBed } from "react-icons/fa";
+import { FaCalendarAlt, FaUserFriends, FaBed, FaMapMarkerAlt } from "react-icons/fa";
 
 export default function FindRoomBar() {
+  // Location options
+  const locations = [
+    { value: "", label: "Select Location" },
+    { value: "maitama", label: "Maitama" },
+    { value: "zone-6-wuse", label: "Zone 6 Wuse" },
+    { value: "minna-city-gate", label: "Minna City Gate" },
+  ];
+
   return (
     <section className="bg-white shadow-md py-4 px-6 md:px-10 rounded-md w-full max-w-6xl mx-auto -mt-10 relative z-20">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 items-center">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-4 items-center">
+        {/* Location Filter */}
+        <div className="flex flex-col">
+          <label className="flex items-center gap-2 text-sm font-medium text-gray-600 mb-1">
+            <FaMapMarkerAlt className="text-gray-500" />
+            Location
+          </label>
+          <select className="border border-gray-300 rounded px-3 py-2 text-sm text-gray-600 focus:outline-none">
+            {locations.map((location) => (
+              <option key={location.value} value={location.value}>
+                {location.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
         {/* Check-in Date */}
         <div className="flex flex-col">
           <label className="flex items-center gap-2 text-sm font-medium text-gray-600 mb-1">
