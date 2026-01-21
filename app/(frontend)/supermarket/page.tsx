@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { CategorySidebar } from "./components/layout/CategorySidebar";
 import { HeroBanner } from "./components/home/HeroBanner";
 import { FlashSales } from "./components/home/FlashSales";
@@ -39,7 +39,9 @@ export default function SupermarketPage() {
   return (
     <main className="bg-gray-50 min-h-screen">
       <div className="px-4 md:px-6 py-4 md:py-6 grid grid-cols-1 md:grid-cols-[260px_1fr] gap-4 md:gap-6">
-        <CategorySidebar />
+        <Suspense fallback={<div className="w-full md:w-64 bg-white rounded-xl shadow-sm p-4 h-fit animate-pulse"><div className="h-40 bg-gray-100 rounded" /></div>}>
+          <CategorySidebar />
+        </Suspense>
 
         <div className="space-y-8">
           <HeroBanner />
