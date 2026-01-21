@@ -5,47 +5,90 @@ import Image from "next/image";
 import { useCart } from "@/components/CartContext";
 import { useWishlist } from "../../contexts/WishlistContext";
 import { useAuth } from "../../contexts/AuthContext";
-import { useState } from "react";
+import { useState, KeyboardEvent } from "react";
+import { useRouter } from "next/navigation";
 
 export function Navbar() {
   const { items } = useCart();
   const { items: wishlistItems } = useWishlist();
   const { user, logout } = useAuth();
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const router = useRouter();
 
   const cartCount = items.reduce((sum, item) => sum + item.qty, 0);
 
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
+      router.push(`/supermarket/products?q=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
   return (
-    <header className="w-full border-b bg-white">
-      <div className="bg-orange-500 text-white text-center text-xs py-1">
+    <header className="w-full border-b bg-white sticky top-0 z-50">
+      <div className="bg-orange-500 text-white text-center text-xs py-1 px-4">
         Call +234 70 588 68549 to Order
       </div>
 
-      <div className="flex items-center gap-4 px-6 py-4">
-        <Link href="/supermarket">
-          <div className="relative">
-            <Image
-              src="/prixairmall.png"
-              alt="Prixair Mall Logo"
-              width={130}
-              height={40}
-              className="h-auto"
-              priority
-            />
+      <div className="flex flex-col md:flex-row items-center gap-4 px-4 md:px-6 py-4">
+        <div className="flex items-center justify-between w-full md:w-auto">
+          <Link href="/supermarket">
+            <div className="relative">
+              <Image
+                src="/prixairmall.png"
+                alt="Prixair Mall Logo"
+                width={130}
+                height={40}
+                className="h-auto w-[100px] md:w-[130px]"
+                priority
+              />
+            </div>
+          </Link>
+          
+          {/* Mobile Cart/Wishlist Icons (Compact) */}
+          <div className="flex md:hidden gap-4 items-center">
+             <Link href="/supermarket/account/wishlist" className="text-black relative">
+              ❤️
+              {wishlistItems.length > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
+                  {wishlistItems.length}
+                </span>
+              )}
+            </Link>
+            <Link href="/supermarket/cart" className="text-black relative">
+              🛒
+              {cartCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-orange-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
           </div>
-        </Link>
+        </div>
 
-        <div className="flex flex-1">
+        <div className="flex w-full flex-1">
           <input
-            className="w-full border border-gray-300 rounded-l-md px-4 py-2 text-black"
-            placeholder="Search Products, Brands and Categories"
+            className="w-full border border-gray-300 rounded-l-md px-4 py-2 text-black text-sm md:text-base focus:outline-none focus:ring-1 focus:ring-orange-500"
+            placeholder="Search Products, Brands..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={handleKeyDown}
           />
-          <button className="bg-orange-500 text-white px-6 rounded-r-md hover:bg-orange-600 transition-colors">
+          <button 
+            onClick={handleSearch}
+            className="bg-orange-500 text-white px-4 md:px-6 rounded-r-md hover:bg-orange-600 transition-colors text-sm md:text-base font-medium"
+          >
             Search
           </button>
         </div>
 
-        <nav className="flex gap-6 text-sm items-center">
+        <nav className="hidden md:flex gap-6 text-sm items-center">
           <div className="relative">
             {user ? (
               <div className="relative">
@@ -115,6 +158,38 @@ export function Navbar() {
             )}
           </Link>
         </nav>
+
+        {/* Mobile Menu Toggle */}
+        <button 
+          onClick={() => setShowUserMenu(!showUserMenu)}
+          className="md:hidden text-2xl"
+        >
+          {showUserMenu ? '✕' : '☰'}
+        </button>
+
+        {/* Mobile Dropdown Menu */}
+        {showUserMenu && (
+          <div className="md:hidden absolute top-full left-0 w-full bg-white border-b shadow-lg z-40 py-4 px-6 flex flex-col gap-4">
+            {user ? (
+              <>
+                <div className="font-bold border-b pb-2 text-black">👤 {user.name}</div>
+                <Link href="/supermarket/account" className="text-black py-1" onClick={() => setShowUserMenu(false)}>My Account</Link>
+                <Link href="/supermarket/account/orders" className="text-black py-1" onClick={() => setShowUserMenu(false)}>My Orders</Link>
+                <Link href="/supermarket/account/wishlist" className="text-black py-1" onClick={() => setShowUserMenu(false)}>Wishlist</Link>
+                <button 
+                  onClick={() => { logout(); setShowUserMenu(false); }}
+                  className="text-red-600 text-left py-1 font-medium"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <Link href="/supermarket/account/login" className="text-black font-medium" onClick={() => setShowUserMenu(false)}>
+                Login / Register
+              </Link>
+            )}
+          </div>
+        )}
       </div>
     </header>
   );

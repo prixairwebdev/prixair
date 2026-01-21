@@ -62,13 +62,13 @@ export function Footer() {
         <div>
           <h4 className="font-semibold text-white mb-4">CATEGORIES</h4>
           <ul className="space-y-2 text-sm">
-            <li>Fruits and Vegetables</li>
-            <li>Beverages</li>
-            <li>Meat and Poultry</li>
-            <li>Snacks</li>
-            <li>Dairy and Eggs</li>
-            <li>Canned Food</li>
-            <li>Household materials</li>
+            <li><Link href="/supermarket/products?category=Fruits%20and%20Vegetables">Fruits and Vegetables</Link></li>
+            <li><Link href="/supermarket/products?category=Beverages">Beverages</Link></li>
+            <li><Link href="/supermarket/products?category=Meat%20and%20Poultry">Meat and Poultry</Link></li>
+            <li><Link href="/supermarket/products?category=Snacks">Snacks</Link></li>
+            <li><Link href="/supermarket/products?category=Dairy%20and%20Eggs">Dairy and Eggs</Link></li>
+            <li><Link href="/supermarket/products?category=Canned%20Food">Canned Food</Link></li>
+            <li><Link href="/supermarket/products?category=Household%20materials">Household materials</Link></li>
           </ul>
         </div>
 

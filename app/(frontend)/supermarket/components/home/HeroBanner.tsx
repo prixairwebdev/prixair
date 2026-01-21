@@ -2,9 +2,11 @@
 
 import Image from "next/image";
 
+import Link from "next/link";
+
 export function HeroBanner() {
   return (
-    <div className="bg-orange-500 rounded-xl overflow-hidden">
+    <Link href="/supermarket/products" className="block bg-orange-500 rounded-xl overflow-hidden hover:opacity-95 transition-opacity">
       <Image
         src="/supermarketbanner.png"
         alt="Mega Sale"
@@ -12,6 +14,6 @@ export function HeroBanner() {
         height={400}
         className="w-full h-auto"
       />
-    </div>
+    </Link>
   );
 }

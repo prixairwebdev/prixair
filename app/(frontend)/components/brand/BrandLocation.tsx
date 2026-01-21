@@ -1,6 +1,6 @@
 'use client';
-import React, { useState } from "react";
-import { Search, MapPin, Clock } from "lucide-react";
+import React from "react";
+import { MapPin, Clock } from "lucide-react";
 import { motion } from "framer-motion";
 
 interface BrandLocationProps {
@@ -47,8 +47,7 @@ const BrandLocation: React.FC<BrandLocationProps> = ({
     sunday: "Closed",
   }
 }) => {
-  const [state, setState] = useState("");
-  const [lga, setLga] = useState("");
+  const location = "Plot 688, Markus Kangye Blvd, Off Oladipo Diya Way, Gaduwa, Abuja";
 
   return (
     <motion.section
@@ -74,60 +73,39 @@ const BrandLocation: React.FC<BrandLocationProps> = ({
           className="text-4xl md:text-5xl font-bold mb-4 text-white"
           variants={itemVariants}
         >
-          Find <span style={{ color: accentColor }}>{brandName}</span> Near You
+          Visit <span style={{ color: accentColor }}>{brandName}</span>
         </motion.h2>
         
         <motion.p 
             variants={itemVariants}
-            className="text-gray-300 mb-12 text-lg"
+            className="text-gray-300 mb-8 text-lg"
         >
-            Enter your location to find the nearest branch and enjoy fresh meals.
+          We're located at a convenient spot for you to enjoy fresh meals.
         </motion.p>
 
-        {/* Search tool */}
+        {/* Location Display */}
         <motion.div 
-          className="bg-white p-2 rounded-3xl shadow-2xl flex flex-col md:flex-row items-stretch gap-2 mb-16 overflow-hidden"
+          className="bg-white/5 border border-white/10 p-8 rounded-3xl backdrop-blur-md mb-16 max-w-2xl mx-auto"
           variants={itemVariants}
         >
-          <div className="flex-1 px-6 py-3 text-left">
-            <label htmlFor="state" className="block text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">State</label>
-            <select
-              id="state"
-              value={state}
-              onChange={(e) => setState(e.target.value)}
-              className="w-full bg-transparent text-gray-900 font-bold focus:outline-none appearance-none cursor-pointer"
-            >
-              <option value="">Select State</option>
-              <option value="Lagos">Lagos</option>
-              <option value="Abuja">Abuja</option>
-            </select>
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <MapPin className="w-6 h-6" style={{ color: accentColor }} />
+            <h3 className="text-xl font-bold text-white">Our Location</h3>
           </div>
-
-          <div className="w-px bg-gray-100 hidden md:block my-2" />
-
-          <div className="flex-1 px-6 py-3 text-left">
-            <label htmlFor="lga" className="block text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">LGA</label>
-            <select
-              id="lga"
-              value={lga}
-              onChange={(e) => setLga(e.target.value)}
-              className="w-full bg-transparent text-gray-900 font-bold focus:outline-none appearance-none cursor-pointer"
-            >
-              <option value="">Select LGA</option>
-              <option value="Ikeja">Ikeja</option>
-              <option value="Maitama">Maitama</option>
-            </select>
-          </div>
-
-          <motion.button 
-            className="px-8 py-4 rounded-2xl text-white font-bold flex items-center justify-center gap-2 transition-all"
+          <p className="text-gray-300 text-lg font-medium leading-relaxed">
+            {location}
+          </p>
+          <motion.a
+            href={`https://maps.google.com/?q=${encodeURIComponent(location)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block mt-6 px-6 py-3 rounded-2xl text-white font-bold transition-all hover:shadow-lg"
             style={{ backgroundColor: accentColor }}
-            whileHover={{ scale: 1.02 }}
+            whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.98 }}
           >
-            <Search className="w-5 h-5" />
-            <span>Search</span>
-          </motion.button>
+            Open in Google Maps
+          </motion.a>
         </motion.div>
 
         {/* Opening Hours */}

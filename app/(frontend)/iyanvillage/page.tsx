@@ -10,25 +10,25 @@ const bestSellers = [
   { 
     name: "Classic Pounded Yam", 
     price: "₦5,000", 
-    image: "/foodimg/dailyspecials/agege.png", // Placeholder for Iyan
+    image: "/iyanvillage/iyan8.jpeg", // Placeholder for Iyan
     description: "Smooth, fluffy pounded yam served with your choice of rich indigenous soup."
   },
   { 
     name: "Egusi Soup Special", 
     price: "₦4,500", 
-    image: "/foodimg/dailyspecials/meatpie.png", // Placeholder
+    image: "/iyanvillage/iyan7.jpeg", // Placeholder
     description: "Rich melon seed soup with melon, spinach, and assorted meats."
   },
   { 
     name: "Fisherman Soup", 
     price: "₦6,500", 
-    image: "/foodimg/bestsellers/sourdough.png", // Placeholder
+    image: "/iyanvillage/iyan6.jpeg", // Placeholder
     description: "A coastal delight featuring fresh fish, prawns, and traditional spices."
   },
   { 
     name: "Village Platter", 
     price: "₦8,500", 
-    image: "/foodimg/bestsellers/croissant.png", // Placeholder
+    image: "/iyanvillage/iyan5.jpeg", // Placeholder
     description: "A hearty combination of Iyan, two soups, and extra protein."
   },
 ];
@@ -37,25 +37,25 @@ const dailySpecials = [
   { 
     name: "Banga Soup", 
     price: "₦5,200", 
-    image: "/foodimg/dailyspecials/sandwich.png", // Placeholder
+    image: "/iyanvillage/iyan6.jpeg", // Placeholder
     description: "Palm nut soup slow-cooked to perfection with native spices."
   },
   { 
     name: "Afang Soup", 
     price: "₦4,800", 
-    image: "/foodimg/bestsellers/cookies.png", // Placeholder
+    image: "/iyanvillage/iyan3.jpeg", // Placeholder
     description: "A nutritious blend of Afang leaves and waterleaf with rich protein."
   },
   { 
     name: "Efo Riro", 
     price: "₦4,500", 
-    image: "/foodimg/bestsellers/cupcakes.png", // Placeholder
+    image: "/iyanvillage/iyan2.jpeg", // Placeholder
     description: "Classic Yoruba spinach stew with palm oil and locust beans."
   },
   { 
     name: "White Soup (Afia Efere)", 
     price: "₦5,500", 
-    image: "/foodimg/dailyspecials/chocolatecake.png", // Placeholder
+    image: "/iyanvillage/iyan15.jpeg", // Placeholder
     description: "Spicy and aromatic soup thickened with pounded yam."
   },
 ];

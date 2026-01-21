@@ -52,7 +52,7 @@ export default function Footer() {
               </a>
             </li>
             <li>
-              <a href="/media" className="hover:text-orange-500">
+              <a href="/news" className="hover:text-orange-500">
                 Media
               </a>
             </li>
