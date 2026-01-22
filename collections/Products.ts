@@ -45,14 +45,9 @@ export const Products: CollectionConfig = {
         },
         {
             name: 'store',
-            type: 'select',
-            options: [
-                { label: 'Supermarket', value: 'supermarket' },
-                { label: 'Pharmacy', value: 'pharmacy' },
-                { label: 'Bakery', value: 'bakery' },
-            ],
+            type: 'relationship',
+            relationTo: 'stores',
             required: true,
-            defaultValue: 'supermarket',
             index: true,
         },
         {

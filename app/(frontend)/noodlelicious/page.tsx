@@ -1,64 +1,12 @@
 'use client';
+import { useEffect, useState } from "react";
 import BrandHero from "../components/brand/BrandHero";
 import BrandInfo from "../components/brand/BrandInfo";
-import BrandMenu from "../components/brand/BrandMenu";
+import BrandMenu, { MenuItem } from "../components/brand/BrandMenu";
 import BrandLocation from "../components/brand/BrandLocation";
 import BrandTestimonials from "../components/brand/BrandTestimonials";
 import BrandHowToOrder from "../components/brand/BrandHowToOrder";
-
-const bestSellers = [
-  { 
-    name: "Singapore Noodles", 
-    price: "₦4,800", 
-    image: "/noodlelicious/noodle1.jpeg", // Placeholder
-    description: "Thin rice noodles stir-fried with curry powder, vegetables, and shrimp."
-  },
-  { 
-    name: "Spicy Beef Ramen", 
-    price: "₦5,500", 
-    image: "/noodlelicious/noodle2.jpeg", // Placeholder
-    description: "Rich beef broth with tender slices of beef, noodles, and a soft-boiled egg."
-  },
-  { 
-    name: "Chicken Stir-Fry", 
-    price: "₦4,200", 
-    image: "/noodlelicious/noodle3.jpeg", // Placeholder
-    description: "Wok-tossed noodles with succulent chicken and a medley of fresh vegetables."
-  },
-  { 
-    name: "Prawn Hakka Noodles", 
-    price: "₦5,800", 
-    image: "/noodlelicious/noodle4.jpeg", // Placeholder
-    description: "Classic Indo-Chinese style noodles with juicy prawns and bell peppers."
-  },
-];
-
-const dailySpecials = [
-  { 
-    name: "Teriyaki Tofu Noodles", 
-    price: "₦3,800", 
-    image: "/noodlelicious/noodle5.jpeg", // Placeholder
-    description: "Crispy tofu and noodles tossed in a sweet and savory teriyaki sauce."
-  },
-  { 
-    name: "Seafood Chow Mein", 
-    price: "₦6,500", 
-    image: "/noodlelicious/noodle6.jpeg", // Placeholder
-    description: "Stir-fried wheat noodles with a variety of fresh seafood and vegetables."
-  },
-  { 
-    name: "Pad Thai Special", 
-    price: "₦5,200", 
-    image: "/noodlelicious/noodle7.jpeg", // Placeholder
-    description: "Classic Thai rice noodles with peanuts, bean sprouts, and your choice of protein."
-  },
-  { 
-    name: "Garlic Butter Noodles", 
-    price: "₦3,500", 
-    image: "/noodlelicious/noodle9.jpeg", // Placeholder
-    description: "Simple yet delicious noodles tossed in a rich garlic butter sauce."
-  },
-];
+import { getProductsByStore } from "@/app/actions/products";
 
 const reviews = [
   {
@@ -79,9 +27,41 @@ const reviews = [
 ];
 
 const NoodleliciousLanding = () => {
+  const [products, setProducts] = useState<MenuItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchNoodleData() {
+      try {
+        const noodleProducts = await getProductsByStore('noodlelicious');
+
+        const mappedProducts: MenuItem[] = noodleProducts.map((p: any) => ({
+          id: p.id,
+          name: p.name,
+          price: p.price,
+          description: p.description,
+          image: typeof p.image === 'string' ? p.image : (p.image?.url || "/noodlelicious/noodle1.jpeg"),
+          store: 'noodlelicious'
+        }));
+
+        setProducts(mappedProducts);
+      } catch (error) {
+        console.error("Failed to fetch Noodlelicious products:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchNoodleData();
+  }, []);
+
+  // Split products for display (mock logic if needed, or just slice)
+  const bestSellers = products.slice(0, 4);
+  const dailySpecials = products.slice(4, 8);
+
   return (
     <div className="overflow-hidden">
-      <BrandHero 
+      <BrandHero
         title={
           <>Noodlelicious: <br /><span className="text-[#F3A35C]">Slurp</span> the Goodness.</>
         }
@@ -92,7 +72,7 @@ const NoodleliciousLanding = () => {
         secondaryColor="#373435"
       />
 
-      <BrandInfo 
+      <BrandInfo
         title="Noodle Artistry"
         description="At Noodlelicious, we're obsessed with the perfect strand. From traditional hand-pulled styles to modern stir-fry favorites, our noodles are prepared fresh with vibrant ingredients and bold sauces. Experience the joy of a perfectly balanced bowl, made just the way you like it."
         image="/noodlelicious/noodle4.jpeg"
@@ -100,24 +80,30 @@ const NoodleliciousLanding = () => {
         buttonText="Our Craft"
       />
 
-      <BrandMenu 
-        bestSellers={bestSellers}
-        dailySpecials={dailySpecials}
-        accentColor="#F3A35C"
+      {loading ? (
+        <div className="flex justify-center py-20">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#F3A35C]"></div>
+        </div>
+      ) : (
+        <BrandMenu
+          bestSellers={bestSellers}
+          dailySpecials={dailySpecials}
+          accentColor="#F3A35C"
+        />
+      )}
+
+      <BrandHowToOrder
+        primaryColor="#F3A35C"
       />
 
-      <BrandTestimonials 
+      <BrandTestimonials
         reviews={reviews}
         accentColor="#F3A35C"
       />
 
-      <BrandLocation 
+      <BrandLocation
         brandName="Noodlelicious"
         accentColor="#F3A35C"
-      />
-
-      <BrandHowToOrder 
-        primaryColor="#F3A35C"
       />
     </div>
   );

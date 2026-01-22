@@ -9,14 +9,14 @@ import { useState, KeyboardEvent } from "react";
 import { useRouter } from "next/navigation";
 
 export function Navbar() {
-  const { items } = useCart();
+  const { getCartCount } = useCart();
   const { items: wishlistItems } = useWishlist();
   const { user, logout } = useAuth();
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
 
-  const cartCount = items.reduce((sum, item) => sum + item.qty, 0);
+  const cartCount = getCartCount('supermarket');
 
   const handleSearch = () => {
     if (searchQuery.trim()) {
@@ -50,10 +50,10 @@ export function Navbar() {
               />
             </div>
           </Link>
-          
+
           {/* Mobile Cart/Wishlist Icons (Compact) */}
           <div className="flex md:hidden gap-4 items-center">
-             <Link href="/supermarket/account/wishlist" className="text-black relative">
+            <Link href="/supermarket/account/wishlist" className="text-black relative">
               ❤️
               {wishlistItems.length > 0 && (
                 <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
@@ -80,7 +80,7 @@ export function Navbar() {
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyDown={handleKeyDown}
           />
-          <button 
+          <button
             onClick={handleSearch}
             className="bg-orange-500 text-white px-4 md:px-6 rounded-r-md hover:bg-orange-600 transition-colors text-sm md:text-base font-medium"
           >
@@ -160,7 +160,7 @@ export function Navbar() {
         </nav>
 
         {/* Mobile Menu Toggle */}
-        <button 
+        <button
           onClick={() => setShowUserMenu(!showUserMenu)}
           className="md:hidden text-2xl"
         >
@@ -176,7 +176,7 @@ export function Navbar() {
                 <Link href="/supermarket/account" className="text-black py-1" onClick={() => setShowUserMenu(false)}>My Account</Link>
                 <Link href="/supermarket/account/orders" className="text-black py-1" onClick={() => setShowUserMenu(false)}>My Orders</Link>
                 <Link href="/supermarket/account/wishlist" className="text-black py-1" onClick={() => setShowUserMenu(false)}>Wishlist</Link>
-                <button 
+                <button
                   onClick={() => { logout(); setShowUserMenu(false); }}
                   className="text-red-600 text-left py-1 font-medium"
                 >

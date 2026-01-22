@@ -29,6 +29,7 @@ export type OrderData = {
     }
     paymentMethod: 'paypal' | 'card' | 'paystack'
     paymentReference?: string
+    storeId: string
 }
 
 export async function createOrder(data: OrderData) {
@@ -93,6 +94,7 @@ export async function createOrder(data: OrderData) {
                 shippingAddress: data.shippingAddress,
                 paymentMethod: data.paymentMethod,
                 paymentReference: data.paymentReference,
+                store: data.storeId,
             },
         })
 

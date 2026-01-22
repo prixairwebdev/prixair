@@ -1,15 +1,16 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
 import { useCart } from '@/components/CartContext';
 import { useAuth } from '../contexts/AuthContext';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { getAddresses } from '@/app/actions/addresses';
 import { Address } from '../types/types';
 import { createOrder } from '@/app/actions/orders';
 import { useOrders } from '../contexts/OrderContext';
+import { getStoreBySlug } from '@/app/actions/products';
 
 interface PaystackTransaction {
   reference: string;
@@ -24,33 +25,47 @@ interface PaystackReference {
 }
 
 export default function CheckoutPage(): React.ReactNode {
-  const { items, total, clear } = useCart();
+  const { getCartItems, getCartTotal, clear } = useCart();
   const { user } = useAuth();
   const { refreshOrders } = useOrders();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const storeFilter = searchParams.get('store') || 'supermarket';
 
-  // Initialize state with null, will be populated via useEffect
+  // Initialize state
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
   const [userAddresses, setUserAddresses] = useState<Address[]>([]);
   const [paymentMethod, setPaymentMethod] = useState<'paystack' | 'paypal' | 'card'>('paystack');
   const [processing, setProcessing] = useState(false);
+  const [storeId, setStoreId] = useState<string | null>(null);
 
-  // Fetch user addresses
+  const items = useMemo(() => getCartItems(storeFilter), [getCartItems, storeFilter]);
+  const orderTotal = useMemo(() => getCartTotal(storeFilter), [getCartTotal, storeFilter]);
+
+  // Fetch user addresses and store ID
   useEffect(() => {
-    async function fetchAddresses() {
+    async function fetchData() {
       if (user) {
         try {
           const addresses = await getAddresses();
           setUserAddresses(addresses);
+
+          // Fetch store ID for the current store slug
+          const storeDoc = await getStoreBySlug(storeFilter);
+          if (storeDoc) {
+            setStoreId(storeDoc.id);
+          } else {
+            console.error(`Store not found: ${storeFilter}`);
+          }
         } catch (error) {
-          console.error("Failed to load addresses", error);
+          console.error("Failed to load checkout data", error);
         }
       }
     }
-    fetchAddresses();
-  }, [user]);
+    fetchData();
+  }, [user, storeFilter]);
 
-  // Set default address when user loads or addresses change
+  // Set default address
   useEffect(() => {
     if (userAddresses.length > 0 && !selectedAddress) {
       const defaultAddr = userAddresses.find(addr => addr.isDefault) || userAddresses[0] || null;
@@ -61,9 +76,6 @@ export default function CheckoutPage(): React.ReactNode {
   }, [userAddresses, selectedAddress]);
 
   if (!user) {
-    // In a real app, you'd redirect to login or show a login modal
-    // For now, let's assume if we are here we might have context or just redirect
-    // But since this is client side, we should safely handle null user
     return (
       <div className="min-h-screen flex items-center justify-center">
         <p>Please <Link href="/supermarket/account/login" className="text-orange-600">login</Link> to continue.</p>
@@ -75,21 +87,26 @@ export default function CheckoutPage(): React.ReactNode {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <p className="mb-4">Your cart is empty.</p>
-          <Link href="/supermarket" className="text-orange-600">Go Shopping</Link>
+          <p className="mb-4">Your {storeFilter} cart is empty.</p>
+          <Link href={storeFilter === 'noodlelicious' ? '/noodlelicious' : '/supermarket'} className="text-orange-600 font-bold">
+            Go Shopping
+          </Link>
         </div>
       </div>
     );
   }
 
-  const orderTotal = total();
-
   // Paystack Config
-  const publicKey = process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY || 'pk_test_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'; // Replace with env var
+  const publicKey = process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY || 'pk_test_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
 
   const handlePaystackPayment = async () => {
     if (!selectedAddress) {
       alert('Please select a shipping address');
+      return;
+    }
+
+    if (!storeId) {
+      alert('Error: Store information not found. Please try again or contact support.');
       return;
     }
 
@@ -98,10 +115,11 @@ export default function CheckoutPage(): React.ReactNode {
     paystack.newTransaction({
       key: publicKey,
       email: user.email,
-      amount: Math.round(orderTotal * 100), // Paystack expects amount in kobo
+      amount: Math.round(orderTotal * 100),
       metadata: {
         name: user.name,
         phone: user.phone || '',
+        store: storeFilter,
       } as Record<string, string>,
       onSuccess: (transaction: PaystackTransaction) => {
         handlePaystackSuccess(transaction);
@@ -112,126 +130,85 @@ export default function CheckoutPage(): React.ReactNode {
     });
   };
 
-
   const handlePaystackSuccess = async (reference: PaystackReference) => {
     setProcessing(true);
 
-    const validItems = items.filter(item => {
-      const itemId = String(item.id || '').trim();
-      if (!itemId) {
-        console.warn('Skipping item without ID:', item);
-        return false;
-      }
-      return true;
-    });
-
-    if (validItems.length === 0) {
-      alert('Error: No valid items in cart');
-      setProcessing(false);
-      return;
-    }
-
-    if (validItems.length < items.length) {
-      console.warn(`Filtered out ${items.length - validItems.length} items without valid IDs`);
-    }
-
-    const orderData = {
-      userId: user.id,
-      items: validItems.map(item => {
-        let imageUrl = '';
-        if (typeof item.image === 'string') {
-          imageUrl = item.image;
-        } else if (item.image && typeof item.image === 'object' && 'url' in item.image) {
-          imageUrl = (item.image as Record<string, string>).url;
-        }
-        return {
+    try {
+      const orderData = {
+        userId: user.id,
+        items: items.map(item => ({
           product_id: item.id,
           name: item.name,
           price: item.price,
           quantity: item.qty,
-          image: imageUrl,
-        };
-      }),
-      total: orderTotal,
-      status: 'pending' as const,
-      customerEmail: user.email,
-      shippingAddress: {
-        name: selectedAddress!.name,
-        phone: selectedAddress!.phone,
-        street: selectedAddress!.street,
-        city: selectedAddress!.city,
-        state: selectedAddress!.state,
-        zipCode: selectedAddress!.zipCode,
-        country: selectedAddress!.country,
-      },
-      paymentMethod: 'paystack' as const,
-      paymentReference: reference.reference,
-    };
+          image: item.image,
+        })),
+        total: orderTotal,
+        status: 'pending' as const,
+        customerEmail: user.email,
+        shippingAddress: {
+          name: selectedAddress!.name,
+          phone: selectedAddress!.phone,
+          street: selectedAddress!.street,
+          city: selectedAddress!.city,
+          state: selectedAddress!.state,
+          zipCode: selectedAddress!.zipCode,
+          country: selectedAddress!.country,
+        },
+        paymentMethod: 'paystack' as const,
+        paymentReference: reference.reference,
+        storeId: storeId!,
+      };
 
-    console.log('Items in cart:', items);
-    console.log('Valid items being ordered:', validItems);
-    console.log('Order data to be sent:', orderData);
+      const result = await createOrder(orderData);
 
-    const result = await createOrder(orderData);
-
-    if (result.success && result.order) {
-      clear();
-      await refreshOrders();
-      router.push(`/supermarket/order-confirmation?orderId=${result.order.id}`);
-    } else {
-      alert('Failed to create order. Please contact support.');
+      if (result.success && result.order) {
+        clear(storeFilter);
+        await refreshOrders();
+        router.push(`/supermarket/order-confirmation?orderId=${result.order.id}`);
+      } else {
+        alert('Failed to create order. Please contact support.');
+        setProcessing(false);
+      }
+    } catch (err) {
+      console.error('Checkout error:', err);
+      alert('An error occurred during checkout.');
       setProcessing(false);
     }
   };
 
-
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-black mb-8">Checkout</h1>
+        <div className="flex items-center gap-4 mb-8">
+          <button onClick={() => router.back()} className="text-gray-500 hover:text-black transition-colors">← Back</button>
+          <h1 className="text-3xl font-bold text-black capitalize">{storeFilter} Checkout</h1>
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Checkout Form */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Shipping Address */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
               <h2 className="text-xl font-bold text-black mb-4">Shipping Address</h2>
-
               {userAddresses.length === 0 ? (
                 <div className="text-center py-8">
                   <p className="text-gray-600 mb-4">No saved addresses</p>
-                  <Link
-                    href="/supermarket/account/addresses"
-                    className="text-orange-600 hover:text-orange-700 font-medium"
-                  >
-                    Add Address →
-                  </Link>
+                  <Link href="/supermarket/account/addresses" className="text-orange-600 hover:text-orange-700 font-medium">Add Address →</Link>
                 </div>
               ) : (
-                <div className="space-y-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {userAddresses.map(address => (
                     <div
                       key={address.id}
                       onClick={() => setSelectedAddress(address)}
-                      className={`border-2 rounded-lg p-4 cursor-pointer transition-colors ${selectedAddress?.id === address.id
-                        ? 'border-orange-500 bg-orange-50'
-                        : 'border-gray-200 hover:border-gray-300'
-                        }`}
+                      className={`border-2 rounded-xl p-4 cursor-pointer transition-all ${selectedAddress?.id === address.id ? 'border-orange-500 bg-orange-50' : 'border-gray-100 hover:border-gray-200'}`}
                     >
                       <div className="flex items-start justify-between">
                         <div>
                           <h3 className="text-black font-semibold">{address.name}</h3>
-                          <p className="text-gray-700 text-sm">{address.phone}</p>
-                          <p className="text-gray-700 text-sm">{address.street}</p>
-                          <p className="text-gray-700 text-sm">
-                            {address.city}, {address.state} {address.zipCode}
-                          </p>
+                          <p className="text-gray-700 text-sm mt-1">{address.phone}</p>
+                          <p className="text-gray-600 text-sm mt-1">{address.street}, {address.city}</p>
                         </div>
-                        {address.isDefault && (
-                          <span className="bg-orange-500 text-white text-xs px-2 py-1 rounded">
-                            Default
-                          </span>
-                        )}
+                        {address.isDefault && <span className="bg-orange-500 text-white text-[10px] px-2 py-0.5 rounded-full uppercase font-bold">Default</span>}
                       </div>
                     </div>
                   ))}
@@ -239,23 +216,18 @@ export default function CheckoutPage(): React.ReactNode {
               )}
             </div>
 
-            {/* Payment Method */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
               <h2 className="text-xl font-bold text-black mb-4">Payment Method</h2>
-
               <div className="space-y-3">
                 <div
                   onClick={() => setPaymentMethod('paystack')}
-                  className={`border-2 rounded-lg p-4 cursor-pointer transition-colors ${paymentMethod === 'paystack'
-                    ? 'border-orange-500 bg-orange-50'
-                    : 'border-gray-200 hover:border-gray-300'
-                    }`}
+                  className={`border-2 rounded-xl p-4 cursor-pointer transition-all ${paymentMethod === 'paystack' ? 'border-orange-500 bg-orange-50' : 'border-gray-100 hover:border-gray-200'}`}
                 >
-                  <div className="flex items-center gap-3">
-                    <div className="text-2xl">💳</div>
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center text-2xl">💳</div>
                     <div>
                       <h3 className="text-black font-semibold">Paystack</h3>
-                      <p className="text-gray-600 text-sm">Pay securely with Paystack</p>
+                      <p className="text-gray-600 text-sm">Pay securely with card, bank transfer or USSD</p>
                     </div>
                   </div>
                 </div>
@@ -263,78 +235,53 @@ export default function CheckoutPage(): React.ReactNode {
             </div>
           </div>
 
-          {/* Order Summary */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow-sm p-6 sticky top-4">
+            <div className="bg-white rounded-2xl shadow-sm p-6 sticky top-24 border border-gray-100">
               <h2 className="text-xl font-bold text-black mb-4">Order Summary</h2>
-
-              <div className="space-y-3 mb-4 max-h-64 overflow-y-auto">
-                {items.map(item => {
-                  const imageUrl = typeof item.image === 'string'
-                    ? item.image
-                    : (item.image && typeof item.image === 'object' && 'url' in item.image
-                      ? (item.image as Record<string, string>).url
-                      : null);
-
-                  return (
-                    <div key={item.id} className="flex gap-3">
-                      {imageUrl && (
-                        <Image
-                          src={imageUrl}
-                          alt={item.name}
-                          width={64}
-                          height={64}
-                          className="object-cover rounded"
-                        />
-                      )}
-                      <div className="flex-1">
-                        <h4 className="text-black font-medium text-sm line-clamp-2">{item.name}</h4>
-                        <p className="text-gray-500 text-xs">Qty: {item.qty}</p>
-                        <p className="text-orange-600 font-semibold text-sm">
-                          NGN {(item.price * item.qty).toFixed(2)}
-                        </p>
-                      </div>
+              <div className="space-y-4 mb-6 max-h-72 overflow-y-auto pr-2 custom-scrollbar">
+                {items.map(item => (
+                  <div key={item.id} className="flex gap-4">
+                    <div className="relative w-16 h-16 flex-shrink-0">
+                      <Image src={item.image || ''} alt={item.name} fill className="object-cover rounded-lg" />
                     </div>
-                  );
-                })}
+                    <div className="flex-1 min-w-0">
+                      <h4 className="text-black font-medium text-sm line-clamp-2">{item.name}</h4>
+                      <p className="text-gray-500 text-xs mt-1">Qty: {item.qty}</p>
+                      <p className="text-orange-600 font-bold text-sm mt-1">₦{(item.price * item.qty).toLocaleString()}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
 
-              <div className="border-t border-gray-200 pt-4 space-y-2 mb-4">
-                <div className="flex justify-between text-gray-700">
+              <div className="border-t border-gray-100 pt-4 space-y-3 mb-6">
+                <div className="flex justify-between text-gray-600">
                   <span>Subtotal</span>
-                  <span>NGN {orderTotal.toFixed(2)}</span>
+                  <span className="text-black font-medium">₦{orderTotal.toLocaleString()}</span>
                 </div>
-                <div className="flex justify-between text-gray-700">
+                <div className="flex justify-between text-gray-600">
                   <span>Shipping</span>
-                  <span className="text-green-600 font-medium">FREE</span>
-                </div>
-                <div className="flex justify-between text-gray-700">
-                  <span>Tax</span>
-                  <span>NGN 0.00</span>
+                  <span className="text-green-600 font-bold">FREE</span>
                 </div>
               </div>
 
-              <div className="border-t border-gray-200 pt-4 mb-6">
-                <div className="flex justify-between text-xl font-bold">
+              <div className="border-t border-gray-100 pt-4 mb-8">
+                <div className="flex justify-between text-2xl font-black">
                   <span className="text-black">Total</span>
-                  <span className="text-orange-600">NGN {orderTotal.toFixed(2)}</span>
+                  <span className="text-orange-600">₦{orderTotal.toLocaleString()}</span>
                 </div>
               </div>
 
               <button
                 onClick={handlePaystackPayment}
-                disabled={!selectedAddress || processing}
-                className={`w-full text-white py-4 rounded-lg font-semibold text-lg mb-3 transition-colors ${!selectedAddress || processing
-                  ? 'bg-gray-300 cursor-not-allowed'
-                  : 'bg-orange-500 hover:bg-orange-600'
-                  }`}
+                disabled={!selectedAddress || processing || !storeId}
+                className={`w-full text-white py-4 rounded-xl font-bold text-lg mb-4 transition-all shadow-xl ${!selectedAddress || processing || !storeId ? 'bg-gray-200 cursor-not-allowed text-gray-400 shadow-none' : 'bg-orange-500 hover:bg-orange-600 shadow-orange-100 active:scale-[0.98]'}`}
               >
-                {processing ? 'Processing...' : 'Pay Now'}
+                {processing ? 'Processing...' : 'Complete Payment'}
               </button>
 
-              <div className="text-center text-sm text-gray-500">
-                <p>🔒 Secure Checkout</p>
-              </div>
+              <p className="text-center text-xs text-gray-400 flex items-center justify-center gap-1">
+                🔒 Your payment is secured and encrypted
+              </p>
             </div>
           </div>
         </div>

@@ -2,12 +2,15 @@
 import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useCart } from "@/components/CartContext";
 
-interface MenuItem {
+export interface MenuItem {
+  id: string;
   name: string;
-  price: string;
+  price: string | number;
   image: string;
   description?: string;
+  store?: 'supermarket' | 'bakery' | 'pharmacy' | 'noodlelicious';
 }
 
 interface BrandMenuProps {
@@ -38,16 +41,16 @@ const itemVariants = {
   },
 };
 
-const BrandMenu: React.FC<BrandMenuProps> = ({ 
-  bestSellers, 
+const BrandMenu: React.FC<BrandMenuProps> = ({
+  bestSellers,
   dailySpecials,
-  accentColor = "#B5D04E" 
+  accentColor = "#B5D04E"
 }) => {
   return (
     <section className="bg-[#fcfbf9] py-20 px-6">
       <div className="max-w-7xl mx-auto">
         {/* Best Sellers Section */}
-        <motion.div 
+        <motion.div
           className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -63,7 +66,7 @@ const BrandMenu: React.FC<BrandMenuProps> = ({
           </button>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-20"
           variants={containerVariants}
           initial="hidden"
@@ -71,12 +74,12 @@ const BrandMenu: React.FC<BrandMenuProps> = ({
           viewport={{ once: true }}
         >
           {bestSellers.map((item, index) => (
-            <MenuItemCard key={index} item={item} accentColor={accentColor} />
+            <MenuItemCard key={item.id || index} item={item} accentColor={accentColor} />
           ))}
         </motion.div>
 
         {/* Daily Specials Section */}
-        <motion.div 
+        <motion.div
           className="mb-12"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -87,7 +90,7 @@ const BrandMenu: React.FC<BrandMenuProps> = ({
           <p className="text-gray-600">Freshly prepared today just for you</p>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
           variants={containerVariants}
           initial="hidden"
@@ -95,7 +98,7 @@ const BrandMenu: React.FC<BrandMenuProps> = ({
           viewport={{ once: true }}
         >
           {dailySpecials.map((item, index) => (
-            <MenuItemCard key={index} item={item} accentColor={accentColor} />
+            <MenuItemCard key={item.id || index} item={item} accentColor={accentColor} />
           ))}
         </motion.div>
       </div>
@@ -103,33 +106,79 @@ const BrandMenu: React.FC<BrandMenuProps> = ({
   );
 };
 
-const MenuItemCard = ({ item, accentColor }: { item: MenuItem; accentColor: string }) => (
-  <motion.div 
-    className="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all group border border-gray-100"
-    variants={itemVariants}
-  >
-    <div className="relative w-full aspect-square overflow-hidden">
-      <Image
-        src={item.image}
-        alt={item.name}
-        fill
-        className="object-cover group-hover:scale-110 transition-transform duration-500"
-      />
-      <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-sm font-bold text-gray-900">
-        {item.price}
+const MenuItemCard = ({ item, accentColor }: { item: MenuItem; accentColor: string }) => {
+  const { addItem, updateQty, getCartItems } = useCart();
+  const store = item.store || 'noodlelicious';
+  const cartItems = getCartItems(store);
+  const cartItem = cartItems.find((i) => i.id === item.id);
+  const qtyInCart = cartItem ? cartItem.qty : 0;
+
+  const handleAdd = () => {
+    let numericPrice = 0;
+    if (typeof item.price === 'string') {
+      numericPrice = parseInt(item.price.replace(/[^0-9]/g, ''), 10);
+    } else {
+      numericPrice = item.price;
+    }
+
+    addItem({
+      id: item.id,
+      name: item.name,
+      price: numericPrice,
+      qty: 1,
+      image: item.image,
+      store: store
+    });
+  };
+
+  return (
+    <motion.div
+      className="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all group border border-gray-100"
+      variants={itemVariants}
+    >
+      <div className="relative w-full aspect-square overflow-hidden">
+        <Image
+          src={item.image}
+          alt={item.name}
+          fill
+          className="object-cover group-hover:scale-110 transition-transform duration-500"
+        />
+        <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-sm font-bold text-gray-900">
+          {typeof item.price === 'number' ? `₦${item.price.toLocaleString()}` : item.price}
+        </div>
       </div>
-    </div>
-    <div className="p-6">
-      <h3 className="text-xl font-bold text-gray-900 mb-2">{item.name}</h3>
-      {item.description && <p className="text-gray-500 text-sm mb-4 line-clamp-2">{item.description}</p>}
-      <button 
-        className="w-full text-white py-3 rounded-2xl font-bold transition-all transform active:scale-95"
-        style={{ backgroundColor: accentColor }}
-      >
-        Add to Order
-      </button>
-    </div>
-  </motion.div>
-);
+      <div className="p-6">
+        <h3 className="text-xl font-bold text-gray-900 mb-2">{item.name}</h3>
+        {item.description && <p className="text-gray-500 text-sm mb-4 line-clamp-2">{item.description}</p>}
+        {qtyInCart > 0 ? (
+          <div className="flex items-center justify-between bg-gray-50 rounded-2xl p-1 border border-gray-100">
+            <button
+              onClick={() => updateQty(item.id, store, qtyInCart - 1)}
+              className="w-12 h-12 flex items-center justify-center rounded-xl bg-white shadow-sm text-xl font-bold text-gray-900 hover:bg-gray-100 transition-all active:scale-90"
+            >
+              -
+            </button>
+            <span className="text-lg font-bold text-gray-900">{qtyInCart}</span>
+            <button
+              onClick={() => updateQty(item.id, store, qtyInCart + 1)}
+              className="w-12 h-12 flex items-center justify-center rounded-xl text-white shadow-sm text-xl font-bold transition-all hover:opacity-90 active:scale-90"
+              style={{ backgroundColor: accentColor }}
+            >
+              +
+            </button>
+          </div>
+        ) : (
+          <button
+            onClick={handleAdd}
+            className="w-full text-white py-3 rounded-2xl font-bold transition-all transform active:scale-95"
+            style={{ backgroundColor: accentColor }}
+          >
+            Add to Order
+          </button>
+        )}
+      </div>
+    </motion.div>
+  );
+};
 
 export default BrandMenu;

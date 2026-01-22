@@ -33,7 +33,7 @@ export interface Product {
   stock?: number;
   rating?: number;
   reviewCount?: number;
-  store: 'supermarket' | 'bakery' | 'pharmacy';
+  store: 'supermarket' | 'bakery' | 'pharmacy' | 'noodlelicious';
 }
 
 export interface CartItem {
@@ -43,7 +43,7 @@ export interface CartItem {
   qty: number;
   image?: string;
   stock?: number;
-  store?: 'supermarket' | 'bakery' | 'pharmacy';
+  store?: 'supermarket' | 'bakery' | 'pharmacy' | 'noodlelicious';
 }
 
 export interface Address {
@@ -86,8 +86,9 @@ export interface Order {
   total: number;
   status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
   shippingAddress: Address;
-  paymentMethod: 'paypal' | 'card';
+  paymentMethod: 'paypal' | 'card' | 'paystack';
   trackingNumber?: string;
+  store?: string | { id: string; name: string; slug: string };
   createdAt: string;
   updatedAt: string;
 }

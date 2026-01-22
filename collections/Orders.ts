@@ -9,9 +9,16 @@ export const Orders: CollectionConfig = {
     },
     admin: {
         useAsTitle: 'id',
-        defaultColumns: ['id', 'status', 'total', 'createdAt'],
+        defaultColumns: ['id', 'store', 'status', 'total', 'createdAt'],
     },
     fields: [
+        {
+            name: 'store',
+            type: 'relationship',
+            relationTo: 'stores',
+            required: true,
+            index: true,
+        },
         {
             name: 'items',
             type: 'array',
