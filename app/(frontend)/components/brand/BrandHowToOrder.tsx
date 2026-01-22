@@ -13,6 +13,7 @@ interface OrderStep {
 interface BrandHowToOrderProps {
   steps?: OrderStep[];
   primaryColor?: string;
+  store?: string;
 }
 
 const defaultSteps: OrderStep[] = [
@@ -35,7 +36,8 @@ const defaultSteps: OrderStep[] = [
 
 const BrandHowToOrder: React.FC<BrandHowToOrderProps> = ({
   steps = defaultSteps,
-  primaryColor = "#B5D04E"
+  primaryColor = "#B5D04E",
+  store = "noodlelicious"
 }) => {
   return (
     <section className="bg-[#fcfbf9] py-24 px-6 border-t border-gray-100">
@@ -78,7 +80,7 @@ const BrandHowToOrder: React.FC<BrandHowToOrderProps> = ({
           ))}
         </div>
 
-        <Link href="/supermarket/cart?store=noodlelicious">
+        <Link href={store === 'supermarket' ? `/supermarket/cart?store=${store}` : `/${store}/products`}>
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}

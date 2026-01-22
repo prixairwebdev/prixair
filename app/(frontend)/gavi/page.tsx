@@ -7,17 +7,17 @@ import BrandTestimonials from "../components/brand/BrandTestimonials";
 import BrandHowToOrder from "../components/brand/BrandHowToOrder";
 
 const bestSellers = [
-  { name: "Sourdough Bread", price: "₦1,500", image: "/foodimg/bestsellers/sourdough.png" },
-  { name: "Red Velvet Cupcakes", price: "₦2,000 (6-pack)", image: "/foodimg/bestsellers/cupcakes.png" },
-  { name: "Butter Croissants", price: "₦1,200", image: "/foodimg/bestsellers/croissant.png" },
-  { name: "Choco-Chip Cookies", price: "₦1,500", image: "/foodimg/bestsellers/cookies.png" },
+  { id: "gavi-1", name: "Sourdough Bread", price: "₦1,500", image: "/foodimg/bestsellers/sourdough.png", store: "gavi" as const },
+  { id: "gavi-2", name: "Red Velvet Cupcakes", price: "₦2,000 (6-pack)", image: "/foodimg/bestsellers/cupcakes.png", store: "gavi" as const },
+  { id: "gavi-3", name: "Butter Croissants", price: "₦1,200", image: "/foodimg/bestsellers/croissant.png", store: "gavi" as const },
+  { id: "gavi-4", name: "Choco-Chip Cookies", price: "₦1,500", image: "/foodimg/bestsellers/cookies.png", store: "gavi" as const },
 ];
 
 const dailySpecials = [
-  { name: "Agege Bread", price: "₦2,000", image: "/foodimg/dailyspecials/agege.png" },
-  { name: "Meat Pie", price: "₦1,000 (6-pack)", image: "/foodimg/dailyspecials/meatpie.png" },
-  { name: "Bread Sandwich", price: "₦800", image: "/foodimg/dailyspecials/sandwich.png" },
-  { name: "Chocolate cake slice", price: "₦4,000", image: "/foodimg/dailyspecials/chocolatecake.png" },
+  { id: "gavi-5", name: "Agege Bread", price: "₦2,000", image: "/foodimg/dailyspecials/agege.png", store: "gavi" as const },
+  { id: "gavi-6", name: "Meat Pie", price: "₦1,000 (6-pack)", image: "/foodimg/dailyspecials/meatpie.png", store: "gavi" as const },
+  { id: "gavi-7", name: "Bread Sandwich", price: "₦800", image: "/foodimg/dailyspecials/sandwich.png", store: "gavi" as const },
+  { id: "gavi-8", name: "Chocolate cake slice", price: "₦4,000", image: "/foodimg/dailyspecials/chocolatecake.png", store: "gavi" as const },
 ];
 
 const reviews = [
@@ -41,7 +41,7 @@ const reviews = [
 const Landing = () => {
   return (
     <div className="overflow-hidden">
-      <BrandHero 
+      <BrandHero
         title={<>Baked Fresh. <br />Loved Daily.</>}
         subtitle="From flaky meat pies to melt-in-your-mouth cakes, GAVI brings oven-fresh goodness right to your doorstep."
         bgImage="/gavibg.png"
@@ -50,30 +50,30 @@ const Landing = () => {
         tagline="Baked with Heart"
       />
 
-      <BrandInfo 
+      <BrandInfo
         title="Baked With Heart"
         description="At GAVI, we believe baking is an art of love. Every loaf, pastry, and cake is made fresh daily with premium ingredients and a passion for perfection. Whether it's a family gathering or a sweet solo treat, we've got something for everyone."
         image="/bwh.png"
         imageAlt="Dough being kneaded"
       />
 
-      <BrandMenu 
+      <BrandMenu
         bestSellers={bestSellers}
         dailySpecials={dailySpecials}
         accentColor="#373435"
       />
 
-      <BrandTestimonials 
+      <BrandTestimonials
         reviews={reviews}
         accentColor="#F3A35C"
       />
 
-      <BrandLocation 
+      <BrandLocation
         brandName="GAVI"
         accentColor="#F3A35C"
       />
 
-      <BrandHowToOrder 
+      <BrandHowToOrder
         primaryColor="#373435"
       />
     </div>

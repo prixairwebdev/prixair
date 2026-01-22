@@ -8,7 +8,7 @@ export type CartItem = {
   qty: number;
   image?: string;
   stock?: number;
-  store: 'supermarket' | 'bakery' | 'pharmacy' | 'noodlelicious';
+  store: 'supermarket' | 'bakery' | 'pharmacy' | 'noodlelicious' | 'toastpan' | 'gavi';
 };
 
 // Store items as a record where keys are store slugs

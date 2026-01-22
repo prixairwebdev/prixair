@@ -8,7 +8,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "seed": "npx tsx scripts/seed.ts"
+    "seed": "npx tsx scripts/seed.ts",
+    "seed:toastpan": "npx tsx scripts/seed-toastpan.ts",
+    "seed:gavi": "npx tsx scripts/seed-gavi.ts"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "^3.70.0",

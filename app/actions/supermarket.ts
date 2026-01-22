@@ -28,7 +28,7 @@ export interface Product {
     stock?: number
     image: string | Media
     category: Category | string
-    store: 'supermarket' | 'pharmacy' | 'bakery'
+    store: string
     rating?: number
     reviewCount?: number
 }
