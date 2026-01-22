@@ -3,6 +3,7 @@ import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { useCart } from "@/components/CartContext";
+import { useRouter } from "next/navigation";
 
 export interface MenuItem {
   id: string;
@@ -17,6 +18,7 @@ interface BrandMenuProps {
   bestSellers: MenuItem[];
   dailySpecials: MenuItem[];
   accentColor?: string;
+  onViewAllClick?: () => void;
 }
 
 const containerVariants = {
@@ -44,8 +46,10 @@ const itemVariants = {
 const BrandMenu: React.FC<BrandMenuProps> = ({
   bestSellers,
   dailySpecials,
-  accentColor = "#B5D04E"
+  accentColor = "#B5D04E",
+  onViewAllClick
 }) => {
+  const router = useRouter();
   return (
     <section className="bg-[#fcfbf9] py-20 px-6">
       <div className="max-w-7xl mx-auto">
@@ -61,9 +65,14 @@ const BrandMenu: React.FC<BrandMenuProps> = ({
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Our Best-Sellers</h2>
             <p className="text-gray-600">Most loved dishes by our community</p>
           </div>
-          <button className="bg-white text-gray-900 border-2 border-gray-200 px-6 py-2 rounded-full font-bold hover:bg-gray-50 transition-all">
-            Full Menu
-          </button>
+          {onViewAllClick && (
+            <button
+              className="bg-white text-gray-900 border-2 border-gray-200 px-6 py-2 rounded-full font-bold hover:bg-gray-50 transition-all"
+              onClick={onViewAllClick}
+            >
+              Full Menu
+            </button>
+          )}
         </motion.div>
 
         <motion.div

@@ -7,6 +7,7 @@ import BrandLocation from "../components/brand/BrandLocation";
 import BrandTestimonials from "../components/brand/BrandTestimonials";
 import BrandHowToOrder from "../components/brand/BrandHowToOrder";
 import { getProductsByStore } from "@/app/actions/products";
+import { useRouter } from "next/navigation";
 
 const reviews = [
   {
@@ -27,6 +28,7 @@ const reviews = [
 ];
 
 const NoodleliciousLanding = () => {
+  const router = useRouter();
   const [products, setProducts] = useState<MenuItem[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -70,6 +72,7 @@ const NoodleliciousLanding = () => {
         bgImage="/logos/noodlel.png"
         primaryColor="#F3A35C"
         secondaryColor="#373435"
+        onOrderClick={() => router.push('/noodlelicious/menu')}
       />
 
       <BrandInfo
@@ -89,6 +92,7 @@ const NoodleliciousLanding = () => {
           bestSellers={bestSellers}
           dailySpecials={dailySpecials}
           accentColor="#F3A35C"
+          onViewAllClick={() => router.push('/noodlelicious/menu')}
         />
       )}
 

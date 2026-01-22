@@ -45,6 +45,57 @@ export async function getProductsByStore(storeSlug: string, limit = 100): Promis
     }
 }
 
+export async function getProductsAndCategories(storeSlug: string) {
+    const payload = await getPayload({ config })
+
+    try {
+        // First find the store by slug
+        const storeResult = await payload.find({
+            collection: 'stores' as any,
+            where: {
+                slug: {
+                    equals: storeSlug,
+                },
+            },
+            limit: 1,
+        })
+
+        if (storeResult.docs.length === 0) {
+            console.warn(`Store with slug ${storeSlug} not found`)
+            return { products: [], categories: [] }
+        }
+
+        const storeId = storeResult.docs[0].id
+
+        // Then find products and categories
+        const [productsResult, categoriesResult] = await Promise.all([
+            payload.find({
+                collection: 'products' as any,
+                where: {
+                    store: {
+                        equals: storeId,
+                    },
+                },
+                limit: 1000,
+                depth: 1,
+            }),
+            payload.find({
+                collection: 'categories' as any,
+                limit: 100,
+                sort: 'name',
+            })
+        ])
+
+        return {
+            products: productsResult.docs as unknown as Product[],
+            categories: categoriesResult.docs as unknown as any[]
+        }
+    } catch (error) {
+        console.error(`Error fetching products and categories for store ${storeSlug}:`, error)
+        return { products: [], categories: [] }
+    }
+}
+
 export async function getStoreBySlug(slug: string) {
     const payload = await getPayload({ config })
 
