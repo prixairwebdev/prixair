@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { sendContactEmail } from "../../../actions/contact";
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -15,9 +16,26 @@ export default function ContactForm() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log(formData); // 🔁 Replace with API call if needed
+    
+    try {
+      const result = await sendContactEmail(formData);
+      if (result.success) {
+        alert("Thank you! Your message has been sent.");
+        setFormData({
+          firstName: "",
+          email: "",
+          message: "",
+        });
+      } else {
+        alert("Failed to send message. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      alert("An error occurred.");
+    }
   };
 
   return (

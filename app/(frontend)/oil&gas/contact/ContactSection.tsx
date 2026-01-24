@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { sendContactEmail } from "../../../actions/contact";
 
 export default function ContactForm() {
   const [form, setForm] = useState({
@@ -17,10 +18,28 @@ export default function ContactForm() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log(form);
-    // Add submit logic here
+    
+    try {
+      const result = await sendContactEmail(form);
+      if (result.success) {
+        alert("Message sent successfully!");
+        setForm({
+          firstName: "",
+          email: "",
+          phone: "",
+          reason: "",
+          message: "",
+        });
+      } else {
+        alert("Failed to send message. Please try again.");
+      }
+    } catch (error) {
+      console.error("Submission error:", error);
+      alert("An error occurred.");
+    }
   };
 
   return (

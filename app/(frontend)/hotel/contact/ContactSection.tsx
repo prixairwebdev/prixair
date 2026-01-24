@@ -3,6 +3,7 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import { motion } from "framer-motion";
 import { FaSearch } from "react-icons/fa";
+import { sendContactEmail } from "../../../actions/contact";
 
 interface FormData {
   firstName: string;
@@ -26,10 +27,27 @@ export default function ContactSection() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
-    // You can replace this with your API call or Next.js action
+    
+    try {
+      const result = await sendContactEmail(formData);
+      if (result.success) {
+        alert("Your message has been sent successfully!");
+        setFormData({
+          firstName: "",
+          email: "",
+          businessUnit: "",
+          message: "",
+        });
+      } else {
+        alert("Failed to send message. Please try again.");
+      }
+    } catch (error) {
+      console.error("Submission error:", error);
+      alert("An error occurred.");
+    }
   };
 
   return (

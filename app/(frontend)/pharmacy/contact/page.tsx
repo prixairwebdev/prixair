@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, easeOut } from "framer-motion";
+import { sendContactEmail } from "../../../actions/contact";
 
 const containerVariants = {
   hidden: {},
@@ -40,9 +41,27 @@ function ContactPage() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log(formData);
+
+    try {
+      const result = await sendContactEmail(formData);
+      if (result.success) {
+        alert("Message sent successfully!");
+        setFormData({
+          name: "",
+          email: "",
+          businessUnit: "",
+          message: "",
+        });
+      } else {
+        alert("Failed to send message. Please try again.");
+      }
+    } catch (error) {
+      console.error("Submission error:", error);
+      alert("An error occurred.");
+    }
   };
 
   return (

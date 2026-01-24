@@ -10,6 +10,7 @@ export const metadata: Metadata = {
 // Import the Montserrat font
 import { Montserrat } from 'next/font/google';
 import { CartProvider } from "@/components/CartContext";
+import LiveChat from "./components/LiveChat";
 
 // Configure the font subset, weight, and style
 const montserrat = Montserrat({
@@ -35,6 +36,7 @@ export default function RootLayout({
 
         <CartProvider>
           {children}
+          <LiveChat />
         </CartProvider>
       </body>
     </html>

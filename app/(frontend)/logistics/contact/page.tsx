@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { motion, easeOut } from "framer-motion";
 // import ReCAPTCHA from "react-google-recaptcha";
+import { sendContactEmail } from "../../../actions/contact";
 
 const containerVariants = {
   hidden: {},
@@ -75,21 +76,31 @@ function ContactPage() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!validate()) return;
 
     console.log("Submitted Data:", formData);
 
-    // Reset form
-    setFormData({
-      name: "",
-      email: "",
-      businessUnit: "",
-      message: "",
-    });
-    setCaptchaValue(null);
+    try {
+      const result = await sendContactEmail(formData);
+      if (result.success) {
+        alert("Message sent successfully!");
+        setFormData({
+          name: "",
+          email: "",
+          businessUnit: "",
+          message: "",
+        });
+        setCaptchaValue(null);
+      } else {
+        alert("Failed to send message. Please try again.");
+      }
+    } catch (error) {
+      console.error("Submission error:", error);
+      alert("An error occurred.");
+    }
 
     // Safely access grecaptcha without using `any`
     // (window as Window & typeof globalThis).grecaptcha?.reset();

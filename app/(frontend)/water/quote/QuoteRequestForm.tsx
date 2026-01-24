@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { sendContactEmail } from "../../../actions/contact";
 
 export default function QuoteRequestForm() {
   const [formData, setFormData] = useState({
@@ -18,9 +19,29 @@ export default function QuoteRequestForm() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log(formData); // Replace with API call
+    
+    try {
+      const result = await sendContactEmail(formData);
+      if (result.success) {
+        alert("Quote request sent successfully!");
+        setFormData({
+          fullName: "",
+          phoneNumber: "",
+          email: "",
+          productType: "",
+          quantity: "",
+          message: "",
+        });
+      } else {
+        alert("Failed to send request. Please try again.");
+      }
+    } catch (error) {
+      console.error("Submission error:", error);
+      alert("An error occurred.");
+    }
   };
 
   return (
