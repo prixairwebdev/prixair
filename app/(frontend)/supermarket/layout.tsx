@@ -2,9 +2,9 @@
 
 import React from 'react';
 import { CartProvider } from '@/components/CartContext';
-import { AuthProvider } from './contexts/AuthContext';
-import { WishlistProvider } from './contexts/WishlistContext';
-import { OrderProvider } from './contexts/OrderContext';
+import { AuthProvider } from '@/components/contexts/AuthContext';
+import { WishlistProvider } from '@/components/contexts/WishlistContext';
+import { OrderProvider } from '@/components/contexts/OrderContext';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 

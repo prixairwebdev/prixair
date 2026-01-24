@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Product, Category } from '@/app/actions/supermarket';
 import ToastpanProductCard from '../components/ToastpanProductCard';
 import { ChevronLeft, Search, Filter, SlidersHorizontal, X } from 'lucide-react';
+import FloatingCart from '../../components/brand/FloatingCart';
 
 interface ProductsListProps {
     products: Product[];
@@ -67,6 +68,7 @@ export default function ProductsList({ products, categories: initialCategories }
 
     return (
         <div className="min-h-screen bg-[#fcfbf9]">
+            <FloatingCart storeSlug="toastpan" accentColor="#B5D04E" />
             {/* Header */}
             <div className="bg-white border-b border-gray-100 sticky top-0 z-30">
                 <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">

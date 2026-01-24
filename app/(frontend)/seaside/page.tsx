@@ -90,6 +90,7 @@ const SeasideLanding = () => {
         bgImage="/logos/seaside.png"
         primaryColor="#0077CC"
         secondaryColor="#F3A35C"
+        store="seaside"
       />
 
       <BrandInfo 
@@ -118,6 +119,7 @@ const SeasideLanding = () => {
 
       <BrandHowToOrder 
         primaryColor="#0077CC"
+        store="seaside"
       />
     </div>
   );

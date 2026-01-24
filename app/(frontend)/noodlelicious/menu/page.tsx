@@ -1,7 +1,7 @@
 import { getProductsAndCategories } from "@/app/actions/products";
 import NoodleliciousMenu from "./NoodleliciousMenu";
 import { Suspense } from "react";
-import { WishlistProvider } from "../../supermarket/contexts/WishlistContext";
+import { WishlistProvider } from "@/components/contexts/WishlistContext";
 
 export const dynamic = "force-dynamic";
 

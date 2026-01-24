@@ -1,5 +1,6 @@
 'use client';
 import { motion, Variants } from "framer-motion";
+import FloatingCart from "./FloatingCart";
 
 interface BrandHeroProps {
   title: React.ReactNode;
@@ -10,6 +11,7 @@ interface BrandHeroProps {
   secondaryColor?: string;
   onOrderClick?: () => void;
   onMenuClick?: () => void;
+  store?: string;
 }
 
 const container: Variants = {
@@ -38,9 +40,11 @@ const BrandHero = ({
   secondaryColor = "#F3A35C",
   onOrderClick,
   onMenuClick,
+  store,
 }: BrandHeroProps) => {
   return (
     <section className="relative min-h-screen flex items-center justify-center px-6 py-20 overflow-hidden">
+      {store && <FloatingCart storeSlug={store} accentColor={secondaryColor} />}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-1000 scale-105"
         style={{ backgroundImage: `url('${bgImage}')` }}

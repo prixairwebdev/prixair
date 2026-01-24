@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { Product } from '../types/types';
+import { Product } from '@/types/store';
 import ImageUpload from './ImageUpload';
 import CategoryDropdown from './CategoryDropdown';
 
@@ -107,8 +107,8 @@ export default function ProductEditModal({ product, isOpen, onClose, onSave }: P
             <div>
               <label className="block text-black font-medium mb-2">Store</label>
               <select
-                value={formData.store}
-                onChange={(e) => setFormData({ ...formData, store: e.target.value as 'supermarket' | 'bakery' | 'pharmacy' })}
+                value={typeof formData.store === 'string' ? formData.store : (formData.store?.slug || '')}
+                onChange={(e) => setFormData({ ...formData, store: e.target.value })}
                 className="w-full border border-gray-300 rounded-lg px-4 py-2 text-black"
               >
                 <option value="supermarket">Supermarket</option>

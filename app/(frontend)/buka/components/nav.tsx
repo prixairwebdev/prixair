@@ -5,11 +5,15 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useCart } from "@/components/CartContext";
+import { FiShoppingCart } from "react-icons/fi";
 
 function Nav() {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const { getCartCount } = useCart();
+  const cartCount = getCartCount("buka");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -83,6 +87,14 @@ function Nav() {
 
         {/* CTA Button - visible on all screens */}
         <div className="flex items-center gap-3">
+          <Link href="/buka/cart" className="relative p-2 text-black hover:text-[#FE0000] transition-colors">
+            <FiShoppingCart size={24} />
+            {cartCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-[#FE0000] text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold">
+                {cartCount}
+              </span>
+            )}
+          </Link>
           <button className="text-white text-sm font-medium flex items-center gap-2 bg-[#FE0000] hover:bg-[#E60000] px-4 py-3 transition-colors">
             <span className="material-symbols-outlined">
               delivery_truck_speed
@@ -159,6 +171,20 @@ function Nav() {
                     </Link>
                   </li>
                 ))}
+
+                <li className="flex items-center gap-4 py-2 border-b border-gray-700">
+                  <Link href="/buka/cart" className="flex items-center gap-3 text-white" onClick={closeMobileMenu}>
+                    <div className="relative">
+                      <FiShoppingCart size={24} />
+                      {cartCount > 0 && (
+                        <span className="absolute -top-2 -right-2 bg-[#FE0000] text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold">
+                          {cartCount}
+                        </span>
+                      )}
+                    </div>
+                    <span>My Cart</span>
+                  </Link>
+                </li>
 
                 <li className="pt-4">
                   <button className="w-full bg-[#FB6404] hover:bg-[#E55A00] text-white py-4 rounded-md flex items-center justify-center gap-2">

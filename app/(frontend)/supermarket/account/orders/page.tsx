@@ -2,8 +2,8 @@
 
 import React, { useEffect } from 'react';
 import Image from 'next/image';
-import { useAuth } from '../../contexts/AuthContext';
-import { useOrders } from '../../contexts/OrderContext';
+import { useAuth } from '@/components/contexts/AuthContext';
+import { useOrders } from '@/components/contexts/OrderContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 

@@ -1,8 +1,8 @@
 import React from 'react';
 import Image from 'next/image';
-import { Product } from '../types/types';
+import { Product } from '@/types/store';
 import { useCart } from '@/components/CartContext';
-import { useWishlist } from '../contexts/WishlistContext';
+import { useWishlist } from '@/components/contexts/WishlistContext';
 import Link from 'next/link';
 
 interface ProductCardProps {
@@ -10,12 +10,16 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
-  const { addItem } = useCart();
+  const { addItem, carts, updateQty } = useCart();
   const { addToWishlist, isInWishlist, removeFromWishlist } = useWishlist();
   const inWishlist = isInWishlist(product.id);
 
-  const imageUrl = typeof product.image === 'string' 
-    ? product.image 
+  // Find if item is in cart
+  const storeSlug = typeof product.store === 'string' ? product.store : product.store.slug;
+  const cartItem = carts[storeSlug]?.find(item => item.id === product.id);
+
+  const imageUrl = typeof product.image === 'string'
+    ? product.image
     : (product.image?.url || '/placeholder.png');
   const categoryName = typeof product.category === 'string' ? product.category : product.category.name;
 
@@ -26,7 +30,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       alert('Error: Product information is invalid. Please refresh and try again.');
       return;
     }
-    
+
     addItem({
       id: product.id,
       name: product.name,
@@ -34,7 +38,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       qty: 1,
       image: imageUrl,
       stock: product.stock,
-      store: product.store,
+      store: storeSlug as any,
     });
   };
 
@@ -97,13 +101,32 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
 
         <div className="flex gap-2">
-          <button
-            onClick={handleAddToCart}
-            disabled={product.stock === 0}
-            className="flex-1 bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-sm font-medium transition-colors"
-          >
-            {product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
-          </button>
+          {cartItem ? (
+            <div className="flex-1 flex items-center justify-between bg-white border border-orange-500 rounded px-2 py-1">
+              <button
+                onClick={() => updateQty(product.id, storeSlug, cartItem.qty - 1)}
+                className="text-orange-600 font-bold text-lg px-2 hover:bg-orange-50 rounded"
+              >
+                -
+              </button>
+              <span className="font-semibold text-black">{cartItem.qty}</span>
+              <button
+                onClick={() => updateQty(product.id, storeSlug, cartItem.qty + 1)}
+                disabled={product.stock !== undefined && cartItem.qty >= product.stock}
+                className="text-orange-600 font-bold text-lg px-2 hover:bg-orange-50 rounded disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                +
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={handleAddToCart}
+              disabled={product.stock === 0}
+              className="flex-1 bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-sm font-medium transition-colors"
+            >
+              {product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
+            </button>
+          )}
           <button
             onClick={handleWishlistToggle}
             className={`px-3 py-2 rounded border transition-colors ${inWishlist

@@ -81,6 +81,7 @@ const ToastPanLanding = () => {
         secondaryColor="#F3A35C"
         onMenuClick={() => router.push('/toastpan/products')}
         onOrderClick={() => router.push('/toastpan/products')}
+        store="toastpan"
       />
 
       <BrandInfo

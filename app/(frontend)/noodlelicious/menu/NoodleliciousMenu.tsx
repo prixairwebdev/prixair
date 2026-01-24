@@ -1,11 +1,12 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { Product, Category } from '../../supermarket/types/types';
+import { Product, Category } from '@/types/store';
 import ProductCard from '../../supermarket/components/ProductCard';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import Link from 'next/link';
+import FloatingCart from '../../components/brand/FloatingCart';
 
 interface NoodleliciousMenuProps {
     initialProducts: Product[];
@@ -57,6 +58,7 @@ export default function NoodleliciousMenu({ initialProducts, initialCategories }
 
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <FloatingCart storeSlug="noodlelicious" accentColor="#F3A35C" />
             {/* Header */}
             <div className="mb-12 text-center">
                 <Link href="/noodlelicious" className="text-orange-600 hover:text-orange-700 font-medium mb-4 inline-block">
@@ -106,8 +108,8 @@ export default function NoodleliciousMenu({ initialProducts, initialCategories }
                                         key={category}
                                         onClick={() => setSelectedCategory(category)}
                                         className={`px-4 py-2 rounded-xl text-sm font-medium transition-all text-left ${selectedCategory === category
-                                                ? 'bg-[#F3A35C] text-white shadow-md transform scale-105'
-                                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                            ? 'bg-[#F3A35C] text-white shadow-md transform scale-105'
+                                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                                             }`}
                                     >
                                         {category}
@@ -179,8 +181,8 @@ export default function NoodleliciousMenu({ initialProducts, initialCategories }
                                         key={i + 1}
                                         onClick={() => setCurrentPage(i + 1)}
                                         className={`w-10 h-10 rounded-xl font-bold transition-all ${currentPage === i + 1
-                                                ? 'bg-[#F3A35C] text-white'
-                                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                            ? 'bg-[#F3A35C] text-white'
+                                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                                             }`}
                                     >
                                         {i + 1}

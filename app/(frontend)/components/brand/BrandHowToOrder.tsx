@@ -80,7 +80,7 @@ const BrandHowToOrder: React.FC<BrandHowToOrderProps> = ({
           ))}
         </div>
 
-        <Link href={store === 'supermarket' ? `/supermarket/cart?store=${store}` : `/${store}/products`}>
+        <Link href={`/${store}/cart`}>
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}

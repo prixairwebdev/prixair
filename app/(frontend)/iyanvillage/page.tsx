@@ -90,6 +90,7 @@ const IyanVillageLanding = () => {
         bgImage="/logos/iyanvillage.png"
         primaryColor="#FE0000"
         secondaryColor="#F3A35C"
+        store="iyanvillage"
       />
 
       <BrandInfo 
@@ -118,6 +119,7 @@ const IyanVillageLanding = () => {
 
       <BrandHowToOrder 
         primaryColor="#FE0000"
+        store="iyanvillage"
       />
     </div>
   );

@@ -73,6 +73,7 @@ const NoodleliciousLanding = () => {
         primaryColor="#F3A35C"
         secondaryColor="#373435"
         onOrderClick={() => router.push('/noodlelicious/menu')}
+        store="noodlelicious"
       />
 
       <BrandInfo
@@ -98,6 +99,7 @@ const NoodleliciousLanding = () => {
 
       <BrandHowToOrder
         primaryColor="#F3A35C"
+        store="noodlelicious"
       />
 
       <BrandTestimonials

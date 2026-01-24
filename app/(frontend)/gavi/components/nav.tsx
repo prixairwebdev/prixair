@@ -28,7 +28,7 @@ const Navbar: FC = () => {
   const cartCount = getCartCount('gavi');
 
   const handleCartClick = () => {
-    router.push('/supermarket/cart?store=gavi');
+    router.push('/gavi/cart');
   };
 
   return (

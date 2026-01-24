@@ -1,15 +1,7 @@
 "use client";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
-export type CartItem = {
-  id: string;
-  name: string;
-  price: number;
-  qty: number;
-  image?: string;
-  stock?: number;
-  store: 'supermarket' | 'bakery' | 'pharmacy' | 'noodlelicious' | 'toastpan' | 'gavi';
-};
+import { CartItem } from "@/types/store";
 
 // Store items as a record where keys are store slugs
 export type CartState = Record<string, CartItem[]>;

@@ -8,7 +8,8 @@ import { CategoryGrid } from "./components/home/CategoryGrid";
 import { HeroSection } from "./components/HeroSection";
 import ProductCard from "./components/ProductCard";
 import { dummyProducts } from "./data/dummy-data";
-import { getSupermarketProducts, getFlashSale, Product, FlashSale } from "@/app/actions/supermarket";
+import { getSupermarketProducts, getFlashSale } from "@/app/actions/supermarket";
+import { Product, FlashSale } from "@/types/store";
 
 export default function SupermarketPage() {
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
@@ -22,7 +23,7 @@ export default function SupermarketPage() {
           getSupermarketProducts(),
           getFlashSale()
         ]);
-        setFeaturedProducts(products);
+        setFeaturedProducts(products as unknown as Product[]);
         setFlashSale(sale);
       } catch (error) {
         console.error("Error fetching supermarket data:", error);

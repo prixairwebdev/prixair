@@ -75,6 +75,7 @@ const Landing = () => {
 
       <BrandHowToOrder
         primaryColor="#373435"
+        store="gavi"
       />
     </div>
   );
