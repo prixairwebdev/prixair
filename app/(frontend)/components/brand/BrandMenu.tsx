@@ -11,7 +11,7 @@ export interface MenuItem {
   price: string | number;
   image: string;
   description?: string;
-  store?: 'supermarket' | 'bakery' | 'pharmacy' | 'noodlelicious' | 'toastpan' | 'gavi';
+  store?: 'supermarket' | 'bakery' | 'pharmacy' | 'noodlelicious' | 'toastpan' | 'gavi' | 'seaside';
 }
 
 interface BrandMenuProps {

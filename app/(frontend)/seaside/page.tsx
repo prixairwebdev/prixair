@@ -1,64 +1,13 @@
 'use client';
+
+import { useEffect, useState } from "react";
 import BrandHero from "../components/brand/BrandHero";
 import BrandInfo from "../components/brand/BrandInfo";
-import BrandMenu from "../components/brand/BrandMenu";
+import BrandMenu, { MenuItem } from "../components/brand/BrandMenu";
 import BrandLocation from "../components/brand/BrandLocation";
 import BrandTestimonials from "../components/brand/BrandTestimonials";
 import BrandHowToOrder from "../components/brand/BrandHowToOrder";
-
-const bestSellers = [
-  { 
-    name: "Grilled Lobster Tail", 
-    price: "₦15,000", 
-    image: "/foodimg/bestsellers/sourdough.png", // Placeholder
-    description: "Succulent lobster tail grilled with garlic butter and lemon herbs."
-  },
-  { 
-    name: "Seafood Paella", 
-    price: "₦9,500", 
-    image: "/foodimg/bestsellers/croissant.png", // Placeholder
-    description: "Authentic saffron rice with shrimp, mussels, calamari, and fish."
-  },
-  { 
-    name: "Crispy Calamari", 
-    price: "₦4,500", 
-    image: "/foodimg/dailyspecials/meatpie.png", // Placeholder
-    description: "Tender calamari rings lightly battered and served with spicy aioli."
-  },
-  { 
-    name: "Pan-Seared Salmon", 
-    price: "₦8,500", 
-    image: "/foodimg/dailyspecials/sandwich.png", // Placeholder
-    description: "Fresh salmon fillet seared to perfection with seasonal vegetables."
-  },
-];
-
-const dailySpecials = [
-  { 
-    name: "Spiced Prawns", 
-    price: "₦7,000", 
-    image: "/foodimg/bestsellers/cookies.png", // Placeholder
-    description: "Jumbo prawns marinated in a spicy blend of coastal herbs."
-  },
-  { 
-    name: "Fish & Chips", 
-    price: "₦5,500", 
-    image: "/foodimg/dailyspecials/agege.png", // Placeholder
-    description: "Crispy beer-battered white fish served with chunky fries."
-  },
-  { 
-    name: "Seafood Pasta", 
-    price: "₦6,000", 
-    image: "/foodimg/bestsellers/cupcakes.png", // Placeholder
-    description: "Fresh pasta tossed with a medley of seafood in a creamy white wine sauce."
-  },
-  { 
-    name: "Grilled Croaker", 
-    price: "₦7,500", 
-    image: "/foodimg/dailyspecials/chocolatecake.png", // Placeholder
-    description: "Whole croaker fish seasoned with local spices and flame-grilled."
-  },
-];
+import { getProductsAndCategories } from "@/app/actions/products";
 
 const reviews = [
   {
@@ -79,6 +28,43 @@ const reviews = [
 ];
 
 const SeasideLanding = () => {
+  const [bestSellers, setBestSellers] = useState<MenuItem[]>([]);
+  const [dailySpecials, setDailySpecials] = useState<MenuItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const { products } = await getProductsAndCategories('seaside');
+        
+        const mappedProducts: MenuItem[] = products.map((p: any) => ({
+          id: p.id,
+          name: p.name,
+          price: p.price,
+          description: p.description,
+          image: typeof p.image === 'object' ? p.image.url : p.image,
+          store: 'seaside'
+        }));
+
+        setBestSellers(mappedProducts.slice(0, 4));
+        setDailySpecials(mappedProducts.slice(4, 8));
+      } catch (error) {
+        console.error("Error fetching Seaside products:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-[#0077CC] border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+
   return (
     <div className="overflow-hidden">
       <BrandHero 
