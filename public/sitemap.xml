@@ -1,88 +1,132 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- Main Pages -->
+  <!-- Main Group Pages -->
   <url>
     <loc>https://prixair.net/</loc>
-    <lastmod>2023-11-15</lastmod>
-    <changefreq>weekly</changefreq>
+    <lastmod>2024-01-25</lastmod>
+    <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://prixair.net/about</loc>
-    <lastmod>2023-11-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://prixair.net/media</loc>
-    <lastmod>2023-11-15</lastmod>
+    <lastmod>2024-01-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://prixair.net/subsidiaries</loc>
-    <lastmod>2023-11-15</lastmod>
+    <lastmod>2024-01-25</lastmod>
     <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://prixair.net/news</loc>
+    <lastmod>2024-01-25</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://prixair.net/contact</loc>
-    <lastmod>2023-11-15</lastmod>
+    <lastmod>2024-01-25</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://prixair.net/join</loc>
-    <lastmod>2023-11-15</lastmod>
+    <lastmod>2024-01-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-  
-  <!-- About Page Sections -->
-  <url>
-    <loc>https://prixair.net/about/#whoarewe</loc>
-    <lastmod>2023-11-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://prixair.net/about/#leadership</loc>
-    <lastmod>2023-11-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://prixair.net/about/#philosophy</loc>
-    <lastmod>2023-11-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
-  <!-- Media Page Sections -->
-  <url>
-    <loc>https://prixair.net/media#news</loc>
-    <lastmod>2023-11-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://prixair.net/media#press</loc>
-    <lastmod>2023-11-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://prixair.net/media#gallery</loc>
-    <lastmod>2023-11-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <!-- Subsidiaries (all pointing to same page) -->
-  <url>
-    <loc>https://prixair.net/subsidiaries</loc>
-    <lastmod>2023-11-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
+
+  <!-- Buka -->
+  <url><loc>https://prixair.net/buka</loc><priority>0.9</priority></url>
+  <url><loc>https://prixair.net/buka/Brand</loc><priority>0.8</priority></url>
+  <url><loc>https://prixair.net/buka/contact</loc><priority>0.7</priority></url>
+  <url><loc>https://prixair.net/buka/locate-us</loc><priority>0.8</priority></url>
+  <url><loc>https://prixair.net/buka/menu</loc><priority>0.8</priority></url>
+  <url><loc>https://prixair.net/buka/promo</loc><priority>0.8</priority></url>
+
+  <!-- Farms -->
+  <url><loc>https://prixair.net/farms</loc><priority>0.9</priority></url>
+  <url><loc>https://prixair.net/farms/contact</loc><priority>0.7</priority></url>
+  <url><loc>https://prixair.net/farms/gallery</loc><priority>0.8</priority></url>
+  <url><loc>https://prixair.net/farms/invest</loc><priority>0.8</priority></url>
+  <url><loc>https://prixair.net/farms/our-farm</loc><priority>0.8</priority></url>
+  <url><loc>https://prixair.net/farms/products</loc><priority>0.8</priority></url>
+
+  <!-- Gavi -->
+  <url><loc>https://prixair.net/gavi</loc><priority>0.9</priority></url>
+  <url><loc>https://prixair.net/gavi/about</loc><priority>0.8</priority></url>
+  <url><loc>https://prixair.net/gavi/contact</loc><priority>0.7</priority></url>
+  <url><loc>https://prixair.net/gavi/menu</loc><priority>0.8</priority></url>
+
+  <!-- Homes -->
+  <url><loc>https://prixair.net/homes</loc><priority>0.9</priority></url>
+  <url><loc>https://prixair.net/homes/about</loc><priority>0.8</priority></url>
+  <url><loc>https://prixair.net/homes/blog</loc><priority>0.8</priority></url>
+  <url><loc>https://prixair.net/homes/contact</loc><priority>0.7</priority></url>
+  <url><loc>https://prixair.net/homes/shop</loc><priority>0.8</priority></url>
+
+  <!-- Hotel -->
+  <url><loc>https://prixair.net/hotel</loc><priority>0.9</priority></url>
+  <url><loc>https://prixair.net/hotel/about</loc><priority>0.8</priority></url>
+  <url><loc>https://prixair.net/hotel/amenities</loc><priority>0.8</priority></url>
+  <url><loc>https://prixair.net/hotel/contact</loc><priority>0.7</priority></url>
+  <url><loc>https://prixair.net/hotel/gallery</loc><priority>0.8</priority></url>
+  <url><loc>https://prixair.net/hotel/rooms</loc><priority>0.8</priority></url>
+
+  <!-- Logistics -->
+  <url><loc>https://prixair.net/logistics</loc><priority>0.9</priority></url>
+  <url><loc>https://prixair.net/logistics/about</loc><priority>0.8</priority></url>
+  <url><loc>https://prixair.net/logistics/contact</loc><priority>0.7</priority></url>
+  <url><loc>https://prixair.net/logistics/services</loc><priority>0.8</priority></url>
+  <url><loc>https://prixair.net/logistics/track</loc><priority>0.8</priority></url>
+
+  <!-- Mining -->
+  <url><loc>https://prixair.net/mining</loc><priority>0.9</priority></url>
+  <url><loc>https://prixair.net/mining/about</loc><priority>0.8</priority></url>
+  <url><loc>https://prixair.net/mining/careers</loc><priority>0.7</priority></url>
+  <url><loc>https://prixair.net/mining/contact</loc><priority>0.7</priority></url>
+  <url><loc>https://prixair.net/mining/news</loc><priority>0.8</priority></url>
+  <url><loc>https://prixair.net/mining/operations</loc><priority>0.8</priority></url>
+  <url><loc>https://prixair.net/mining/team</loc><priority>0.8</priority></url>
+  <url><loc>https://prixair.net/mining/whatwedo</loc><priority>0.8</priority></url>
+
+  <!-- Oil & Gas -->
+  <url><loc>https://prixair.net/oil&amp;gas</loc><priority>0.9</priority></url>
+  <url><loc>https://prixair.net/oil&amp;gas/about</loc><priority>0.8</priority></url>
+  <url><loc>https://prixair.net/oil&amp;gas/contact</loc><priority>0.7</priority></url>
+
+  <!-- Real Estate -->
+  <url><loc>https://prixair.net/realestate</loc><priority>0.9</priority></url>
+  <url><loc>https://prixair.net/realestate/about</loc><priority>0.8</priority></url>
+  <url><loc>https://prixair.net/realestate/contact</loc><priority>0.7</priority></url>
+  <url><loc>https://prixair.net/realestate/properties</loc><priority>0.8</priority></url>
+
+  <!-- Supermarket -->
+  <url><loc>https://prixair.net/supermarket</loc><priority>0.9</priority></url>
+  <url><loc>https://prixair.net/supermarket/products</loc><priority>0.8</priority></url>
+  <url><loc>https://prixair.net/supermarket/cart</loc><priority>0.8</priority></url>
+  <url><loc>https://prixair.net/supermarket/checkout</loc><priority>0.8</priority></url>
+  <url><loc>https://prixair.net/supermarket/account</loc><priority>0.7</priority></url>
+
+  <!-- Pharmacy -->
+  <url><loc>https://prixair.net/pharmacy</loc><priority>0.9</priority></url>
+  <url><loc>https://prixair.net/pharmacy/about</loc><priority>0.8</priority></url>
+  <url><loc>https://prixair.net/pharmacy/contact</loc><priority>0.7</priority></url>
+  <url><loc>https://prixair.net/pharmacy/products</loc><priority>0.8</priority></url>
+
+  <!-- Water -->
+  <url><loc>https://prixair.net/water</loc><priority>0.9</priority></url>
+  <url><loc>https://prixair.net/water/about</loc><priority>0.8</priority></url>
+  <url><loc>https://prixair.net/water/contact</loc><priority>0.7</priority></url>
+  <url><loc>https://prixair.net/water/products</loc><priority>0.8</priority></url>
+  <url><loc>https://prixair.net/water/quote</loc><priority>0.8</priority></url>
+
+  <!-- Other Subsidiaries -->
+  <url><loc>https://prixair.net/food</loc><priority>0.8</priority></url>
+  <url><loc>https://prixair.net/iyanvillage</loc><priority>0.8</priority></url>
+  <url><loc>https://prixair.net/noodlelicious</loc><priority>0.8</priority></url>
+  <url><loc>https://prixair.net/seaside</loc><priority>0.8</priority></url>
+  <url><loc>https://prixair.net/toastpan</loc><priority>0.8</priority></url>
 </urlset>
