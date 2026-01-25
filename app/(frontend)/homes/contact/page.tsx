@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Nav from "../components/nav";
 import Footer from "../components/footer";
-import { sendContactEmail } from "../../../actions/contact";
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -22,20 +21,18 @@ export default function ContactForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    try {
-      const result = await sendContactEmail(formData);
-      if (result.success) {
-        alert("Message sent successfully!");
-        setFormData({ name: "", email: "", businessUnit: "", message: "" });
-      } else {
-        alert("Failed to send message.");
-      }
-    } catch (error) {
-      console.error(error);
-      alert("An error occurred.");
-    } finally {
-      setLoading(false);
-    }
+    
+    // Create mailto link with form data
+    const subject = encodeURIComponent(`Contact Form: ${formData.businessUnit || 'Prixair Homes'}`);
+    const bodyText = `Name: ${formData.name}\r\nEmail: ${formData.email}\r\nBusiness Unit: ${formData.businessUnit}\r\n\r\nMessage:\r\n${formData.message}`;
+    const body = encodeURIComponent(bodyText);
+    
+    const mailtoLink = `mailto:info@prixairgroup.com?subject=${subject}&body=${body}`;
+    window.location.href = mailtoLink;
+
+    // Reset form
+    setFormData({ name: "", email: "", businessUnit: "", message: "" });
+    setLoading(false);
   };
 
   return (

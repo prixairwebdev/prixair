@@ -5,7 +5,6 @@ import { motion, easeOut } from "framer-motion";
 // import ReCAPTCHA from "react-google-recaptcha";
 import Nav from "../components/nav"
 import Footer from "../components/footer"
-import { sendContactEmail } from "../../actions/contact";
 const containerVariants = {
   hidden: {},
   show: {
@@ -82,30 +81,22 @@ function ContactPage() {
 
     if (!validate()) return;
 
-    console.log("Submitted Data:", formData);
+    // Create mailto link with form data
+    const subject = encodeURIComponent(`Contact Form: ${formData.businessUnit || 'General Inquiry'}`);
+    const bodyText = `Name: ${formData.name}\r\nEmail: ${formData.email}\r\nBusiness Unit: ${formData.businessUnit}\r\n\r\nMessage:\r\n${formData.message}`;
+    const body = encodeURIComponent(bodyText);
+    
+    const mailtoLink = `mailto:info@prixairgroup.com?subject=${subject}&body=${body}`;
+    window.location.href = mailtoLink;
 
-    try {
-      const result = await sendContactEmail(formData);
-      if (result.success) {
-        alert("Message sent successfully!");
-        // Reset form
-        setFormData({
-          name: "",
-          email: "",
-          businessUnit: "",
-          message: "",
-        });
-        setCaptchaValue(null);
-      } else {
-        alert("Failed to send message. Please try again later.");
-      }
-    } catch (error) {
-      console.error("Submission error:", error);
-      alert("An error occurred. Please try again.");
-    }
-
-    // Safely access grecaptcha without using `any`
-    // (window as Window & typeof globalThis).grecaptcha?.reset();
+    // Reset form
+    setFormData({
+      name: "",
+      email: "",
+      businessUnit: "",
+      message: "",
+    });
+    setCaptchaValue(null);
   };
 
   return (

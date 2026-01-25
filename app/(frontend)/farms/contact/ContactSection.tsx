@@ -2,7 +2,6 @@
 
 import { useState, ChangeEvent, FormEvent } from "react";
 import { motion } from "framer-motion";
-import { sendContactEmail } from "../../../actions/contact";
 
 interface FormData {
   fullName: string;
@@ -28,25 +27,22 @@ export default function ContactSection() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
     
-    try {
-      const result = await sendContactEmail(formData);
-      if (result.success) {
-        alert("Your message has been sent successfully!");
-        setFormData({
-          fullName: "",
-          phone: "",
-          address: "",
-          additionalDetails: "",
-        });
-      } else {
-        alert("Failed to send message. Please try again.");
-      }
-    } catch (error) {
-      console.error("Submission error:", error);
-      alert("An error occurred.");
-    }
+    // Create mailto link with form data
+    const subject = encodeURIComponent('Contact Form: Prixair Farms');
+    const bodyText = `Full Name: ${formData.fullName}\r\nPhone: ${formData.phone}\r\nAddress: ${formData.address}\r\n\r\nAdditional Details:\r\n${formData.additionalDetails}`;
+    const body = encodeURIComponent(bodyText);
+    
+    const mailtoLink = `mailto:info@prixairgroup.com?subject=${subject}&body=${body}`;
+    window.location.href = mailtoLink;
+    
+    // Reset form
+    setFormData({
+      fullName: "",
+      phone: "",
+      address: "",
+      additionalDetails: "",
+    });
   };
 
   return (

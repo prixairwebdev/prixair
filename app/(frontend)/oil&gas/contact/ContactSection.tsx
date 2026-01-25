@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { sendContactEmail } from "../../../actions/contact";
 
 export default function ContactForm() {
   const [form, setForm] = useState({
@@ -20,26 +19,23 @@ export default function ContactForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(form);
     
-    try {
-      const result = await sendContactEmail(form);
-      if (result.success) {
-        alert("Message sent successfully!");
-        setForm({
-          firstName: "",
-          email: "",
-          phone: "",
-          reason: "",
-          message: "",
-        });
-      } else {
-        alert("Failed to send message. Please try again.");
-      }
-    } catch (error) {
-      console.error("Submission error:", error);
-      alert("An error occurred.");
-    }
+    // Create mailto link with form data
+    const subject = encodeURIComponent(`Contact Form: ${form.reason || 'General Inquiry'}`);
+    const bodyText = `Name: ${form.firstName}\r\nEmail: ${form.email}\r\nPhone: ${form.phone}\r\nReason: ${form.reason}\r\n\r\nMessage:\r\n${form.message}`;
+    const body = encodeURIComponent(bodyText);
+    
+    const mailtoLink = `mailto:info@prixairgroup.com?subject=${subject}&body=${body}`;
+    window.location.href = mailtoLink;
+    
+    // Reset form
+    setForm({
+      firstName: "",
+      email: "",
+      phone: "",
+      reason: "",
+      message: "",
+    });
   };
 
   return (

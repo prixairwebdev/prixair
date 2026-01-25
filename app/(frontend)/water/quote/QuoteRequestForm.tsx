@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { sendContactEmail } from "../../../actions/contact";
 
 export default function QuoteRequestForm() {
   const [formData, setFormData] = useState({
@@ -21,27 +20,24 @@ export default function QuoteRequestForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(formData); // Replace with API call
     
-    try {
-      const result = await sendContactEmail(formData);
-      if (result.success) {
-        alert("Quote request sent successfully!");
-        setFormData({
-          fullName: "",
-          phoneNumber: "",
-          email: "",
-          productType: "",
-          quantity: "",
-          message: "",
-        });
-      } else {
-        alert("Failed to send request. Please try again.");
-      }
-    } catch (error) {
-      console.error("Submission error:", error);
-      alert("An error occurred.");
-    }
+    // Create mailto link with form data
+    const subject = encodeURIComponent(`Quote Request: ${formData.productType || 'Water Products'}`);
+    const bodyText = `Full Name: ${formData.fullName}\r\nPhone Number: ${formData.phoneNumber}\r\nEmail: ${formData.email}\r\nProduct Type: ${formData.productType}\r\nQuantity: ${formData.quantity}\r\n\r\nMessage:\r\n${formData.message}`;
+    const body = encodeURIComponent(bodyText);
+    
+    const mailtoLink = `mailto:info@prixairgroup.com?subject=${subject}&body=${body}`;
+    window.location.href = mailtoLink;
+    
+    // Reset form
+    setFormData({
+      fullName: "",
+      phoneNumber: "",
+      email: "",
+      productType: "",
+      quantity: "",
+      message: "",
+    });
   };
 
   return (

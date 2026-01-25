@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { sendContactEmail } from "../../../actions/contact";
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -18,24 +17,21 @@ export default function ContactForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(formData); // 🔁 Replace with API call if needed
     
-    try {
-      const result = await sendContactEmail(formData);
-      if (result.success) {
-        alert("Thank you! Your message has been sent.");
-        setFormData({
-          firstName: "",
-          email: "",
-          message: "",
-        });
-      } else {
-        alert("Failed to send message. Please try again.");
-      }
-    } catch (error) {
-      console.error("Error submitting form:", error);
-      alert("An error occurred.");
-    }
+    // Create mailto link with form data
+    const subject = encodeURIComponent('Contact Form: Water Products');
+    const bodyText = `First Name: ${formData.firstName}\r\nEmail: ${formData.email}\r\n\r\nMessage:\r\n${formData.message}`;
+    const body = encodeURIComponent(bodyText);
+    
+    const mailtoLink = `mailto:info@prixairgroup.com?subject=${subject}&body=${body}`;
+    window.location.href = mailtoLink;
+    
+    // Reset form
+    setFormData({
+      firstName: "",
+      email: "",
+      message: "",
+    });
   };
 
   return (

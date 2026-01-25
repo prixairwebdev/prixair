@@ -3,7 +3,6 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import { motion } from "framer-motion";
 import { FaSearch } from "react-icons/fa";
-import { sendContactEmail } from "../../../actions/contact";
 
 interface FormData {
   firstName: string;
@@ -29,25 +28,22 @@ export default function ContactSection() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
     
-    try {
-      const result = await sendContactEmail(formData);
-      if (result.success) {
-        alert("Your message has been sent successfully!");
-        setFormData({
-          firstName: "",
-          email: "",
-          businessUnit: "",
-          message: "",
-        });
-      } else {
-        alert("Failed to send message. Please try again.");
-      }
-    } catch (error) {
-      console.error("Submission error:", error);
-      alert("An error occurred.");
-    }
+    // Create mailto link with form data
+    const subject = encodeURIComponent(`Contact Form: ${formData.businessUnit || 'Prixair Hotel'}`);
+    const bodyText = `First Name: ${formData.firstName}\r\nEmail: ${formData.email}\r\nBusiness Unit: ${formData.businessUnit}\r\n\r\nMessage:\r\n${formData.message}`;
+    const body = encodeURIComponent(bodyText);
+    
+    const mailtoLink = `mailto:info@prixairgroup.com?subject=${subject}&body=${body}`;
+    window.location.href = mailtoLink;
+    
+    // Reset form
+    setFormData({
+      firstName: "",
+      email: "",
+      businessUnit: "",
+      message: "",
+    });
   };
 
   return (
