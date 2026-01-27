@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useEffect } from 'react';
-import { useAdminAuth } from '../contexts/AdminAuthContext';
+import { useAdminAuth } from '@/app/(frontend)/supermarket/contexts/AdminAuthContext';
 import { useRouter, usePathname } from 'next/navigation';
-import { AdminAuthProvider } from '../contexts/AdminAuthContext';
+import { AdminAuthProvider } from '@/app/(frontend)/supermarket/contexts/AdminAuthContext';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (

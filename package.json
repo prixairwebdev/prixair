@@ -8,7 +8,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "seed": "npx tsx scripts/seed.ts"
+    "seed": "npx tsx scripts/seed.ts",
+    "seed:toastpan": "npx tsx scripts/seed-toastpan.ts",
+    "seed:gavi": "npx tsx scripts/seed-gavi.ts",
+    "seed:seaside": "npx tsx scripts/seed-seaside.ts"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "^3.70.0",
@@ -26,6 +29,7 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-dropzone": "^14.3.8",
+    "react-hook-form": "^7.71.1",
     "react-icons": "^5.5.0",
     "react-intersection-observer": "^10.0.0",
     "react-swipeable": "^7.0.2",

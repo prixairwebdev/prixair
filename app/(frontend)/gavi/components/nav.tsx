@@ -3,6 +3,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState, FC, ReactNode } from 'react';
 import { FiShoppingCart, FiSearch, FiMenu, FiX } from 'react-icons/fi';
+import { useCart } from '@/components/CartContext';
+import { useRouter } from 'next/navigation';
 
 // Types for NavLink
 type NavLinkProps = {
@@ -21,10 +23,17 @@ const Navbar: FC = () => {
   const [showSearchModal, setShowSearchModal] = useState<boolean>(false);
   const [showCartModal, setShowCartModal] = useState<boolean>(false);
   const [showMobileMenu, setShowMobileMenu] = useState<boolean>(false);
+  const { getCartCount } = useCart();
+  const router = useRouter();
+  const cartCount = getCartCount('gavi');
+
+  const handleCartClick = () => {
+    router.push('/gavi/cart');
+  };
 
   return (
     <>
-<nav className="bg-white shadow-md px-6 py-4 flex justify-between items-center fixed top-0 left-0 w-full z-[60]">
+      <nav className="bg-white shadow-md px-6 py-4 flex justify-between items-center fixed top-0 left-0 w-full z-[60]">
         <div className="flex items-center gap-10">
           <Image
             src="/logo.png"
@@ -35,11 +44,32 @@ const Navbar: FC = () => {
           />
           {/* Desktop Menu */}
           <div className="hidden md:flex gap-6 text-gray-900 text-md font-bold">
-            <FiShoppingCart size={24} />
-            <span className="absolute -top-2 -right-2 bg-orange-500 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">
-              1
-            </span>
+            <button
+              onClick={handleCartClick}
+              className="relative cursor-pointer hover:text-[#F3A35C] transition-colors"
+              aria-label="View Cart"
+            >
+              <FiShoppingCart size={24} />
+              {cartCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-[#F3A35C] text-white text-xs w-5 h-5 flex items-center justify-center rounded-full font-bold">
+                  {cartCount}
+                </span>
+              )}
+            </button>
           </div>
+          {/* Mobile Cart Icon */}
+          <button
+            onClick={handleCartClick}
+            className="md:hidden relative text-gray-900 hover:text-[#F3A35C] transition-colors mr-4"
+            aria-label="View Cart"
+          >
+            <FiShoppingCart size={24} />
+            {cartCount > 0 && (
+              <span className="absolute -top-2 -right-2 bg-[#F3A35C] text-white text-xs w-5 h-5 flex items-center justify-center rounded-full font-bold">
+                {cartCount}
+              </span>
+            )}
+          </button>
           {/* Hamburger icon for mobile - Now at extreme right */}
           <button
             className="md:hidden block text-gray-900"

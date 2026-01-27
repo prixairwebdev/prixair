@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState } from 'react';
-import { useAuth } from '../../contexts/AuthContext';
+import React, { useState, useEffect } from 'react';
+import { useAuth } from '@/components/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { getStoreBySlug } from '@/app/actions/products';
 
 export default function RegisterPage() {
   const [name, setName] = useState('');
@@ -14,8 +15,20 @@ export default function RegisterPage() {
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [storeId, setStoreId] = useState('');
   const { register } = useAuth();
   const router = useRouter();
+
+  useEffect(() => {
+    const fetchStoreId = async () => {
+      const store = await getStoreBySlug('supermarket');
+      if (store) {
+        setStoreId(store.id);
+      }
+    };
+
+    fetchStoreId();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,10 +44,15 @@ export default function RegisterPage() {
       return;
     }
 
+    if (!storeId) {
+        setError('Could not find store information. Please try again later.');
+        return;
+    }
+
     setLoading(true);
 
     try {
-      const success = await register(name, email, password, phone);
+      const success = await register(name, email, password, storeId, phone);
       if (success) {
         router.push('/supermarket/account');
       } else {

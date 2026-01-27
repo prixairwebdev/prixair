@@ -1,64 +1,14 @@
 'use client';
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { getProductsAndCategories } from "@/app/actions/products";
+import { MenuItem } from "../components/brand/BrandMenu";
 import BrandHero from "../components/brand/BrandHero";
 import BrandInfo from "../components/brand/BrandInfo";
 import BrandMenu from "../components/brand/BrandMenu";
 import BrandLocation from "../components/brand/BrandLocation";
 import BrandTestimonials from "../components/brand/BrandTestimonials";
 import BrandHowToOrder from "../components/brand/BrandHowToOrder";
-
-const bestSellers = [
-  { 
-    name: "Classic Avocado Toast", 
-    price: "₦4,500", 
-    image: "/toastpanimg/toastpan7.jpeg",
-    description: "Smashed avocado, cherry tomatoes, and poached egg on sourdough."
-  },
-  { 
-    name: "Cinnamon French Toast", 
-    price: "₦3,800", 
-    image: "/toastpanimg/toastpan2.jpeg",
-    description: "Brioche soaked in vanilla custard, served with maple syrup and berries."
-  },
-  { 
-    name: "Spicy Tuna Melt", 
-    price: "₦4,200", 
-    image: "/toastpanimg/toastpan3.jpeg",
-    description: "Zesty tuna salad with melted cheddar on toasted rustic bread."
-  },
-  { 
-    name: "Honey Walnut Toast", 
-    price: "₦3,500", 
-    image: "/toastpanimg/toastpan4.jpeg",
-    description: "Creamy whipped ricotta, walnuts, and a drizzle of local honey."
-  },
-];
-
-const dailySpecials = [
-  { 
-    name: "Smoked Salmon Toast", 
-    price: "₦5,500", 
-    image: "/toastpanimg/toastpan5.jpeg",
-    description: "Premium smoked salmon, cream cheese, capers, and red onions."
-  },
-  { 
-    name: "Berry Mascarpone", 
-    price: "₦4,000", 
-    image: "/toastpanimg/toastpan6.jpeg",
-    description: "Sweet mascarpone spread with seasonal berries and mint."
-  },
-  { 
-    name: "Garlic Mushroom", 
-    price: "₦4,200", 
-    image: "/toastpanimg/toastpan7.jpeg",
-    description: "Sautéed wild mushrooms with garlic butter and thyme."
-  },
-  { 
-    name: "Nutella Banana", 
-    price: "₦3,500", 
-    image: "/toastpanimg/toastpan8.jpeg",
-    description: "Thick cut toast with Nutella, bananas, and toasted hazelnuts."
-  },
-];
 
 const reviews = [
   {
@@ -79,9 +29,48 @@ const reviews = [
 ];
 
 const ToastPanLanding = () => {
+  const router = useRouter();
+  const [bestSellers, setBestSellers] = useState<MenuItem[]>([]);
+  const [dailySpecials, setDailySpecials] = useState<MenuItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const { products } = await getProductsAndCategories('toastpan');
+
+        const mappedProducts: MenuItem[] = products.map((p: any) => ({
+          id: p.id,
+          name: p.name,
+          price: p.price,
+          description: p.description,
+          image: typeof p.image === 'object' ? p.image.url : p.image,
+          store: 'toastpan'
+        }));
+
+        // Split products for display
+        setBestSellers(mappedProducts.slice(0, 4));
+        setDailySpecials(mappedProducts.slice(4, 8));
+      } catch (error) {
+        console.error("Error fetching Toast Pan products:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#fcfbf9]">
+        <div className="w-12 h-12 border-4 border-[#B5D04E] border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+
   return (
     <div className="overflow-hidden">
-      <BrandHero 
+      <BrandHero
         title={
           <>Savor the <span className="text-[#B5D04E]">Crunch</span>, <br /> Feel the <span className="text-[#F3A35C]">Heart</span>.</>
         }
@@ -90,9 +79,12 @@ const ToastPanLanding = () => {
         bgImage="/toastpanimg/toastpan.jpeg"
         primaryColor="#B5D04E"
         secondaryColor="#F3A35C"
+        onMenuClick={() => router.push('/toastpan/products')}
+        onOrderClick={() => router.push('/toastpan/products')}
+        store="toastpan"
       />
 
-      <BrandInfo 
+      <BrandInfo
         title="Toasted to Perfection"
         description="At Toast Pan, we believe the best things in life are simple. We take artisan bread, fresh local ingredients, and plenty of passion to create the most satisfying toasted meals you've ever tasted. From savory melts to sweet breakfast delights, every slice is a masterpiece."
         image="/toastpanimg/toastpan3.jpeg"
@@ -100,24 +92,26 @@ const ToastPanLanding = () => {
         buttonText="Our Story"
       />
 
-      <BrandMenu 
+      <BrandMenu
         bestSellers={bestSellers}
         dailySpecials={dailySpecials}
         accentColor="#B5D04E"
+        onViewAllClick={() => router.push('/toastpan/products')}
       />
 
-      <BrandTestimonials 
+      <BrandTestimonials
         reviews={reviews}
         accentColor="#F3A35C"
       />
 
-      <BrandLocation 
+      <BrandLocation
         brandName="Toast Pan"
         accentColor="#F3A35C"
       />
 
-      <BrandHowToOrder 
+      <BrandHowToOrder
         primaryColor="#B5D04E"
+        store="toastpan"
       />
     </div>
   );

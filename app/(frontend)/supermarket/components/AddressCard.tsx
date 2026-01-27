@@ -1,5 +1,5 @@
 import React from 'react';
-import { Address } from '../types/types';
+import { Address } from '@/types/store';
 
 interface AddressCardProps {
   address: Address;
@@ -16,7 +16,7 @@ export default function AddressCard({ address, onEdit, onDelete, onSetDefault }:
           Default Address
         </div>
       )}
-      
+
       <h3 className="text-black font-semibold mb-1">{address.name}</h3>
       <p className="text-gray-700 text-sm mb-1">{address.phone}</p>
       <p className="text-gray-700 text-sm mb-1">{address.street}</p>

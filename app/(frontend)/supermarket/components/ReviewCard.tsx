@@ -1,5 +1,5 @@
 import React from 'react';
-import { Review } from '../types/types';
+import { Review } from '@/types/store';
 
 interface ReviewCardProps {
   review: Review;

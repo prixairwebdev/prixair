@@ -11,6 +11,9 @@ export const metadata: Metadata = {
 import { Montserrat } from 'next/font/google';
 import { CartProvider } from "@/components/CartContext";
 import LiveChat from "./components/LiveChat";
+import { WishlistProvider } from "@/components/contexts/WishlistContext";
+import { AuthProvider } from "@/components/contexts/AuthContext";
+import { OrderProvider } from "@/components/contexts/OrderContext";
 
 // Configure the font subset, weight, and style
 const montserrat = Montserrat({
@@ -55,10 +58,16 @@ export default function RootLayout({
         className="overflow-x-hidden bg-white font-sans" // font-sans will use Montserrat
         suppressHydrationWarning
       >
-        <CartProvider>
-          {children}
+        <AuthProvider>
+          <CartProvider>
+            <WishlistProvider>
+              <OrderProvider>
+                {children}
           <LiveChat />
-        </CartProvider>
+              </OrderProvider>
+            </WishlistProvider>
+          </CartProvider>
+        </AuthProvider>
       </body>
     </html>
   );

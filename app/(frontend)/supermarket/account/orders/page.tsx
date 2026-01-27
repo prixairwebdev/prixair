@@ -2,8 +2,8 @@
 
 import React, { useEffect } from 'react';
 import Image from 'next/image';
-import { useAuth } from '../../contexts/AuthContext';
-import { useOrders } from '../../contexts/OrderContext';
+import { useAuth } from '@/components/contexts/AuthContext';
+import { useOrders } from '@/components/contexts/OrderContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
@@ -89,22 +89,22 @@ export default function OrdersPage() {
                   <div className="space-y-3">
                     {order.items.map((item, idx) => {
                       return (
-                      <div key={idx} className="flex items-center gap-4">
-                        {item.image && (
-                          <Image
-                            src={item.image}
-                            alt={item.name}
-                            width={64}
-                            height={64}
-                            className="object-cover rounded"
-                          />
-                        )}
-                        <div className="flex-1">
-                          <h4 className="text-black font-medium">{item.name}</h4>
-                          <p className="text-gray-500 text-sm">Quantity: {item.quantity}</p>
+                        <div key={idx} className="flex items-center gap-4">
+                          {item.image && (
+                            <Image
+                              src={item.image}
+                              alt={item.name}
+                              width={64}
+                              height={64}
+                              className="object-cover rounded"
+                            />
+                          )}
+                          <div className="flex-1">
+                            <h4 className="text-black font-medium">{item.name}</h4>
+                            <p className="text-gray-500 text-sm">Quantity: {item.quantity}</p>
+                          </div>
+                          <p className="text-black font-semibold">NGN {(item.price * item.quantity).toFixed(2)}</p>
                         </div>
-                        <p className="text-black font-semibold">NGN {(item.price * item.quantity).toFixed(2)}</p>
-                      </div>
                       );
                     })}
                   </div>
@@ -112,9 +112,15 @@ export default function OrdersPage() {
 
                 <div className="border-t border-gray-200 pt-4">
                   <div className="flex items-center justify-between mb-2">
+                    <span className="text-gray-600">Store:</span>
+                    <span className="text-black font-medium capitalize">
+                      {typeof order.store === 'string' ? order.store : (order.store as any)?.name || 'N/A'}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between mb-2">
                     <span className="text-gray-600">Payment Method:</span>
                     <span className="text-black font-medium">
-                      {order.paymentMethod === 'paypal' ? 'PayPal' : 'Card'}
+                      {order.paymentMethod === 'paypal' ? 'PayPal' : order.paymentMethod === 'paystack' ? 'Paystack' : 'Card'}
                     </span>
                   </div>
                   {order.trackingNumber && (

@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useEffect } from 'react';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '@/components/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useOrders } from '../contexts/OrderContext';
+import { useOrders } from '@/components/contexts/OrderContext';
 
 export default function AccountPage() {
   const { user, logout } = useAuth();
@@ -103,12 +103,11 @@ export default function AccountPage() {
                         {new Date(order.createdAt).toLocaleDateString()}
                       </span>
                     </div>
-                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                      order.status === 'delivered' ? 'bg-green-100 text-green-700' :
-                      order.status === 'shipped' ? 'bg-blue-100 text-blue-700' :
-                      order.status === 'processing' ? 'bg-yellow-100 text-yellow-700' :
-                      'bg-gray-100 text-gray-700'
-                    }`}>
+                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${order.status === 'delivered' ? 'bg-green-100 text-green-700' :
+                        order.status === 'shipped' ? 'bg-blue-100 text-blue-700' :
+                          order.status === 'processing' ? 'bg-yellow-100 text-yellow-700' :
+                            'bg-gray-100 text-gray-700'
+                      }`}>
                       {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
                     </span>
                   </div>

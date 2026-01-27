@@ -192,7 +192,7 @@ export default function Home() {
                     variants={container}
                   >
                     <motion.a
-                      href="/menu"
+                      href="/buka/products"
                       className="bg-[#FE0000] hover:bg-[#D90000] text-white px-6 sm:px-8 py-4 sm:py-5 text-lg sm:text-xl flex items-center justify-center gap-2 w-full sm:w-auto min-w-[180px] font-semibold shadow-lg"
                       variants={buttonItem}
                       whileHover="hover"
@@ -202,7 +202,7 @@ export default function Home() {
                       View Menu
                     </motion.a>
                     <motion.a
-                      href="/order"
+                      href="/buka/products"
                       className="text-[#FE0000] hover:text-[#D90000] bg-white hover:bg-gray-100 px-6 sm:px-8 py-4 sm:py-5 text-lg sm:text-xl flex items-center justify-center gap-2 w-full sm:w-auto min-w-[180px] font-semibold  shadow-lg"
                       variants={buttonItem}
                       whileHover="hover"

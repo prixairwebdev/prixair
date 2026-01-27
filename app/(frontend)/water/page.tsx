@@ -71,7 +71,7 @@ export default function Home() {
                 variants={item}
               >
                 <a
-                  href="/products"
+                  href="/water/products"
                   className="w-auto px-4 py-2 sm:px-6 sm:py-3 text-xs sm:text-sm md:text-base text-white font-semibold bg-orange-500 hover:bg-orange-600 rounded-md transition-colors"
                 >
                   Shop now

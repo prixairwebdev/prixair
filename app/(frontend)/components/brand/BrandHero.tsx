@@ -1,5 +1,6 @@
 'use client';
 import { motion, Variants } from "framer-motion";
+import FloatingCart from "./FloatingCart";
 
 interface BrandHeroProps {
   title: React.ReactNode;
@@ -10,6 +11,7 @@ interface BrandHeroProps {
   secondaryColor?: string;
   onOrderClick?: () => void;
   onMenuClick?: () => void;
+  store?: string;
 }
 
 const container: Variants = {
@@ -38,10 +40,12 @@ const BrandHero = ({
   secondaryColor = "#F3A35C",
   onOrderClick,
   onMenuClick,
+  store,
 }: BrandHeroProps) => {
   return (
     <section className="relative min-h-screen flex items-center justify-center px-6 py-20 overflow-hidden">
-      <div 
+      {store && <FloatingCart storeSlug={store} accentColor={secondaryColor} />}
+      <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-1000 scale-105"
         style={{ backgroundImage: `url('${bgImage}')` }}
       />
@@ -55,7 +59,7 @@ const BrandHero = ({
         viewport={{ once: true }}
       >
         {tagline && (
-          <motion.span 
+          <motion.span
             variants={item}
             className="inline-block px-4 py-1 mb-6 text-sm font-bold tracking-widest uppercase text-white rounded-full shadow-sm"
             style={{ backgroundColor: secondaryColor }}
@@ -82,33 +86,37 @@ const BrandHero = ({
           className="flex flex-col sm:flex-row items-center justify-center gap-4"
           variants={item}
         >
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={onOrderClick}
-            className="w-full sm:w-auto text-white px-10 py-4 rounded-full font-bold text-lg shadow-lg transition-all"
-            style={{ backgroundColor: primaryColor }}
-          >
-            Order Now
-          </motion.button>
-          
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={onMenuClick}
-            className="w-full sm:w-auto border-2 px-10 py-4 rounded-full font-bold text-lg bg-white/80 backdrop-blur-md transition-all"
-            style={{ borderColor: secondaryColor, color: secondaryColor }}
-          >
-            View Menu
-          </motion.button>
+          {onOrderClick && (
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={onOrderClick}
+              className="w-full sm:w-auto text-white px-10 py-4 rounded-full font-bold text-lg shadow-lg transition-all"
+              style={{ backgroundColor: primaryColor }}
+            >
+              Order Now
+            </motion.button>
+          )}
+
+          {onMenuClick && (
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={onMenuClick}
+              className="w-full sm:w-auto border-2 px-10 py-4 rounded-full font-bold text-lg bg-white/80 backdrop-blur-md transition-all"
+              style={{ borderColor: secondaryColor, color: secondaryColor }}
+            >
+              View Menu
+            </motion.button>
+          )}
         </motion.div>
       </motion.div>
 
       <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
-          <div 
-            className="w-1 h-12 rounded-full" 
-            style={{ background: `linear-gradient(to b, ${primaryColor}, transparent)` }}
-          />
+        <div
+          className="w-1 h-12 rounded-full"
+          style={{ background: `linear-gradient(to b, ${primaryColor}, transparent)` }}
+        />
       </div>
     </section>
   );

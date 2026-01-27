@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { useAdminAuth } from '../../contexts/AdminAuthContext';
+import { useAdminAuth } from '@/app/(frontend)/supermarket/contexts/AdminAuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 

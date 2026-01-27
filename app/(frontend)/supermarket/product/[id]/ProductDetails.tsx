@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/components/CartContext';
-import { useWishlist } from '../../contexts/WishlistContext';
+import { useWishlist } from '@/components/contexts/WishlistContext';
 import Link from 'next/link';
 import Image from 'next/image';
 import ReviewCard from '../../components/ReviewCard';
@@ -40,7 +40,7 @@ export default function ProductDetails({ product, relatedProducts }: ProductDeta
             qty: quantity,
             image: imageUrl || undefined,
             stock: currentStock,
-            store: product.store,
+            store: typeof product.store === 'string' ? product.store : product.store.slug,
         });
         alert('Added to cart!');
     };
@@ -126,7 +126,9 @@ export default function ProductDetails({ product, relatedProducts }: ProductDeta
                             </div>
                             <div className="flex items-center gap-2">
                                 <span className="text-black font-semibold">Store:</span>
-                                <span className="text-gray-700 capitalize">{product.store}</span>
+                                <span className="text-gray-700 capitalize">
+                                    {typeof product.store === 'string' ? product.store : product.store.name || product.store.slug}
+                                </span>
                             </div>
                         </div>
 

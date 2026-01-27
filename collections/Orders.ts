@@ -9,9 +9,16 @@ export const Orders: CollectionConfig = {
     },
     admin: {
         useAsTitle: 'id',
-        defaultColumns: ['id', 'status', 'total', 'createdAt'],
+        defaultColumns: ['id', 'store', 'status', 'total', 'createdAt'],
     },
     fields: [
+        {
+            name: 'store',
+            type: 'relationship',
+            relationTo: 'stores',
+            required: true,
+            index: true,
+        },
         {
             name: 'items',
             type: 'array',
@@ -120,6 +127,24 @@ export const Orders: CollectionConfig = {
             name: 'user',
             type: 'relationship',
             relationTo: 'users',
+        },
+        {
+            name: 'subtotal', // Total of items before discount
+            type: 'number',
+        },
+        {
+            name: 'discountTotal',
+            type: 'number',
+            defaultValue: 0,
+        },
+        {
+            name: 'couponCode',
+            type: 'text',
+        },
+        {
+            name: 'promotion',
+            type: 'relationship',
+            relationTo: 'promotions',
         },
         {
             name: 'shipdayId',

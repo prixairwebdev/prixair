@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useEffect } from 'react';
-import { useAuth } from '../../contexts/AuthContext';
-import { useWishlist } from '../../contexts/WishlistContext';
+import { useAuth } from '@/components/contexts/AuthContext';
+import { useWishlist } from '@/components/contexts/WishlistContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import ProductCard from '../../components/ProductCard';
+import ProductCard from '@/components/ProductCard';
 
 export default function WishlistPage() {
   const { user } = useAuth();
