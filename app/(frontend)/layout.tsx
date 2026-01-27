@@ -40,7 +40,7 @@ export default function RootLayout({
               (function(){
                 var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
                 s1.async=true;
-                s1.src='https://embed.tawk.to/6975e5c5b2c8d0197e1422d2/1jfq8j3hu';
+                s1.src='https://embed.tawk.to/695e3d96aad9c019814f9cf1/1jec21572';
                 s1.charset='UTF-8';
                 s1.setAttribute('crossorigin','*');
                 s0.parentNode.insertBefore(s1,s0);
