@@ -14,17 +14,16 @@ interface NewsItem {
 }
 
 const newsList: NewsItem[] = [
-  // {
-  //   title: "Prixair Hotels Launches New Luxury Suite In Abuja",
-  //   description: "Prixair expands its footprint in premium hospitality with the unveiling of a state-of-the-art luxury suite tailored for business travelers and dignitaries.",
-  //   image: "/subsidiaries/mining.png",
-  //   date: "01/07/2025",
-  //   link: "https://prixair.com/news/hotel-launch",
-  // },
-      {
+  {
+    title: "PRIXIAR RESOURCES LIMITED AND CHUANGXING CAPITAL CO. Ltd signs MOU on partnership for Gold mining",
+    description: "PRIXIAR RESOURCES LIMITED is pleased to announce the signing of a Memorandum of Understanding (MoU) with Chuangxing Capital Co. Ltd for a strategic partnership in gold mining operations.",
+    image: "/pxm/pxm1.jpeg",
+    date: "January 26, 2026",
+    link: "/news",
+  },
+  {
     title: "NIGER STATE GOVERNMENT PARTNERS WITH PRIX AIR MINING COMPANY",
-    description:
-      "The Commissioner of Mineral Resources, Alhaji Garba Sabo Yahaya made this disclosure when he received a delegation of investors from the Prix Air Mining Company Limited.",
+    description: "The Commissioner of Mineral Resources, Alhaji Garba Sabo Yahaya made this disclosure when he received a delegation of investors from the Prix Air Mining Company Limited.",
     image: "https://platinumnews.com.ng/wp-content/uploads/2023/12/IMG-20231207-WA0157-750x375.jpg",
     date: "12/07/2023",
     link: "https://platinumnews.com.ng/2023/12/07/niger-state-government-partners-with-prix-air-mining-company/",
@@ -42,13 +41,6 @@ const newsList: NewsItem[] = [
     image: "https://images.unsplash.com/photo-1677335594135-9a38aa4ded23?q=80&w=2673&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     date: "July 2025",
     link: "https://prixair.com/news/farm-award",
-  },
-  {
-    title: "Prixair Water Launches New Ultra-Pure Bottling Line",
-    description: "The new bottling line increases daily production by 40%, ensuring safer, fresher bottled water.",
-    image: "https://images.unsplash.com/photo-1616118132534-381148898bb4?q=80&w=1364&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    date: "July 2025",
-    link: "https://prixair.com/news/bottling",
   },
 ];
 

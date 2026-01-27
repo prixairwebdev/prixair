@@ -15,7 +15,17 @@ interface NewsItem {
 }
 
 const newsList: NewsItem[] = [
-  {
+
+    {
+     title: 'PRIXIAR RESOURCES LIMITED AND CHUANGXING CAPITAL CO. Ltd signs MOU on partnership for Gold mining',
+    description:
+      'PRIXIAR RESOURCES LIMITED is pleased to announce the signing of a Memorandum of Understanding (MoU) with Chuangxing Capital Co. Ltd for a strategic partnership in gold mining operations. The MoU outlines a framework for cooperation covering investment, technical support, and operational development in identified gold mining projects. This partnership reflects both companies’ shared vision to promote responsible mining, economic growth, and sustainable resource development.  ',
+    image: '/pxm/pxm1.jpeg',
+    date: 'January 26, 2026',
+    link: '/news', // etc
+  },
+  // Other example items
+    {
     title: 'New Lithium Discovery in Eastern Belt',
     description:
       'Our geologists confirmed a significant lithium reserve in the Eastern Belt zone during Q2 exploration.',
@@ -31,15 +41,7 @@ According to internal reports from Prixair’s geology and field operations unit
 > “Our field data points to a lithium concentration well above global economic thresholds. The geology of the Eastern Belt aligns with pegmatite-hosted lithium systems, and we’re confident that this reserve could become one of the most strategic lithium sources in West Africa.”
     `,
   },
-  // Other example items
-  {
-    title: 'Prixair Logistics Acquires 10 New Delivery Trucks',
-    description: 'Major investment in logistics capacity and national distribution efficiency.',
-    image: '/newss.png',
-    date: 'July 2025',
-    link: '',
-    content: `Prixair Logistics has expanded its fleet with 10 new delivery trucks...`, // etc
-  },
+
   {
     title: 'Prixair Farms Wins Agricultural Excellence Award',
     description: 'Recognized for sustainable and high-yield farming innovations across Nigeria.',

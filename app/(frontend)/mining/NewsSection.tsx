@@ -27,11 +27,11 @@ const fadeUp: Variants = {
 
 const NewsSection = () => {
   const featuredNews: NewsItem = {
-    title: 'New Lithium Discovery in Eastern Belt',
+    title: 'PRIXIAR RESOURCES LIMITED AND CHUANGXING CAPITAL CO. Ltd signs MOU on partnership for Gold mining',
     description:
-      'Our geologists confirmed a significant lithium reserve in the Eastern Belt zone during Q2 exploration. Early estimates indicate high-grade extraction potential.',
-    imageUrl: '/images/news1.png',
-    date: 'June 24, 2025',
+      'PRIXIAR RESOURCES LIMITED is pleased to announce the signing of a Memorandum of Understanding (MoU) with Chuangxing Capital Co. Ltd for a strategic partnership in gold mining operations. The MoU outlines a framework for cooperation covering investment, technical support, and operational development in identified gold mining projects. This partnership reflects both companies’ shared vision to promote responsible mining, economic growth, and sustainable resource development.  ',
+    imageUrl: '/pxm/pxm1.jpeg',
+    date: 'January 26, 2026',
     link: '/news',
   };
 
