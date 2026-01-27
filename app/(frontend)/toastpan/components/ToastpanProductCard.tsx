@@ -10,10 +10,16 @@ interface ToastpanProductCardProps {
 }
 
 export default function ToastpanProductCard({ product }: ToastpanProductCardProps) {
-  const { addItem } = useCart();
+  const { addItem, updateQty, getCartItems } = useCart();
 
-  const imageUrl = typeof product.image === 'string' 
-    ? product.image 
+  // Ensure store is a string slug
+  const storeSlug = typeof product.store === 'string' ? product.store : (product.store?.slug || 'toastpan');
+  const cartItems = getCartItems(storeSlug);
+  const existingItem = cartItems.find(item => item.id === product.id);
+  const qtyInCart = existingItem ? existingItem.qty : 0;
+
+  const imageUrl = typeof product.image === 'string'
+    ? product.image
     : (product.image?.url || '/placeholder.png');
   const categoryName = typeof product.category === 'string' ? product.category : product.category.name;
 
@@ -23,7 +29,7 @@ export default function ToastpanProductCard({ product }: ToastpanProductCardProp
       console.error('Cannot add product to cart: missing ID', product);
       return;
     }
-    
+
     addItem({
       id: product.id,
       name: product.name,
@@ -31,7 +37,7 @@ export default function ToastpanProductCard({ product }: ToastpanProductCardProp
       qty: 1,
       image: imageUrl,
       stock: product.stock,
-      store: product.store,
+      store: storeSlug,
     });
   };
 
@@ -73,13 +79,34 @@ export default function ToastpanProductCard({ product }: ToastpanProductCardProp
           <span className="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-1 rounded">
             {categoryName}
           </span>
-          <button
-            onClick={handleAddToCart}
-            disabled={product.stock === 0}
-            className="bg-[#B5D04E] text-white px-4 py-2 rounded-lg hover:bg-[#A3BC46] disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed text-sm font-bold transition-colors shadow-sm active:transform active:scale-95"
-          >
-            {product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
-          </button>
+
+          {qtyInCart > 0 ? (
+            <div className="flex items-center gap-3 bg-gray-100 rounded-lg p-1">
+              <button
+                onClick={() => updateQty(product.id, storeSlug, qtyInCart - 1)}
+                className="w-8 h-8 flex items-center justify-center bg-white rounded-md shadow-sm text-gray-800 font-bold hover:bg-gray-50 transition-colors"
+                aria-label="Decrease quantity"
+              >
+                -
+              </button>
+              <span className="text-sm font-bold text-gray-900 min-w-[1rem] text-center">{qtyInCart}</span>
+              <button
+                onClick={() => updateQty(product.id, storeSlug, qtyInCart + 1)}
+                className="w-8 h-8 flex items-center justify-center bg-[#B5D04E] rounded-md shadow-sm text-white font-bold hover:bg-[#A3BC46] transition-colors"
+                aria-label="Increase quantity"
+              >
+                +
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={handleAddToCart}
+              disabled={product.stock === 0}
+              className="bg-[#B5D04E] text-white px-4 py-2 rounded-lg hover:bg-[#A3BC46] disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed text-sm font-bold transition-colors shadow-sm active:transform active:scale-95"
+            >
+              {product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
+            </button>
+          )}
         </div>
       </div>
     </div>

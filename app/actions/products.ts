@@ -38,7 +38,13 @@ export async function getProductsByStore(storeSlug: string, limit = 100): Promis
             depth: 1,
         })
 
-        return result.docs as unknown as Product[]
+        return result.docs.map(doc => {
+            const product = doc as unknown as Product
+            return {
+                ...product,
+                store: typeof product.store === 'string' ? product.store : (product.store?.slug || storeSlug)
+            }
+        }) as unknown as Product[]
     } catch (error) {
         console.error(`Error fetching products for store ${storeSlug}:`, error)
         return []
@@ -91,8 +97,16 @@ export async function getProductsAndCategories(storeSlug: string) {
             })
         ])
 
+        const normalizedProducts = productsResult.docs.map(doc => {
+            const product = doc as unknown as Product
+            return {
+                ...product,
+                store: typeof product.store === 'string' ? product.store : (product.store?.slug || storeSlug)
+            }
+        }) as unknown as Product[]
+
         return {
-            products: productsResult.docs as unknown as Product[],
+            products: normalizedProducts,
             categories: categoriesResult.docs as unknown as any[]
         }
     } catch (error) {

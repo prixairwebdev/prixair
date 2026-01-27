@@ -10,17 +10,17 @@ interface FloatingCartProps {
     accentColor?: string;
 }
 
-const FloatingCart: React.FC<FloatingCartProps> = ({ 
-    storeSlug, 
-    accentColor = "#FB6404" 
+const FloatingCart: React.FC<FloatingCartProps> = ({
+    storeSlug,
+    accentColor = "#FB6404"
 }) => {
     const { getCartCount } = useCart();
     const count = getCartCount(storeSlug);
 
     return (
-        <Link 
+        <Link
             href={`/${storeSlug}/cart`}
-            className="fixed bottom-8 right-8 z-[100] flex items-center justify-center w-16 h-16 rounded-full shadow-2xl transition-all hover:scale-110 active:scale-95 group"
+            className="fixed bottom-28 right-8 z-[100] flex items-center justify-center w-16 h-16 rounded-full shadow-2xl transition-all hover:scale-110 active:scale-95 group"
             style={{ backgroundColor: accentColor }}
         >
             <div className="relative text-white">
@@ -31,7 +31,7 @@ const FloatingCart: React.FC<FloatingCartProps> = ({
                     </span>
                 )}
             </div>
-            
+
             {/* Tooltip-like label */}
             <span className="absolute right-full mr-4 bg-black/80 text-white text-xs px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none font-bold uppercase tracking-wider">
                 View Cart
