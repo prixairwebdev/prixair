@@ -17,10 +17,25 @@ export default function ContactForm() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(form);
-    // Add submit logic here
+    
+    // Create mailto link with form data
+    const subject = encodeURIComponent(`Contact Form: ${form.reason || 'General Inquiry'}`);
+    const bodyText = `Name: ${form.firstName}\r\nEmail: ${form.email}\r\nPhone: ${form.phone}\r\nReason: ${form.reason}\r\n\r\nMessage:\r\n${form.message}`;
+    const body = encodeURIComponent(bodyText);
+    
+    const mailtoLink = `mailto:info@prixairgroup.com?subject=${subject}&body=${body}`;
+    window.location.href = mailtoLink;
+    
+    // Reset form
+    setForm({
+      firstName: "",
+      email: "",
+      phone: "",
+      reason: "",
+      message: "",
+    });
   };
 
   return (

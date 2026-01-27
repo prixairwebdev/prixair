@@ -77,7 +77,7 @@ function Nav() {
     {
       name: "Prixair Media",
       imageUrl: "/subsidiaries/media.jpg",
-      href: "/news",
+      href: "/media",
     },
     {
       name: "Prixair Home",
