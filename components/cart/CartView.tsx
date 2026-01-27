@@ -1,16 +1,17 @@
 "use client";
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { useCart } from '@/components/CartContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
+import { validatePromotion } from '@/app/actions/promotions';
 
 interface CartViewProps {
     storeSlug: string;
     storeName: string;
-    primaryColorCls?: string; // e.g., "bg-orange-500 hover:bg-orange-600"
-    textColorCls?: string; // e.g., "text-orange-600"
+    primaryColorCls?: string;
+    textColorCls?: string;
     checkoutPath?: string;
     continueShoppingPath?: string;
 }
@@ -23,18 +24,81 @@ export default function CartView({
     checkoutPath,
     continueShoppingPath = `/${storeSlug}`,
 }: CartViewProps) {
-    const { carts, removeItem, updateQty, getCartTotal, clear, getCartItems } = useCart();
+    const { carts, removeItem, updateQty, getCartTotal, clear, getCartItems, promoCodes, applyPromoCode, removePromoCode } = useCart();
     const router = useRouter();
 
     const items = useMemo(() => getCartItems(storeSlug), [getCartItems, storeSlug]);
     const hasItems = items.length > 0;
     const total = getCartTotal(storeSlug);
 
+    // Promo state
+    const [promoInput, setPromoInput] = useState("");
+    const [discountAmount, setDiscountAmount] = useState(0);
+    const [promoFeedback, setPromoFeedback] = useState<{ type: 'success' | 'error', message: string } | null>(null);
+    const [isValidating, setIsValidating] = useState(false);
+
+    // Load existing promo code from context
+    useEffect(() => {
+        const existingCode = promoCodes?.[storeSlug];
+        if (existingCode) {
+            setPromoInput(existingCode);
+        }
+    }, [promoCodes, storeSlug]);
+
+    // Validate promo when code or items change
+    useEffect(() => {
+        const code = promoCodes?.[storeSlug];
+        if (!code || items.length === 0) {
+            setDiscountAmount(0);
+            setPromoFeedback(null);
+            return;
+        }
+
+        const validate = async () => {
+            setIsValidating(true);
+            try {
+                const res = await validatePromotion(code, storeSlug, items.map(i => ({ id: i.id, price: i.price, qty: i.qty })));
+                if (res.isValid && res.discount !== undefined) {
+                    setDiscountAmount(res.discount);
+                    setPromoFeedback({ type: 'success', message: res.message || 'Promotion applied!' });
+                } else {
+                    setDiscountAmount(0);
+                    // If stored code is invalid (expired?), maybe remove it?
+                    // Optional: removePromoCode(storeSlug); 
+                    setPromoFeedback({ type: 'error', message: res.message || 'Invalid promotion.' });
+                }
+            } catch (e) {
+                console.error(e);
+                setPromoFeedback({ type: 'error', message: 'Error applying promotion.' });
+            } finally {
+                setIsValidating(false);
+            }
+        };
+
+        const timeout = setTimeout(validate, 500); // Debounce slightly or just run
+        return () => clearTimeout(timeout);
+
+    }, [promoCodes, storeSlug, items]);
+
+    const handleApplyPromo = () => {
+        if (!promoInput.trim()) return;
+        applyPromoCode(storeSlug, promoInput.trim());
+    };
+
+    const handleRemovePromo = () => {
+        removePromoCode(storeSlug);
+        setPromoInput("");
+        setDiscountAmount(0);
+        setPromoFeedback(null);
+    };
+
     const resolvedCheckoutPath = checkoutPath || `/${storeSlug}/checkout`;
 
     const handleCheckout = () => {
         router.push(resolvedCheckoutPath);
     };
+
+    const finalTotal = Math.max(0, total - discountAmount);
 
     return (
         <div className="min-h-screen bg-gray-50 py-8 px-4">
@@ -140,16 +204,61 @@ export default function CartView({
                                         <span>Subtotal</span>
                                         <span>₦{total.toLocaleString()}</span>
                                     </div>
+
+                                    {/* Discount Row */}
+                                    {discountAmount > 0 && (
+                                        <div className="flex justify-between text-green-600 font-medium">
+                                            <span>Discount</span>
+                                            <span>-₦{discountAmount.toLocaleString()}</span>
+                                        </div>
+                                    )}
+
                                     <div className="flex justify-between text-gray-700">
                                         <span>Delivery</span>
                                         <span className="text-green-600 font-medium font-semibold">FREE</span>
                                     </div>
                                 </div>
 
+                                {/* Promo Code Input */}
+                                <div className="mb-6">
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">Promo Code</label>
+                                    <div className="flex gap-2">
+                                        <input
+                                            type="text"
+                                            value={promoInput}
+                                            onChange={(e) => setPromoInput(e.target.value)}
+                                            placeholder="Enter code"
+                                            className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-black focus:outline-none focus:ring-2 focus:ring-orange-500"
+                                            disabled={!!promoCodes?.[storeSlug]}
+                                        />
+                                        {promoCodes?.[storeSlug] ? (
+                                            <button
+                                                onClick={handleRemovePromo}
+                                                className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-300 transition-colors"
+                                            >
+                                                Remove
+                                            </button>
+                                        ) : (
+                                            <button
+                                                onClick={handleApplyPromo}
+                                                className={`text-white px-4 py-2 rounded-lg font-medium transition-colors ${primaryColorCls}`}
+                                                disabled={!promoInput || isValidating}
+                                            >
+                                                {isValidating ? '...' : 'Apply'}
+                                            </button>
+                                        )}
+                                    </div>
+                                    {promoFeedback && (
+                                        <p className={`text-sm mt-2 ${promoFeedback.type === 'success' ? 'text-green-600' : 'text-red-500'}`}>
+                                            {promoFeedback.message}
+                                        </p>
+                                    )}
+                                </div>
+
                                 <div className="border-t border-gray-100 pt-4 mb-6">
                                     <div className="flex justify-between text-xl font-bold">
                                         <span className="text-black">Total</span>
-                                        <span className={textColorCls}>₦{total.toLocaleString()}</span>
+                                        <span className={textColorCls}>₦{finalTotal.toLocaleString()}</span>
                                     </div>
                                 </div>
 

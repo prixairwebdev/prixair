@@ -129,6 +129,24 @@ export const Orders: CollectionConfig = {
             relationTo: 'users',
         },
         {
+            name: 'subtotal', // Total of items before discount
+            type: 'number',
+        },
+        {
+            name: 'discountTotal',
+            type: 'number',
+            defaultValue: 0,
+        },
+        {
+            name: 'couponCode',
+            type: 'text',
+        },
+        {
+            name: 'promotion',
+            type: 'relationship',
+            relationTo: 'promotions',
+        },
+        {
             name: 'shipdayId',
             type: 'text',
             admin: {

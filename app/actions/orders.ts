@@ -30,6 +30,10 @@ export type OrderData = {
     paymentMethod: 'paypal' | 'card' | 'paystack'
     paymentReference?: string
     storeId: string
+    subtotal?: number
+    discountTotal?: number
+    couponCode?: string
+    promotionId?: string
 }
 
 export async function createOrder(data: OrderData) {
@@ -95,6 +99,10 @@ export async function createOrder(data: OrderData) {
                 paymentMethod: data.paymentMethod,
                 paymentReference: data.paymentReference,
                 store: data.storeId,
+                subtotal: data.subtotal,
+                discountTotal: data.discountTotal,
+                couponCode: data.couponCode,
+                promotion: data.promotionId,
             },
         })
 

@@ -16,6 +16,8 @@ import { Stores } from "./collections/Stores.ts";
 
 const dirname = path.resolve(process.cwd());
 
+import { Promotions } from "./collections/Promotions.ts";
+
 export default buildConfig({
   admin: {
     user: Users.slug,
@@ -23,7 +25,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Categories, Products, FlashSales, Orders, Addresses, Stores],
+  collections: [Users, Media, Categories, Products, FlashSales, Orders, Addresses, Stores, Promotions],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "",
   typescript: {

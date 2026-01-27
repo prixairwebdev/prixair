@@ -5,6 +5,7 @@ import { CartItem } from "@/types/store";
 
 // Store items as a record where keys are store slugs
 export type CartState = Record<string, CartItem[]>;
+export type PromoState = Record<string, string>; // storeSlug -> code
 
 type CartContextType = {
   carts: CartState;
@@ -16,12 +17,16 @@ type CartContextType = {
   getCartTotal: (store: string) => number;
   getAllCartsTotal: () => number;
   getCartCount: (store: string) => number;
+  promoCodes: PromoState;
+  applyPromoCode: (store: string, code: string) => void;
+  removePromoCode: (store: string) => void;
 };
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   const [carts, setCarts] = useState<CartState>({});
+  const [promoCodes, setPromoCodes] = useState<PromoState>({});
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
@@ -43,6 +48,11 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
           setCarts(migrated);
         }
       }
+
+      const rawPromos = localStorage.getItem("prixair_promos");
+      if (rawPromos) {
+        setPromoCodes(JSON.parse(rawPromos));
+      }
     } catch (e) {
       console.error("Failed to load cart from local storage", e);
     } finally {
@@ -54,10 +64,11 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     if (!isInitialized) return;
     try {
       localStorage.setItem("prixair_carts_v2", JSON.stringify(carts));
+      localStorage.setItem("prixair_promos", JSON.stringify(promoCodes));
     } catch (e) {
       console.error("Failed to save cart to local storage", e);
     }
-  }, [carts, isInitialized]);
+  }, [carts, promoCodes, isInitialized]);
 
   const addItem = (item: CartItem, qty = 1) => {
     const store = item.store;
@@ -115,6 +126,18 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     return items.reduce((sum, item) => sum + item.qty, 0);
   };
 
+  const applyPromoCode = (store: string, code: string) => {
+    setPromoCodes(cur => ({ ...cur, [store]: code }));
+  };
+
+  const removePromoCode = (store: string) => {
+    setPromoCodes(cur => {
+      const next = { ...cur };
+      delete next[store];
+      return next;
+    });
+  };
+
   return (
     <CartContext.Provider value={{
       carts,
@@ -125,7 +148,10 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
       getCartItems,
       getCartTotal,
       getAllCartsTotal,
-      getCartCount
+      getCartCount,
+      promoCodes,
+      applyPromoCode,
+      removePromoCode
     }}>
       {children}
     </CartContext.Provider>

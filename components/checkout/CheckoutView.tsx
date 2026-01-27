@@ -11,6 +11,7 @@ import { Address } from '@/types/store';
 import { createOrder } from '@/app/actions/orders';
 import { useOrders } from '@/components/contexts/OrderContext';
 import { getStoreBySlug } from '@/app/actions/products';
+import { validatePromotion } from '@/app/actions/promotions';
 
 interface CheckoutViewProps {
     storeSlug: string;
@@ -41,7 +42,7 @@ export default function CheckoutView({
     accentColorCls = "border-orange-500 bg-orange-50",
     loginPath,
 }: CheckoutViewProps) {
-    const { getCartItems, getCartTotal, clear } = useCart();
+    const { getCartItems, getCartTotal, clear, promoCodes } = useCart();
     const { user } = useAuth();
     const { refreshOrders } = useOrders();
     const router = useRouter();
@@ -53,8 +54,16 @@ export default function CheckoutView({
     const [processing, setProcessing] = useState(false);
     const [storeId, setStoreId] = useState<string | null>(null);
 
+    // Promo State
+    const [discountAmount, setDiscountAmount] = useState(0);
+    const [promotionId, setPromotionId] = useState<string | undefined>(undefined);
+    const [isValidatingPromo, setIsValidatingPromo] = useState(false);
+
     const items = useMemo(() => getCartItems(storeSlug), [getCartItems, storeSlug]);
-    const orderTotal = useMemo(() => getCartTotal(storeSlug), [getCartTotal, storeSlug]);
+    const subtotal = useMemo(() => getCartTotal(storeSlug), [getCartTotal, storeSlug]);
+
+    // Calculate final total
+    const finalTotal = Math.max(0, subtotal - discountAmount);
 
     // Fetch user addresses and store ID
     useEffect(() => {
@@ -78,6 +87,37 @@ export default function CheckoutView({
         }
         fetchData();
     }, [user, storeSlug]);
+
+    // Validate Promo Code Check
+    useEffect(() => {
+        const code = promoCodes?.[storeSlug];
+        if (!code || items.length === 0) {
+            setDiscountAmount(0);
+            setPromotionId(undefined);
+            return;
+        }
+
+        const validate = async () => {
+            setIsValidatingPromo(true);
+            try {
+                const res = await validatePromotion(code, storeSlug, items.map(i => ({ id: i.id, price: i.price, qty: i.qty })));
+                if (res.isValid && res.discount !== undefined) {
+                    setDiscountAmount(res.discount);
+                    setPromotionId(res.promo?.id);
+                } else {
+                    // Invalid in checkout? Just reset.
+                    setDiscountAmount(0);
+                    setPromotionId(undefined);
+                }
+            } catch (e) {
+                console.error("Promo validation failed", e);
+                setDiscountAmount(0);
+            } finally {
+                setIsValidatingPromo(false);
+            }
+        };
+        validate();
+    }, [promoCodes, storeSlug, items]);
 
     // Set default address
     useEffect(() => {
@@ -127,16 +167,22 @@ export default function CheckoutView({
             return;
         }
 
+        if (isValidatingPromo) {
+            alert('Please wait for promotion validation.');
+            return;
+        }
+
         const PaystackPop = (await import('@paystack/inline-js')).default;
         const paystack = new PaystackPop();
         paystack.newTransaction({
             key: publicKey,
             email: user.email,
-            amount: Math.round(orderTotal * 100),
+            amount: Math.round(finalTotal * 100), // Use discounted total
             metadata: {
                 name: user.name,
                 phone: user.phone || '',
                 store: storeSlug,
+                promoCode: promoCodes?.[storeSlug] || '',
             } as Record<string, string>,
             onSuccess: (transaction: PaystackTransaction) => {
                 handlePaystackSuccess(transaction);
@@ -160,7 +206,11 @@ export default function CheckoutView({
                     quantity: item.qty,
                     image: item.image,
                 })),
-                total: orderTotal,
+                total: finalTotal, // Final discounted total
+                subtotal: subtotal,
+                discountTotal: discountAmount,
+                couponCode: promoCodes?.[storeSlug],
+                promotionId: promotionId,
                 status: 'pending' as const,
                 customerEmail: user.email,
                 shippingAddress: {
@@ -273,8 +323,16 @@ export default function CheckoutView({
                             <div className="border-t border-gray-100 pt-4 space-y-3 mb-6">
                                 <div className="flex justify-between text-gray-600">
                                     <span>Subtotal</span>
-                                    <span className="text-black font-medium">₦{orderTotal.toLocaleString()}</span>
+                                    <span className="text-black font-medium">₦{subtotal.toLocaleString()}</span>
                                 </div>
+
+                                {discountAmount > 0 && (
+                                    <div className="flex justify-between text-green-600 font-medium">
+                                        <span>Discount</span>
+                                        <span>-₦{discountAmount.toLocaleString()}</span>
+                                    </div>
+                                )}
+
                                 <div className="flex justify-between text-gray-600">
                                     <span>Shipping</span>
                                     <span className="text-green-600 font-bold">FREE</span>
@@ -284,16 +342,16 @@ export default function CheckoutView({
                             <div className="border-t border-gray-100 pt-4 mb-8">
                                 <div className="flex justify-between text-2xl font-black">
                                     <span className="text-black">Total</span>
-                                    <span className={textColorCls}>₦{orderTotal.toLocaleString()}</span>
+                                    <span className={textColorCls}>₦{finalTotal.toLocaleString()}</span>
                                 </div>
                             </div>
 
                             <button
                                 onClick={handlePaystackPayment}
-                                disabled={!selectedAddress || processing || !storeId}
-                                className={`w-full text-white py-4 rounded-xl font-bold text-lg mb-4 transition-all shadow-xl ${!selectedAddress || processing || !storeId ? 'bg-gray-200 cursor-not-allowed text-gray-400 shadow-none' : primaryColorCls + ' active:scale-[0.98]'}`}
+                                disabled={!selectedAddress || processing || !storeId || isValidatingPromo}
+                                className={`w-full text-white py-4 rounded-xl font-bold text-lg mb-4 transition-all shadow-xl ${!selectedAddress || processing || !storeId || isValidatingPromo ? 'bg-gray-200 cursor-not-allowed text-gray-400 shadow-none' : primaryColorCls + ' active:scale-[0.98]'}`}
                             >
-                                {processing ? 'Processing...' : 'Complete Payment'}
+                                {processing ? 'Processing...' : (isValidatingPromo ? 'Validating...' : 'Complete Payment')}
                             </button>
 
                             <p className="text-center text-xs text-gray-400 flex items-center justify-center gap-1">

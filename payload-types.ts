@@ -75,6 +75,7 @@ export interface Config {
     orders: Order;
     addresses: Address;
     stores: Store;
+    promotions: Promotion;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -90,6 +91,7 @@ export interface Config {
     orders: OrdersSelect<false> | OrdersSelect<true>;
     addresses: AddressesSelect<false> | AddressesSelect<true>;
     stores: StoresSelect<false> | StoresSelect<true>;
+    promotions: PromotionsSelect<false> | PromotionsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -261,8 +263,44 @@ export interface Order {
     country: string;
   };
   user?: (number | null) | User;
+  subtotal?: number | null;
+  discountTotal?: number | null;
+  couponCode?: string | null;
+  promotion?: (number | null) | Promotion;
   shipdayId?: string | null;
   shipdayStatus?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "promotions".
+ */
+export interface Promotion {
+  id: number;
+  title: string;
+  /**
+   * The coupon code users enter. Leave empty for automatic promotions (not yet supported).
+   */
+  code?: string | null;
+  type: 'percentage' | 'fixed';
+  value: number;
+  startDate?: string | null;
+  endDate?: string | null;
+  /**
+   * Total number of times this promo can be used
+   */
+  usageLimit?: number | null;
+  /**
+   * Limit per user (if logged in)
+   */
+  perUserLimit?: number | null;
+  minOrderValue?: number | null;
+  targetType: 'global' | 'store' | 'category' | 'product';
+  targetStores?: (number | Store)[] | null;
+  targetCategories?: (number | Category)[] | null;
+  targetProducts?: (number | Product)[] | null;
+  isActive?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -339,6 +377,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'stores';
         value: number | Store;
+      } | null)
+    | ({
+        relationTo: 'promotions';
+        value: number | Promotion;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -498,6 +540,10 @@ export interface OrdersSelect<T extends boolean = true> {
         country?: T;
       };
   user?: T;
+  subtotal?: T;
+  discountTotal?: T;
+  couponCode?: T;
+  promotion?: T;
   shipdayId?: T;
   shipdayStatus?: T;
   updatedAt?: T;
@@ -529,6 +575,28 @@ export interface StoresSelect<T extends boolean = true> {
   slug?: T;
   description?: T;
   image?: T;
+  isActive?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "promotions_select".
+ */
+export interface PromotionsSelect<T extends boolean = true> {
+  title?: T;
+  code?: T;
+  type?: T;
+  value?: T;
+  startDate?: T;
+  endDate?: T;
+  usageLimit?: T;
+  perUserLimit?: T;
+  minOrderValue?: T;
+  targetType?: T;
+  targetStores?: T;
+  targetCategories?: T;
+  targetProducts?: T;
   isActive?: T;
   updatedAt?: T;
   createdAt?: T;
