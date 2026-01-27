@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useEffect } from 'react';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '@/components/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { dummyReviews } from '../../data/dummy-data';
-import ReviewCard from '../../components/ReviewCard';
+import { dummyReviews } from '@/app/(frontend)/supermarket/data/dummy-data';
+import ReviewCard from '@/app/(frontend)/supermarket/components/ReviewCard';
 
 export default function ReviewsPage() {
   const { user } = useAuth();

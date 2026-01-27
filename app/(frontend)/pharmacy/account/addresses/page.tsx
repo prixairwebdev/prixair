@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '@/components/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import AddressCard from '../../components/AddressCard';
-import { Address } from '../../types/types';
+import BrandAddressCard from '@/app/(frontend)/components/brand/BrandAddressCard';
+import { Address } from '@/types/store';
 import { getAddresses, createAddress, updateAddress, deleteAddress } from '@/app/actions/addresses';
 
 export default function AddressesPage() {
@@ -277,7 +277,7 @@ export default function AddressesPage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {addresses.map(address => (
-              <AddressCard
+              <BrandAddressCard
                 key={address.id}
                 address={address}
                 onSetDefault={() => handleSetDefault(address.id)}
