@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '@/components/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { getStoreBySlug } from '@/app/actions/products';
@@ -45,8 +45,8 @@ export default function RegisterPage() {
     }
 
     if (!storeId) {
-        setError('Could not find store information. Please try again later.');
-        return;
+      setError('Could not find store information. Please try again later.');
+      return;
     }
 
     setLoading(true);
