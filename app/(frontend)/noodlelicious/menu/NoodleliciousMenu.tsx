@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { Product, Category } from '@/types/store';
+import { Product, Category } from '@/app/actions/supermarket';
 import ProductCard from '@/components/ProductCard';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, ChevronLeft, ChevronRight, X } from 'lucide-react';

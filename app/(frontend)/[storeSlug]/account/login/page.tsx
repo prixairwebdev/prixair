@@ -5,6 +5,11 @@ import { useRouter, useParams } from "next/navigation";
 import { useAuth } from "@/components/contexts/AuthContext";
 import { useState } from "react";
 
+interface LoginInputs {
+  email: string;
+  password: string;
+}
+
 const LoginPage = () => {
   const router = useRouter();
   const params = useParams();
@@ -14,32 +19,20 @@ const LoginPage = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm<LoginInputs>();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: LoginInputs) => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch("/api/users/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: data.email,
-          password: data.password,
-        }),
-      });
+      const success = await login(data.email, data.password);
 
-      const result = await response.json();
-
-      if (response.ok) {
-        login(result.user);
+      if (success) {
         router.push(`/${storeSlug}/checkout`);
       } else {
-        setError(result.errors?.[0]?.message || "Invalid credentials");
+        setError("Invalid credentials");
       }
     } catch (err) {
       setError("An unexpected error occurred. Please try again.");
@@ -69,9 +62,8 @@ const LoginPage = () => {
               Email
             </label>
             <input
-              className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
-                errors.email ? "border-red-500" : ""
-              }`}
+              className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${errors.email ? "border-red-500" : ""
+                }`}
               id="email"
               type="email"
               placeholder="Email"
@@ -79,7 +71,7 @@ const LoginPage = () => {
             />
             {errors.email && (
               <p className="text-red-500 text-xs italic">
-                {errors.email.message}
+                {errors.email.message as string}
               </p>
             )}
           </div>
@@ -91,9 +83,8 @@ const LoginPage = () => {
               Password
             </label>
             <input
-              className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline ${
-                errors.password ? "border-red-500" : ""
-              }`}
+              className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline ${errors.password ? "border-red-500" : ""
+                }`}
               id="password"
               type="password"
               placeholder="******************"
@@ -103,7 +94,7 @@ const LoginPage = () => {
             />
             {errors.password && (
               <p className="text-red-500 text-xs italic">
-                {errors.password.message}
+                {errors.password.message as string}
               </p>
             )}
           </div>

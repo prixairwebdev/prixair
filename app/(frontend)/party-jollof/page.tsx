@@ -7,55 +7,63 @@ import BrandTestimonials from "../components/brand/BrandTestimonials";
 import BrandHowToOrder from "../components/brand/BrandHowToOrder";
 
 const bestSellers = [
-  { 
-    name: "Regular plus", 
-    price: "₦7,000", 
-    image: "/partyjollof/pj3.jpeg", 
+  {
+    id: "pj-1",
+    name: "Regular plus",
+    price: "₦7,000",
+    image: "/partyjollof/pj3.jpeg",
     description: "Smoky, authentic Nigerian Jollof rice served with your choice of protein and sides."
   },
-  { 
-    name: "Maxi", 
-    price: "₦25,000", 
-    image: "/partyjollof/pj2.jpeg", 
+  {
+    id: "pj-2",
+    name: "Maxi",
+    price: "₦25,000",
+    image: "/partyjollof/pj2.jpeg",
     description: "Succulent chicken thighs grilled and tossed in our signature spicy pepper sauce."
   },
-  { 
-    name: "Maxi plus", 
-    price: "₦40,000", 
-    image: "/partyjollof/pj1.jpeg", 
+  {
+    id: "pj-3",
+    name: "Maxi plus",
+    price: "₦40,000",
+    image: "/partyjollof/pj1.jpeg",
     description: "Arromatic fried rice with mixed vegetables, liver, and shrimps."
   },
-  { 
-    name: "Regular", 
-    price: "₦3,000", 
-    image: "/partyjollof/pj4.jpeg", 
+  {
+    id: "pj-4",
+    name: "Regular",
+    price: "₦3,000",
+    image: "/partyjollof/pj4.jpeg",
     description: "Perfectly ripe, sweet, and golden-brown dodo."
   },
 ];
 
 const dailySpecials = [
-  { 
-    name: "Native Jollof", 
-    price: "₦4,000", 
-    image: "/partyjollof/pj7.jpeg", 
+  {
+    id: "pj-5",
+    name: "Native Jollof",
+    price: "₦4,000",
+    image: "/partyjollof/pj7.jpeg",
     description: "Jollof rice topped with grilled croaker fish, prawns, and calamari."
   },
-  { 
-    name: "Asun jollof", 
-    price: "₦5,000", 
-    image: "/partyjollof/pj6.jpeg", 
+  {
+    id: "pj-6",
+    name: "Asun jollof",
+    price: "₦5,000",
+    image: "/partyjollof/pj6.jpeg",
     description: "Chopped goat meat grilled with habanero peppers and onions."
   },
-  { 
-    name: "Native Rice", 
-    price: "₦30,000", 
-    image: "/partyjollof/pj5.jpeg", 
+  {
+    id: "pj-7",
+    name: "Native Rice",
+    price: "₦30,000",
+    image: "/partyjollof/pj5.jpeg",
     description: "Traditionally cooked rice with palm oil, locust beans, and dried fish."
   },
-  { 
-    name: "Regular Jollof", 
-    price: "₦3,000", 
-    image: "/partyjollof/pj4.jpeg", 
+  {
+    id: "pj-8",
+    name: "Regular Jollof",
+    price: "₦3,000",
+    image: "/partyjollof/pj4.jpeg",
     description: "Steamed bean pudding with egg and fish."
   },
 ];
@@ -81,7 +89,7 @@ const reviews = [
 const PartyJollofLanding = () => {
   return (
     <div className="overflow-hidden">
-      <BrandHero 
+      <BrandHero
         title={
           <>Experience the <span className="text-[#FF4500]">Authentic</span> <br /> <span className="text-[#FFA500]">Party Flavor</span>.</>
         }
@@ -92,7 +100,7 @@ const PartyJollofLanding = () => {
         secondaryColor="#FFA500"
       />
 
-      <BrandInfo 
+      <BrandInfo
         title="Our Secret? The Smoke."
         description="At Party Jollof, we don't cut corners. We believe the best Jollof rice is cooked with patience and that special touch of smoke. Using traditional recipes and the finest local spices, we deliver a meal that isn't just food—it's an experience. Come for the rice, stay for the vibe."
         image="/partyjollof/pjhm.jpeg"
@@ -100,23 +108,23 @@ const PartyJollofLanding = () => {
         buttonText="Our Process"
       />
 
-      <BrandMenu 
+      <BrandMenu
         bestSellers={bestSellers}
         dailySpecials={dailySpecials}
         accentColor="#FF4500"
       />
 
-      <BrandTestimonials 
+      <BrandTestimonials
         reviews={reviews}
         accentColor="#FFA500"
       />
 
-      <BrandLocation 
+      <BrandLocation
         brandName="Party Jollof"
         accentColor="#FF4500"
       />
 
-      <BrandHowToOrder 
+      <BrandHowToOrder
         primaryColor="#FF4500"
       />
     </div>

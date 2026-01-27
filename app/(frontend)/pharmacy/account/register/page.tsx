@@ -23,7 +23,7 @@ export default function RegisterPage() {
     const fetchStoreId = async () => {
       const store = await getStoreBySlug('pharmacy');
       if (store) {
-        setStoreId(store.id);
+        setStoreId(String(store.id));
       }
     };
 

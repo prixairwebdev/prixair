@@ -43,7 +43,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
           oldItems.forEach(item => {
             const store = item.store || 'supermarket';
             if (!migrated[store]) migrated[store] = [];
-            migrated[store].push({ ...item, store: store as any });
+            migrated[store].push({ ...item, store: store });
           });
           setCarts(migrated);
         }

@@ -39,12 +39,12 @@ const Landing = () => {
       try {
         const { products } = await getProductsAndCategories('gavi');
 
-        const mappedProducts: MenuItem[] = products.map((p: any) => ({
+        const mappedProducts: MenuItem[] = products.map((p) => ({
           id: p.id,
           name: p.name,
           price: p.price,
           description: p.description,
-          image: typeof p.image === 'object' ? p.image.url : p.image,
+          image: (typeof p.image === 'object' ? p.image?.url : p.image) || '/gavibg.png',
           store: 'gavi'
         }));
 
