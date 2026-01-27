@@ -1,5 +1,6 @@
 import { getProductsAndCategories } from "@/app/actions/products";
 import ProductsList from "./ProductsList";
+import FloatingCheckout from '@/app/(frontend)/components/brand/FloatingCheckout';
 import { Suspense } from "react";
 
 export const dynamic = 'force-dynamic';
@@ -14,6 +15,7 @@ export default async function ToastpanProductsPage() {
             </div>
         }>
             <ProductsList products={products} categories={categories} />
+            <FloatingCheckout storeSlug="toastpan" accentColor="#B5D04E" />
         </Suspense>
     );
 }
