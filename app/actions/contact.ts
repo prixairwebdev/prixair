@@ -2,7 +2,19 @@
 
 import nodemailer from "nodemailer";
 
-export async function sendContactEmail(formData: any) {
+interface ContactFormData {
+  name?: string;
+  firstName?: string;
+  fullName?: string;
+  email?: string;
+  businessUnit?: string;
+  message?: string;
+  phone?: string;
+  address?: string;
+  additionalDetails?: string;
+}
+
+export async function sendContactEmail(formData: ContactFormData) {
   const { name, firstName, fullName, email, businessUnit, message, phone, address, additionalDetails } = formData;
 
   const to = "Contact@prixair.net";

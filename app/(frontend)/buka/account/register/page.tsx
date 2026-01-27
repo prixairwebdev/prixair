@@ -23,7 +23,7 @@ export default function RegisterPage() {
     const fetchStoreId = async () => {
       const store = await getStoreBySlug('buka');
       if (store) {
-        setStoreId(store.id);
+        setStoreId(String(store.id));
       }
     };
 
@@ -45,8 +45,8 @@ export default function RegisterPage() {
     }
 
     if (!storeId) {
-        setError('Could not find store information. Please try again later.');
-        return;
+      setError('Could not find store information. Please try again later.');
+      return;
     }
 
     setLoading(true);

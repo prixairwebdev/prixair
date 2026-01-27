@@ -114,7 +114,7 @@ export default function OrdersPage() {
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-gray-600">Store:</span>
                     <span className="text-black font-medium capitalize">
-                      {typeof order.store === 'string' ? order.store : (order.store as any)?.name || 'N/A'}
+                      {typeof order.store === 'string' ? order.store : (order.store as { name: string }).name || 'N/A'}
                     </span>
                   </div>
                   <div className="flex items-center justify-between mb-2">

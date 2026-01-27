@@ -2,7 +2,7 @@
 
 import { getPayload } from 'payload'
 import config from '@payload-config'
-import { Product } from './supermarket'
+import { Product, Category } from './supermarket'
 
 export async function getProductsByStore(storeSlug: string, limit = 100): Promise<Product[]> {
     const payload = await getPayload({ config })
@@ -10,7 +10,7 @@ export async function getProductsByStore(storeSlug: string, limit = 100): Promis
     try {
         // First find the store by slug
         const storeResult = await payload.find({
-            collection: 'stores' as any,
+            collection: 'stores',
             where: {
                 slug: {
                     equals: storeSlug,
@@ -28,7 +28,7 @@ export async function getProductsByStore(storeSlug: string, limit = 100): Promis
 
         // Then find products for that store
         const result = await payload.find({
-            collection: 'products' as any,
+            collection: 'products',
             where: {
                 store: {
                     equals: storeId,
@@ -57,7 +57,7 @@ export async function getProductsAndCategories(storeSlug: string) {
     try {
         // First find the store by slug
         const storeResult = await payload.find({
-            collection: 'stores' as any,
+            collection: 'stores',
             where: {
                 slug: {
                     equals: storeSlug,
@@ -76,7 +76,7 @@ export async function getProductsAndCategories(storeSlug: string) {
         // Then find products and categories
         const [productsResult, categoriesResult] = await Promise.all([
             payload.find({
-                collection: 'products' as any,
+                collection: 'products',
                 where: {
                     store: {
                         equals: storeId,
@@ -86,7 +86,7 @@ export async function getProductsAndCategories(storeSlug: string) {
                 depth: 1,
             }),
             payload.find({
-                collection: 'categories' as any,
+                collection: 'categories',
                 where: {
                     store: {
                         equals: storeId,
@@ -107,7 +107,7 @@ export async function getProductsAndCategories(storeSlug: string) {
 
         return {
             products: normalizedProducts,
-            categories: categoriesResult.docs as unknown as any[]
+            categories: categoriesResult.docs as unknown as Category[]
         }
     } catch (error) {
         console.error(`Error fetching products and categories for store ${storeSlug}:`, error)
@@ -120,7 +120,7 @@ export async function getStoreBySlug(slug: string) {
 
     try {
         const result = await payload.find({
-            collection: 'stores' as any,
+            collection: 'stores',
             where: {
                 slug: {
                     equals: slug,

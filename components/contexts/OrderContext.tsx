@@ -90,9 +90,9 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
                     isDefault: false,
                     type: 'shipping' as const,
                 },
-                paymentMethod: order.paymentMethod as any,
+                paymentMethod: order.paymentMethod as Order['paymentMethod'],
                 trackingNumber: order.trackingNumber,
-                store: (order as any).store,
+                store: (order as unknown as { store: string | { slug: string } }).store,
                 createdAt: order.createdAt,
                 updatedAt: order.updatedAt,
             }));

@@ -172,7 +172,7 @@ export default function AddressesPage() {
                                         value={formData.name}
                                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                         className="w-full border border-gray-300 rounded-lg px-4 py-2 text-[#373435] focus:outline-none focus:ring-2"
-                                        style={{ '--tw-ring-color': PRIMARY_COLOR } as any}
+                                        style={{ '--tw-ring-color': PRIMARY_COLOR } as React.CSSProperties}
                                         required
                                     />
                                 </div>
@@ -183,7 +183,7 @@ export default function AddressesPage() {
                                         value={formData.phone}
                                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                                         className="w-full border border-gray-300 rounded-lg px-4 py-2 text-[#373435] focus:outline-none focus:ring-2"
-                                        style={{ '--tw-ring-color': PRIMARY_COLOR } as any}
+                                        style={{ '--tw-ring-color': PRIMARY_COLOR } as React.CSSProperties}
                                         required
                                     />
                                 </div>
@@ -196,7 +196,7 @@ export default function AddressesPage() {
                                     value={formData.street}
                                     onChange={(e) => setFormData({ ...formData, street: e.target.value })}
                                     className="w-full border border-gray-300 rounded-lg px-4 py-2 text-[#373435] focus:outline-none focus:ring-2"
-                                    style={{ '--tw-ring-color': PRIMARY_COLOR } as any}
+                                    style={{ '--tw-ring-color': PRIMARY_COLOR } as React.CSSProperties}
                                     placeholder="123 Main Street, Apartment 4B"
                                     required
                                 />
@@ -210,7 +210,7 @@ export default function AddressesPage() {
                                         value={formData.city}
                                         onChange={(e) => setFormData({ ...formData, city: e.target.value })}
                                         className="w-full border border-gray-300 rounded-lg px-4 py-2 text-[#373435] focus:outline-none focus:ring-2"
-                                        style={{ '--tw-ring-color': PRIMARY_COLOR } as any}
+                                        style={{ '--tw-ring-color': PRIMARY_COLOR } as React.CSSProperties}
                                         required
                                     />
                                 </div>
@@ -221,7 +221,7 @@ export default function AddressesPage() {
                                         value={formData.state}
                                         onChange={(e) => setFormData({ ...formData, state: e.target.value })}
                                         className="w-full border border-gray-300 rounded-lg px-4 py-2 text-[#373435] focus:outline-none focus:ring-2"
-                                        style={{ '--tw-ring-color': PRIMARY_COLOR } as any}
+                                        style={{ '--tw-ring-color': PRIMARY_COLOR } as React.CSSProperties}
                                         required
                                     />
                                 </div>
@@ -232,7 +232,7 @@ export default function AddressesPage() {
                                         value={formData.zipCode}
                                         onChange={(e) => setFormData({ ...formData, zipCode: e.target.value })}
                                         className="w-full border border-gray-300 rounded-lg px-4 py-2 text-[#373435] focus:outline-none focus:ring-2"
-                                        style={{ '--tw-ring-color': PRIMARY_COLOR } as any}
+                                        style={{ '--tw-ring-color': PRIMARY_COLOR } as React.CSSProperties}
                                         required
                                     />
                                 </div>
@@ -244,7 +244,7 @@ export default function AddressesPage() {
                                     value={formData.type}
                                     onChange={(e) => setFormData({ ...formData, type: e.target.value as 'shipping' | 'billing' | 'both' })}
                                     className="w-full border border-gray-300 rounded-lg px-4 py-2 text-[#373435] focus:outline-none focus:ring-2"
-                                    style={{ '--tw-ring-color': PRIMARY_COLOR } as any}
+                                    style={{ '--tw-ring-color': PRIMARY_COLOR } as React.CSSProperties}
                                 >
                                     <option value="both">Shipping & Billing</option>
                                     <option value="shipping">Shipping Only</option>

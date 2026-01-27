@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 
 export default function LiveChat() {
   const openTawkChat = () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const Tawk_API = (window as any).Tawk_API;
     if (Tawk_API) {
       if (typeof Tawk_API.maximize === "function") {

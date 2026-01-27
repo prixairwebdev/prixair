@@ -37,12 +37,12 @@ const NoodleliciousLanding = () => {
       try {
         const noodleProducts = await getProductsByStore('noodlelicious');
 
-        const mappedProducts: MenuItem[] = noodleProducts.map((p: any) => ({
+        const mappedProducts: MenuItem[] = noodleProducts.map((p) => ({
           id: p.id,
           name: p.name,
           price: p.price,
           description: p.description,
-          image: typeof p.image === 'string' ? p.image : (p.image?.url || "/noodlelicious/noodle1.jpeg"),
+          image: (typeof p.image === 'string' ? p.image : p.image?.url) || "/noodlelicious/noodle1.jpeg",
           store: 'noodlelicious'
         }));
 

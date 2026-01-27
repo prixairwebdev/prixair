@@ -5,24 +5,7 @@ import ProductCard from './ProductCard';
 import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 
-interface Product {
-    id: string;
-    name: string;
-    description?: string;
-    price: number;
-    stock?: number;
-    image: any;
-    category: any;
-    store: any;
-    rating?: number;
-    reviewCount?: number;
-}
-
-interface Category {
-    id: string;
-    name: string;
-    slug?: string;
-}
+import { Product, Category } from '@/app/actions/supermarket';
 
 interface StoreProductsListProps {
     products: Product[];
@@ -33,15 +16,15 @@ interface StoreProductsListProps {
 
 const ITEMS_PER_PAGE = 12;
 
-export default function StoreProductsList({ 
-    products, 
-    categories, 
-    storeSlug, 
-    storeName 
+export default function StoreProductsList({
+    products,
+    categories,
+    storeSlug,
+    storeName
 }: StoreProductsListProps) {
     const searchParams = useSearchParams();
     const router = useRouter();
-    
+
     const [selectedCategory, setSelectedCategory] = useState<string>('All');
     const [sortBy, setSortBy] = useState<string>('name');
     const [searchQuery, setSearchQuery] = useState('');
@@ -51,7 +34,7 @@ export default function StoreProductsList({
         const query = searchParams.get('q');
         const category = searchParams.get('category');
         const page = searchParams.get('page');
-        
+
         if (query) setSearchQuery(query);
         if (category) setSelectedCategory(category);
         if (page) setCurrentPage(parseInt(page));
@@ -152,8 +135,8 @@ export default function StoreProductsList({
                                             key={category}
                                             onClick={() => handleCategoryChange(category)}
                                             className={`w-full text-left px-5 py-3 rounded-xl transition-all font-medium ${selectedCategory === category
-                                                    ? 'bg-orange-500 text-white shadow-lg shadow-orange-200 scale-[1.02]'
-                                                    : 'bg-gray-50 text-gray-700 hover:bg-orange-50 hover:text-orange-600'
+                                                ? 'bg-orange-500 text-white shadow-lg shadow-orange-200 scale-[1.02]'
+                                                : 'bg-gray-50 text-gray-700 hover:bg-orange-50 hover:text-orange-600'
                                                 }`}
                                         >
                                             {category}
@@ -222,25 +205,24 @@ export default function StoreProductsList({
                                         >
                                             Previous
                                         </button>
-                                        
+
                                         <div className="flex gap-2">
                                             {[...Array(totalPages)].map((_, i) => {
                                                 const pageNum = i + 1;
                                                 // Simple pagination logic to show only few pages if many exist
                                                 if (
-                                                    pageNum === 1 || 
-                                                    pageNum === totalPages || 
+                                                    pageNum === 1 ||
+                                                    pageNum === totalPages ||
                                                     (pageNum >= currentPage - 1 && pageNum <= currentPage + 1)
                                                 ) {
                                                     return (
                                                         <button
                                                             key={pageNum}
                                                             onClick={() => handlePageChange(pageNum)}
-                                                            className={`w-12 h-12 rounded-xl border-2 font-bold transition-all ${
-                                                                currentPage === pageNum
-                                                                    ? 'bg-orange-500 border-orange-500 text-white shadow-lg shadow-orange-100'
-                                                                    : 'bg-white border-gray-100 text-gray-700 hover:border-orange-500 hover:text-orange-600'
-                                                            }`}
+                                                            className={`w-12 h-12 rounded-xl border-2 font-bold transition-all ${currentPage === pageNum
+                                                                ? 'bg-orange-500 border-orange-500 text-white shadow-lg shadow-orange-100'
+                                                                : 'bg-white border-gray-100 text-gray-700 hover:border-orange-500 hover:text-orange-600'
+                                                                }`}
                                                         >
                                                             {pageNum}
                                                         </button>

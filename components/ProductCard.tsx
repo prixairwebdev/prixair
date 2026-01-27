@@ -23,9 +23,9 @@ export default function ProductCard({ product }: ProductCardProps) {
   const imageUrl = typeof product.image === 'string'
     ? product.image
     : (product.image?.url || '/placeholder.png');
-    
-  const categoryName = typeof product.category === 'string' 
-    ? product.category 
+
+  const categoryName = typeof product.category === 'string'
+    ? product.category
     : (product.category?.name || 'Uncategorized');
 
   const handleAddToCart = () => {
@@ -42,7 +42,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       qty: 1,
       image: imageUrl,
       stock: product.stock,
-      store: storeSlug as any,
+      store: storeSlug,
     });
   };
 
@@ -65,51 +65,50 @@ export default function ProductCard({ product }: ProductCardProps) {
           fill
           className="object-cover group-hover:scale-110 transition-transform duration-500"
         />
-        
+
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-2">
-            {typeof product.stock === 'number' && product.stock < 10 && product.stock > 0 && (
-                <div className="bg-orange-500 text-white text-[10px] font-black px-2 py-1 rounded-lg uppercase tracking-wider shadow-lg">
-                Low Stock
-                </div>
-            )}
-            {typeof product.stock === 'number' && product.stock === 0 && (
-                <div className="bg-red-600 text-white text-[10px] font-black px-2 py-1 rounded-lg uppercase tracking-wider shadow-lg">
-                Out of Stock
-                </div>
-            )}
+          {typeof product.stock === 'number' && product.stock < 10 && product.stock > 0 && (
+            <div className="bg-orange-500 text-white text-[10px] font-black px-2 py-1 rounded-lg uppercase tracking-wider shadow-lg">
+              Low Stock
+            </div>
+          )}
+          {typeof product.stock === 'number' && product.stock === 0 && (
+            <div className="bg-red-600 text-white text-[10px] font-black px-2 py-1 rounded-lg uppercase tracking-wider shadow-lg">
+              Out of Stock
+            </div>
+          )}
         </div>
 
         {/* Wishlist Button Overlay */}
         <button
-            onClick={(e) => {
-                e.preventDefault();
-                handleWishlistToggle();
-            }}
-            className={`absolute top-3 right-3 w-10 h-10 rounded-full shadow-md flex items-center justify-center transition-all duration-300 ${
-                inWishlist 
-                ? 'bg-red-500 text-white scale-110' 
-                : 'bg-white/80 backdrop-blur-sm text-gray-600 hover:bg-white hover:scale-110'
+          onClick={(e) => {
+            e.preventDefault();
+            handleWishlistToggle();
+          }}
+          className={`absolute top-3 right-3 w-10 h-10 rounded-full shadow-md flex items-center justify-center transition-all duration-300 ${inWishlist
+              ? 'bg-red-500 text-white scale-110'
+              : 'bg-white/80 backdrop-blur-sm text-gray-600 hover:bg-white hover:scale-110'
             }`}
         >
-            {inWishlist ? '❤️' : '🤍'}
+          {inWishlist ? '❤️' : '🤍'}
         </button>
       </Link>
 
       <div className="p-5 flex flex-col flex-1">
         <div className="mb-2">
-            <span className="text-[10px] font-bold text-orange-500 uppercase tracking-widest">{categoryName}</span>
-            <Link href={productLink}>
-                <h3 className="text-black font-extrabold text-base mb-1 hover:text-orange-600 transition-colors line-clamp-1">
-                    {product.name}
-                </h3>
-            </Link>
+          <span className="text-[10px] font-bold text-orange-500 uppercase tracking-widest">{categoryName}</span>
+          <Link href={productLink}>
+            <h3 className="text-black font-extrabold text-base mb-1 hover:text-orange-600 transition-colors line-clamp-1">
+              {product.name}
+            </h3>
+          </Link>
         </div>
 
         {product.description && (
-            <p className="text-gray-500 text-xs mb-4 line-clamp-2 leading-relaxed flex-1">
-                {product.description}
-            </p>
+          <p className="text-gray-500 text-xs mb-4 line-clamp-2 leading-relaxed flex-1">
+            {product.description}
+          </p>
         )}
 
         {typeof product.rating === 'number' && (
@@ -129,7 +128,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           <div className="flex flex-col">
             <span className="text-gray-400 text-[10px] font-bold uppercase tracking-tighter">Price</span>
             <span className="text-black font-black text-xl tracking-tight">
-                <span className="text-sm mr-0.5">NGN</span>{product.price.toLocaleString()}
+              <span className="text-sm mr-0.5">NGN</span>{product.price.toLocaleString()}
             </span>
           </div>
         </div>

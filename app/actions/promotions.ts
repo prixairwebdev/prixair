@@ -14,7 +14,7 @@ export type PromoValidationResult = {
     isValid: boolean;
     discount?: number;
     message?: string;
-    promo?: any; // The promo object
+    promo?: unknown; // The promo object
 }
 
 export async function validatePromotion(
@@ -27,7 +27,7 @@ export async function validatePromotion(
     try {
         // 1. Find the promotion
         const promoQuery = await payload.find({
-            collection: 'promotions' as any,
+            collection: 'promotions',
             where: {
                 code: {
                     equals: code,
@@ -57,7 +57,7 @@ export async function validatePromotion(
 
         // 3. Find the current store context
         const storeQuery = await payload.find({
-            collection: 'stores' as any,
+            collection: 'stores',
             where: { slug: { equals: storeSlug } },
             limit: 1
         })
@@ -80,7 +80,7 @@ export async function validatePromotion(
         }
         else if (promo.targetType === 'store') {
             // Check if current store is in targetStores
-            const targetStoreIds = (promo.targetStores as any[])?.map(s => typeof s === 'object' ? s.id : s) || [];
+            const targetStoreIds = ((promo.targetStores as unknown) as (string | number | { id: string | number })[])?.map(s => typeof s === 'object' ? s.id : s) || [];
             if (targetStoreIds.includes(currentStore.id)) {
                 eligibleAmount = cartTotal;
                 eligibleItemsCount = items.length;
@@ -96,7 +96,7 @@ export async function validatePromotion(
 
             // Fetch product details for all items in cart to check category/id
             const productsQuery = await payload.find({
-                collection: 'products' as any,
+                collection: 'products',
                 where: {
                     id: { in: itemIds }
                 },
@@ -105,16 +105,16 @@ export async function validatePromotion(
             const productDocs = productsQuery.docs;
 
             for (const item of items) {
-                const product = productDocs.find(p => p.id === item.id);
+                const product = productDocs.find(p => String(p.id) === String(item.id));
                 if (!product) continue;
 
                 let isMatch = false;
                 if (promo.targetType === 'product') {
-                    const targetProductIds = (promo.targetProducts as any[])?.map(p => typeof p === 'object' ? p.id : p) || [];
+                    const targetProductIds = ((promo.targetProducts as unknown) as (string | number | { id: string | number })[])?.map(p => typeof p === 'object' ? p.id : p) || [];
                     if (targetProductIds.includes(product.id)) isMatch = true;
                 }
                 else if (promo.targetType === 'category') {
-                    const targetCategoryIds = (promo.targetCategories as any[])?.map(c => typeof c === 'object' ? c.id : c) || [];
+                    const targetCategoryIds = ((promo.targetCategories as unknown) as (string | number | { id: string | number })[])?.map(c => typeof c === 'object' ? c.id : c) || [];
                     const prodCatId = typeof product.category === 'object' ? product.category?.id : product.category;
                     if (targetCategoryIds.includes(prodCatId)) isMatch = true;
                 }

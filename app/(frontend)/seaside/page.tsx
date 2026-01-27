@@ -38,13 +38,13 @@ const SeasideLanding = () => {
     async function fetchData() {
       try {
         const { products } = await getProductsAndCategories('seaside');
-        
-        const mappedProducts: MenuItem[] = products.map((p: any) => ({
+
+        const mappedProducts: MenuItem[] = products.map((p) => ({
           id: p.id,
           name: p.name,
           price: p.price,
           description: p.description,
-          image: typeof p.image === 'object' ? p.image.url : p.image,
+          image: (typeof p.image === 'object' ? p.image?.url : p.image) || '/restaurantplaceholder.jpg',
           store: 'seaside'
         }));
 
@@ -69,7 +69,7 @@ const SeasideLanding = () => {
 
   return (
     <div className="overflow-hidden">
-      <BrandHero 
+      <BrandHero
         title={
           <>Seaside Restaurant: <br /><span className="text-[#0077CC]">Ocean&apos;s</span> Best.</>
         }
@@ -83,7 +83,7 @@ const SeasideLanding = () => {
         store="seaside"
       />
 
-      <BrandInfo 
+      <BrandInfo
         title="Fresh from the Waves"
         description="At Seaside, we bring the ocean to your plate. We source the finest, freshest seafood daily to ensure every meal is a celebration of the sea. Whether you're craving a light bite or a grand seafood feast, our chefs craft dishes that highlight the natural flavors of the deep blue."
         image="/restaurantplaceholder.jpg"
@@ -91,24 +91,24 @@ const SeasideLanding = () => {
         buttonText="Our Process"
       />
 
-      <BrandMenu 
+      <BrandMenu
         bestSellers={bestSellers}
         dailySpecials={dailySpecials}
         accentColor="#0077CC"
         onViewAllClick={() => router.push('/seaside/products')}
       />
 
-      <BrandTestimonials 
+      <BrandTestimonials
         reviews={reviews}
         accentColor="#F3A35C"
       />
 
-      <BrandLocation 
+      <BrandLocation
         brandName="Seaside"
         accentColor="#F3A35C"
       />
 
-      <BrandHowToOrder 
+      <BrandHowToOrder
         primaryColor="#0077CC"
         store="seaside"
       />
