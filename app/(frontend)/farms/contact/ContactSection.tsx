@@ -25,10 +25,24 @@ export default function ContactSection() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    // Replace with API call or Next.js action here
+    
+    // Create mailto link with form data
+    const subject = encodeURIComponent('Contact Form: Prixair Farms');
+    const bodyText = `Full Name: ${formData.fullName}\r\nPhone: ${formData.phone}\r\nAddress: ${formData.address}\r\n\r\nAdditional Details:\r\n${formData.additionalDetails}`;
+    const body = encodeURIComponent(bodyText);
+    
+    const mailtoLink = `mailto:info@prixairgroup.com?subject=${subject}&body=${body}`;
+    window.location.href = mailtoLink;
+    
+    // Reset form
+    setFormData({
+      fullName: "",
+      phone: "",
+      address: "",
+      additionalDetails: "",
+    });
   };
 
   return (

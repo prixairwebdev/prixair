@@ -26,10 +26,24 @@ export default function ContactSection() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    // You can replace this with your API call or Next.js action
+    
+    // Create mailto link with form data
+    const subject = encodeURIComponent(`Contact Form: ${formData.businessUnit || 'Prixair Hotel'}`);
+    const bodyText = `First Name: ${formData.firstName}\r\nEmail: ${formData.email}\r\nBusiness Unit: ${formData.businessUnit}\r\n\r\nMessage:\r\n${formData.message}`;
+    const body = encodeURIComponent(bodyText);
+    
+    const mailtoLink = `mailto:info@prixairgroup.com?subject=${subject}&body=${body}`;
+    window.location.href = mailtoLink;
+    
+    // Reset form
+    setFormData({
+      firstName: "",
+      email: "",
+      businessUnit: "",
+      message: "",
+    });
   };
 
   return (

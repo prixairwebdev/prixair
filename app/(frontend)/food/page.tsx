@@ -40,6 +40,11 @@ const foods = [
     imageUrl: "/logos/iyanvillage.png",
     href: "/iyanvillage",
   },
+  {
+    name: "Party Jollof",
+    imageUrl: "/partyjollof/pjlogo.jpeg", // Placeholder
+    href: "/party-jollof",
+  },
 ];
 
 // Animation variants

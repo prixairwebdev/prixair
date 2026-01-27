@@ -15,9 +15,23 @@ export default function ContactForm() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(formData); // 🔁 Replace with API call if needed
+    
+    // Create mailto link with form data
+    const subject = encodeURIComponent('Contact Form: Water Products');
+    const bodyText = `First Name: ${formData.firstName}\r\nEmail: ${formData.email}\r\n\r\nMessage:\r\n${formData.message}`;
+    const body = encodeURIComponent(bodyText);
+    
+    const mailtoLink = `mailto:info@prixairgroup.com?subject=${subject}&body=${body}`;
+    window.location.href = mailtoLink;
+    
+    // Reset form
+    setFormData({
+      firstName: "",
+      email: "",
+      message: "",
+    });
   };
 
   return (

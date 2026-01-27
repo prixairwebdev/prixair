@@ -1,0 +1,57 @@
+﻿.next/dev/types/validator.ts(5,56): error TS2306: File 'C:/Users/8955y/OneDrive/Desktop/Prixair work/prixair/.next/dev/types/routes.d.ts' is not a module.
+.next/dev/types/validator.ts(24,32): error TS2304: Cannot find name 'LayoutProps'.
+.next/dev/types/validator.ts(24,63): error TS2304: Cannot find name 'LayoutProps'.
+.next/dev/types/validator.ts(42,39): error TS2307: Cannot find module '../../../app/(frontend)/Group/about/page.js' or its corresponding type declarations.
+.next/dev/types/validator.ts(51,39): error TS2307: Cannot find module '../../../app/(frontend)/Group/components/subsidiaries/page.js' or its corresponding type declarations.
+.next/dev/types/validator.ts(60,39): error TS2307: Cannot find module '../../../app/(frontend)/Group/contact/page.js' or its corresponding type declarations.
+.next/dev/types/validator.ts(69,39): error TS2307: Cannot find module '../../../app/(frontend)/Group/food/page.js' or its corresponding type declarations.
+.next/dev/types/validator.ts(78,39): error TS2307: Cannot find module '../../../app/(frontend)/Group/join/page.js' or its corresponding type declarations.
+.next/dev/types/validator.ts(87,39): error TS2307: Cannot find module '../../../app/(frontend)/Group/media/page.js' or its corresponding type declarations.
+.next/dev/types/validator.ts(96,39): error TS2307: Cannot find module '../../../app/(frontend)/Group/page.js' or its corresponding type declarations.
+.next/dev/types/validator.ts(105,39): error TS2307: Cannot find module '../../../app/(frontend)/Group/subsidiaries/page.js' or its corresponding type declarations.
+.next/dev/types/validator.ts(177,39): error TS2307: Cannot find module '../../../app/(frontend)/cms/page.js' or its corresponding type declarations.
+.next/dev/types/validator.ts(186,39): error TS2307: Cannot find module '../../../app/(frontend)/components/subsidiaries/page.js' or its corresponding type declarations.
+.next/dev/types/validator.ts(366,39): error TS2307: Cannot find module '../../../app/(frontend)/hotel/components/subsidiaries/page.js' or its corresponding type declarations.
+.next/dev/types/validator.ts(420,39): error TS2307: Cannot find module '../../../app/(frontend)/laundry/booking/page.js' or its corresponding type declarations.
+.next/dev/types/validator.ts(429,39): error TS2307: Cannot find module '../../../app/(frontend)/laundry/contact/page.js' or its corresponding type declarations.
+.next/dev/types/validator.ts(438,39): error TS2307: Cannot find module '../../../app/(frontend)/laundry/page.js' or its corresponding type declarations.
+.next/dev/types/validator.ts(447,39): error TS2307: Cannot find module '../../../app/(frontend)/laundry/service/page.js' or its corresponding type declarations.
+.next/dev/types/validator.ts(456,39): error TS2307: Cannot find module '../../../app/(frontend)/laundry/servicearea/page.js' or its corresponding type declarations.
+.next/dev/types/validator.ts(474,39): error TS2307: Cannot find module '../../../app/(frontend)/logistics/components/subsidiaries/page.js' or its corresponding type declarations.
+.next/dev/types/validator.ts(690,39): error TS2307: Cannot find module '../../../app/(frontend)/realestate/components/subsidiaries/page.js' or its corresponding type declarations.
+.next/dev/types/validator.ts(822,39): error TS2307: Cannot find module '../../../app/(frontend)/Group/layout.js' or its corresponding type declarations.
+.next/dev/types/validator.ts(840,39): error TS2307: Cannot find module '../../../app/(frontend)/cms/layout.js' or its corresponding type declarations.
+.next/dev/types/validator.ts(876,39): error TS2307: Cannot find module '../../../app/(frontend)/laundry/layout.js' or its corresponding type declarations.
+app/(frontend)/media/page.tsx(53,17): error TS2322: Type '{ hidden: { opacity: number; y: number; }; show: { opacity: number; y: number; transition: { duration: number; ease: string; }; }; }' is not assignable to type 'Variants'.
+  Property 'show' is incompatible with index signature.
+    Type '{ opacity: number; y: number; transition: { duration: number; ease: string; }; }' is not assignable to type 'Variant'.
+      Type '{ opacity: number; y: number; transition: { duration: number; ease: string; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ opacity: number; y: number; transition: { duration: number; ease: string; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ duration: number; ease: string; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ duration: number; ease: string; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ duration: number; ease: string; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'ease' are incompatible.
+                    Type 'string' is not assignable to type 'Easing | Easing[] | undefined'.
+app/(frontend)/media/page.tsx(61,17): error TS2322: Type '{ hidden: { opacity: number; y: number; }; show: { opacity: number; y: number; transition: { duration: number; ease: string; }; }; }' is not assignable to type 'Variants'.
+  Property 'show' is incompatible with index signature.
+    Type '{ opacity: number; y: number; transition: { duration: number; ease: string; }; }' is not assignable to type 'Variant'.
+      Type '{ opacity: number; y: number; transition: { duration: number; ease: string; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ opacity: number; y: number; transition: { duration: number; ease: string; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ duration: number; ease: string; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ duration: number; ease: string; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ duration: number; ease: string; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'ease' are incompatible.
+                    Type 'string' is not assignable to type 'Easing | Easing[] | undefined'.
+app/(frontend)/media/page.tsx(69,17): error TS2322: Type '{ hidden: { opacity: number; y: number; }; show: { opacity: number; y: number; transition: { duration: number; ease: string; }; }; }' is not assignable to type 'Variants'.
+  Property 'show' is incompatible with index signature.
+    Type '{ opacity: number; y: number; transition: { duration: number; ease: string; }; }' is not assignable to type 'Variant'.
+      Type '{ opacity: number; y: number; transition: { duration: number; ease: string; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ opacity: number; y: number; transition: { duration: number; ease: string; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ duration: number; ease: string; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ duration: number; ease: string; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ duration: number; ease: string; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'ease' are incompatible.
+                    Type 'string' is not assignable to type 'Easing | Easing[] | undefined'.

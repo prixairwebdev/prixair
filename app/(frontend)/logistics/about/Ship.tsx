@@ -61,14 +61,7 @@ export default function Ship() {
             Request a Quote
           </motion.a>
 
-          <motion.a
-            href="/track"
-            className="bg-white text-gray-800 px-6 py-3 rounded-md font-medium hover:bg-gray-100 transition-colors duration-200"
-            whileHover={{ scale: 1.07 }}
-            whileTap={{ scale: 0.97 }}
-          >
-            Track Shipment
-          </motion.a>
+      
         </motion.div>
       </motion.div>
     </section>
