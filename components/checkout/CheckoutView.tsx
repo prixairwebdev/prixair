@@ -39,7 +39,7 @@ export default function CheckoutView({
     primaryColorCls = "bg-orange-500 hover:bg-orange-600 shadow-orange-100",
     textColorCls = "text-orange-600",
     accentColorCls = "border-orange-500 bg-orange-50",
-    loginPath = "/supermarket/account/login",
+    loginPath,
 }: CheckoutViewProps) {
     const { getCartItems, getCartTotal, clear } = useCart();
     const { user } = useAuth();

@@ -72,7 +72,7 @@ const NoodleliciousLanding = () => {
         bgImage="/logos/noodlel.png"
         primaryColor="#F3A35C"
         secondaryColor="#373435"
-        onOrderClick={() => router.push('/noodlelicious/menu')}
+        onOrderClick={() => router.push('/noodlelicious/products')}
         store="noodlelicious"
       />
 
@@ -93,7 +93,7 @@ const NoodleliciousLanding = () => {
           bestSellers={bestSellers}
           dailySpecials={dailySpecials}
           accentColor="#F3A35C"
-          onViewAllClick={() => router.push('/noodlelicious/menu')}
+          onViewAllClick={() => router.push('/noodlelicious/products')}
         />
       )}
 

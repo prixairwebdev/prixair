@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import BrandHero from "../components/brand/BrandHero";
 import BrandInfo from "../components/brand/BrandInfo";
 import BrandMenu, { MenuItem } from "../components/brand/BrandMenu";
@@ -28,6 +29,7 @@ const reviews = [
 ];
 
 const SeasideLanding = () => {
+  const router = useRouter();
   const [bestSellers, setBestSellers] = useState<MenuItem[]>([]);
   const [dailySpecials, setDailySpecials] = useState<MenuItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -76,6 +78,8 @@ const SeasideLanding = () => {
         bgImage="/logos/seaside.png"
         primaryColor="#0077CC"
         secondaryColor="#F3A35C"
+        onMenuClick={() => router.push('/seaside/products')}
+        onOrderClick={() => router.push('/seaside/products')}
         store="seaside"
       />
 
@@ -91,6 +95,7 @@ const SeasideLanding = () => {
         bestSellers={bestSellers}
         dailySpecials={dailySpecials}
         accentColor="#0077CC"
+        onViewAllClick={() => router.push('/seaside/products')}
       />
 
       <BrandTestimonials 

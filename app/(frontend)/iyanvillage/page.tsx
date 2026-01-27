@@ -1,64 +1,15 @@
 'use client';
+import { useEffect, useState } from "react";
 import BrandHero from "../components/brand/BrandHero";
 import BrandInfo from "../components/brand/BrandInfo";
-import BrandMenu from "../components/brand/BrandMenu";
+import BrandMenu, { MenuItem } from "../components/brand/BrandMenu";
 import BrandLocation from "../components/brand/BrandLocation";
 import BrandTestimonials from "../components/brand/BrandTestimonials";
 import BrandHowToOrder from "../components/brand/BrandHowToOrder";
-
-const bestSellers = [
-  { 
-    name: "Classic Pounded Yam", 
-    price: "₦5,000", 
-    image: "/iyanvillage/iyan8.jpeg", // Placeholder for Iyan
-    description: "Smooth, fluffy pounded yam served with your choice of rich indigenous soup."
-  },
-  { 
-    name: "Egusi Soup Special", 
-    price: "₦4,500", 
-    image: "/iyanvillage/iyan7.jpeg", // Placeholder
-    description: "Rich melon seed soup with melon, spinach, and assorted meats."
-  },
-  { 
-    name: "Fisherman Soup", 
-    price: "₦6,500", 
-    image: "/iyanvillage/iyan6.jpeg", // Placeholder
-    description: "A coastal delight featuring fresh fish, prawns, and traditional spices."
-  },
-  { 
-    name: "Village Platter", 
-    price: "₦8,500", 
-    image: "/iyanvillage/iyan5.jpeg", // Placeholder
-    description: "A hearty combination of Iyan, two soups, and extra protein."
-  },
-];
-
-const dailySpecials = [
-  { 
-    name: "Banga Soup", 
-    price: "₦5,200", 
-    image: "/iyanvillage/iyan6.jpeg", // Placeholder
-    description: "Palm nut soup slow-cooked to perfection with native spices."
-  },
-  { 
-    name: "Afang Soup", 
-    price: "₦4,800", 
-    image: "/iyanvillage/iyan3.jpeg", // Placeholder
-    description: "A nutritious blend of Afang leaves and waterleaf with rich protein."
-  },
-  { 
-    name: "Efo Riro", 
-    price: "₦4,500", 
-    image: "/iyanvillage/iyan2.jpeg", // Placeholder
-    description: "Classic Yoruba spinach stew with palm oil and locust beans."
-  },
-  { 
-    name: "White Soup (Afia Efere)", 
-    price: "₦5,500", 
-    image: "/iyanvillage/iyan15.jpeg", // Placeholder
-    description: "Spicy and aromatic soup thickened with pounded yam."
-  },
-];
+import FloatingCart from "../components/brand/FloatingCart";
+import { getProductsByStore } from "@/app/actions/products";
+import { Product } from "@/app/actions/supermarket";
+import { useRouter } from "next/navigation";
 
 const reviews = [
   {
@@ -79,6 +30,38 @@ const reviews = [
 ];
 
 const IyanVillageLanding = () => {
+  const router = useRouter();
+  const [products, setProducts] = useState<MenuItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchIyanData() {
+      try {
+        const iyanProducts = await getProductsByStore('iyanvillage');
+
+        const mappedProducts: MenuItem[] = iyanProducts.map((p: Product) => ({
+          id: p.id,
+          name: p.name,
+          price: p.price,
+          description: p.description,
+          image: typeof p.image === 'string' ? p.image : (p.image?.url || "/iyanvillage/iyan8.jpeg"),
+          store: 'iyanvillage'
+        }));
+
+        setProducts(mappedProducts);
+      } catch (error) {
+        console.error("Failed to fetch Iyan Village products:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchIyanData();
+  }, []);
+
+  const bestSellers = products.slice(0, 4);
+  const dailySpecials = products.slice(4, 8);
+
   return (
     <div className="overflow-hidden">
       <BrandHero 
@@ -101,11 +84,18 @@ const IyanVillageLanding = () => {
         buttonText="Our Heritage"
       />
 
-      <BrandMenu 
-        bestSellers={bestSellers}
-        dailySpecials={dailySpecials}
-        accentColor="#FE0000"
-      />
+      {loading ? (
+        <div className="flex justify-center py-20">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#FE0000]"></div>
+        </div>
+      ) : (
+        <BrandMenu 
+          bestSellers={bestSellers}
+          dailySpecials={dailySpecials}
+          accentColor="#FE0000"
+          store="iyanvillage"
+        />
+      )}
 
       <BrandTestimonials 
         reviews={reviews}
@@ -120,6 +110,11 @@ const IyanVillageLanding = () => {
       <BrandHowToOrder 
         primaryColor="#FE0000"
         store="iyanvillage"
+      />
+
+      <FloatingCart 
+        storeSlug="iyanvillage"
+        accentColor="#FE0000"
       />
     </div>
   );

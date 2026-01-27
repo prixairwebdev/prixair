@@ -31,5 +31,11 @@ export const Categories: CollectionConfig = {
                 ],
             },
         },
+        {
+            name: 'store',
+            type: 'relationship',
+            relationTo: 'stores',
+            required: true,
+        },
     ],
 };

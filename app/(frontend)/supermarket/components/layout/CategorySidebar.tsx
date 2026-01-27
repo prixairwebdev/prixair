@@ -52,7 +52,7 @@ export function CategorySidebar() {
   }
 
   const sortedCategories = categories.length > 0 
-    ? categories.map(c => c.name) 
+    ? Array.from(new Set(categories.map(c => c.name))) 
     : fallbackCategories;
 
   return (

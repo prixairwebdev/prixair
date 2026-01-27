@@ -81,6 +81,11 @@ export async function getProductsAndCategories(storeSlug: string) {
             }),
             payload.find({
                 collection: 'categories' as any,
+                where: {
+                    store: {
+                        equals: storeId,
+                    },
+                },
                 limit: 100,
                 sort: 'name',
             })

@@ -11,7 +11,7 @@ export interface MenuItem {
   price: string | number;
   image: string;
   description?: string;
-  store?: 'supermarket' | 'bakery' | 'pharmacy' | 'noodlelicious' | 'toastpan' | 'gavi' | 'seaside';
+  store?: 'supermarket' | 'bakery' | 'pharmacy' | 'noodlelicious' | 'toastpan' | 'gavi' | 'seaside' | 'iyanvillage';
 }
 
 interface BrandMenuProps {
@@ -19,6 +19,7 @@ interface BrandMenuProps {
   dailySpecials: MenuItem[];
   accentColor?: string;
   onViewAllClick?: () => void;
+  store?: 'supermarket' | 'bakery' | 'pharmacy' | 'noodlelicious' | 'toastpan' | 'gavi' | 'seaside' | 'iyanvillage';
 }
 
 const containerVariants = {
@@ -47,7 +48,8 @@ const BrandMenu: React.FC<BrandMenuProps> = ({
   bestSellers,
   dailySpecials,
   accentColor = "#B5D04E",
-  onViewAllClick
+  onViewAllClick,
+  store
 }) => {
   const router = useRouter();
   return (
@@ -83,7 +85,7 @@ const BrandMenu: React.FC<BrandMenuProps> = ({
           viewport={{ once: true }}
         >
           {bestSellers.map((item, index) => (
-            <MenuItemCard key={item.id || index} item={item} accentColor={accentColor} />
+            <MenuItemCard key={item.id || index} item={item} accentColor={accentColor} storeSlug={store} />
           ))}
         </motion.div>
 
@@ -107,7 +109,7 @@ const BrandMenu: React.FC<BrandMenuProps> = ({
           viewport={{ once: true }}
         >
           {dailySpecials.map((item, index) => (
-            <MenuItemCard key={item.id || index} item={item} accentColor={accentColor} />
+            <MenuItemCard key={item.id || index} item={item} accentColor={accentColor} storeSlug={store} />
           ))}
         </motion.div>
       </div>
@@ -115,9 +117,9 @@ const BrandMenu: React.FC<BrandMenuProps> = ({
   );
 };
 
-const MenuItemCard = ({ item, accentColor }: { item: MenuItem; accentColor: string }) => {
+const MenuItemCard = ({ item, accentColor, storeSlug }: { item: MenuItem; accentColor: string; storeSlug?: string }) => {
   const { addItem, updateQty, getCartItems } = useCart();
-  const store = item.store || 'noodlelicious';
+  const store = item.store || storeSlug || 'noodlelicious';
   const cartItems = getCartItems(store);
   const cartItem = cartItems.find((i) => i.id === item.id);
   const qtyInCart = cartItem ? cartItem.qty : 0;

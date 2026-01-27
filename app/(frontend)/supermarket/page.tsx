@@ -6,7 +6,7 @@ import { HeroBanner } from "./components/home/HeroBanner";
 import { FlashSales } from "./components/home/FlashSales";
 import { CategoryGrid } from "./components/home/CategoryGrid";
 import { HeroSection } from "./components/HeroSection";
-import ProductCard from "./components/ProductCard";
+import ProductCard from "@/components/ProductCard";
 import { dummyProducts } from "./data/dummy-data";
 import { getSupermarketProducts, getFlashSale } from "@/app/actions/supermarket";
 import { Product, FlashSale } from "@/types/store";

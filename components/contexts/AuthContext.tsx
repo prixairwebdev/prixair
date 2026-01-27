@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 interface AuthContextType {
     user: User | null;
     login: (email: string, password: string) => Promise<boolean>;
-    register: (name: string, email: string, password: string, phone?: string) => Promise<boolean>;
+    register: (name: string, email: string, password: string, storeId: string, phone?: string) => Promise<boolean>;
     logout: () => Promise<void>;
     isAuthenticated: boolean;
     loading: boolean;
@@ -63,7 +63,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
     };
 
-    const register = async (name: string, email: string, password: string, phone?: string): Promise<boolean> => {
+    const register = async (name: string, email: string, password: string, storeId: string, phone?: string): Promise<boolean> => {
         try {
             const res = await fetch('/api/users', {
                 method: 'POST',
@@ -75,6 +75,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                     email,
                     password,
                     phone,
+                    store: storeId,
                 }),
             });
 

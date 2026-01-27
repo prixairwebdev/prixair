@@ -1,15 +1,20 @@
-
-import { getSupermarketProducts, getCategories } from '@/app/actions/supermarket';
-import ProductsList from './ProductsList';
+import { getProductsAndCategories, getStoreBySlug } from '@/app/actions/products';
+import StoreProductsList from '@/components/StoreProductsList';
 import { Suspense } from 'react';
+import { notFound } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';
 
 export default async function ProductsPage() {
-  const [products, categories] = await Promise.all([
-    getSupermarketProducts(100), // Fetch up to 100 products for now
-    getCategories()
+  const storeSlug = 'supermarket';
+  const [store, data] = await Promise.all([
+    getStoreBySlug(storeSlug),
+    getProductsAndCategories(storeSlug)
   ]);
+
+  if (!store) {
+    return notFound();
+  }
 
   return (
     <Suspense fallback={
@@ -17,7 +22,12 @@ export default async function ProductsPage() {
         <div className="text-xl font-semibold text-gray-600 animate-pulse">Loading Products...</div>
       </div>
     }>
-      <ProductsList products={products} categories={categories} />
+      <StoreProductsList 
+        products={data.products} 
+        categories={data.categories} 
+        storeSlug={storeSlug}
+        storeName={store.name}
+      />
     </Suspense>
   );
 }

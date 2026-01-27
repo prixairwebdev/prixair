@@ -10,6 +10,9 @@ export const metadata: Metadata = {
 // Import the Montserrat font
 import { Montserrat } from 'next/font/google';
 import { CartProvider } from "@/components/CartContext";
+import { WishlistProvider } from "@/components/contexts/WishlistContext";
+import { AuthProvider } from "@/components/contexts/AuthContext";
+import { OrderProvider } from "@/components/contexts/OrderContext";
 
 // Configure the font subset, weight, and style
 const montserrat = Montserrat({
@@ -33,9 +36,15 @@ export default function RootLayout({
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
-        <CartProvider>
-          {children}
-        </CartProvider>
+        <AuthProvider>
+          <CartProvider>
+            <WishlistProvider>
+              <OrderProvider>
+                {children}
+              </OrderProvider>
+            </WishlistProvider>
+          </CartProvider>
+        </AuthProvider>
       </body>
     </html>
   );

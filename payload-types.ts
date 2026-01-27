@@ -136,6 +136,8 @@ export interface User {
   id: number;
   name: string;
   phone?: string | null;
+  store?: (number | null) | Store;
+  roles?: ('admin' | 'user')[] | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -153,6 +155,20 @@ export interface User {
       }[]
     | null;
   password?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "stores".
+ */
+export interface Store {
+  id: number;
+  name: string;
+  slug?: string | null;
+  description?: string | null;
+  image?: (number | null) | Media;
+  isActive?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -181,6 +197,7 @@ export interface Category {
   id: number;
   name: string;
   slug?: string | null;
+  store: number | Store;
   updatedAt: string;
   createdAt: string;
 }
@@ -199,20 +216,6 @@ export interface Product {
   store: number | Store;
   rating?: number | null;
   reviewCount?: number | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "stores".
- */
-export interface Store {
-  id: number;
-  name: string;
-  slug?: string | null;
-  description?: string | null;
-  image?: (number | null) | Media;
-  isActive?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -386,6 +389,8 @@ export interface PayloadMigration {
 export interface UsersSelect<T extends boolean = true> {
   name?: T;
   phone?: T;
+  store?: T;
+  roles?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -428,6 +433,7 @@ export interface MediaSelect<T extends boolean = true> {
 export interface CategoriesSelect<T extends boolean = true> {
   name?: T;
   slug?: T;
+  store?: T;
   updatedAt?: T;
   createdAt?: T;
 }
