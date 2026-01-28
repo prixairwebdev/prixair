@@ -103,12 +103,6 @@ export default function LoginPage() {
               </Link>
             </p>
           </div>
-
-          <div className="mt-6 pt-6 border-t border-gray-200">
-            <p className="text-xs text-gray-500 text-center">
-              Demo credentials: john.doe@example.com (any password)
-            </p>
-          </div>
         </div>
 
         <div className="mt-6 text-center">

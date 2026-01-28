@@ -65,6 +65,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const register = async (name: string, email: string, password: string, storeId: string, phone?: string): Promise<boolean> => {
         try {
+            // Convert storeId to number if it's a numeric string, as Payload/Postgres expects integer IDs
+            const store = !isNaN(Number(storeId)) ? Number(storeId) : storeId;
+
             const res = await fetch('/api/users', {
                 method: 'POST',
                 headers: {
@@ -75,7 +78,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                     email,
                     password,
                     phone,
-                    store: storeId,
+                    store: store,
                 }),
             });
 
