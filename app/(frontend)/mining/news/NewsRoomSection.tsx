@@ -4,34 +4,34 @@ import { motion, useAnimation, easeIn, easeOut } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-
-interface NewsItem {
-  title: string;
-  description: string;
-  image: string;
-  date: string;
-  link: string;
-  content?: string;
-}
+import { NewsItem } from '@/types/news';
+import NewsModal from '@/components/NewsModal';
 
 const newsList: NewsItem[] = [
 
     {
-     title: 'PRIXIAR RESOURCES LIMITED AND CHUANGXING CAPITAL CO. Ltd signs MOU on partnership for Gold mining',
+     title: 'PRIXAIR RESOURCES LIMITED AND CHUANGXING CAPITAL CO. Ltd signs MOU on partnership for Gold mining',
     description:
-      'PRIXIAR RESOURCES LIMITED is pleased to announce the signing of a Memorandum of Understanding (MoU) with Chuangxing Capital Co. Ltd for a strategic partnership in gold mining operations. The MoU outlines a framework for cooperation covering investment, technical support, and operational development in identified gold mining projects. This partnership reflects both companies’ shared vision to promote responsible mining, economic growth, and sustainable resource development.  ',
+      'PRIXAIR RESOURCES LIMITED is pleased to announce the signing of a Memorandum of Understanding (MoU) with Chuangxing Capital Co. Ltd for a strategic partnership in gold mining operations. The MoU outlines a framework for cooperation covering investment, technical support, and operational development in identified gold mining projects. This partnership reflects both companies’ shared vision to promote responsible mining, economic growth, and sustainable resource development.  ',
     image: '/pxm/pxm1.jpeg',
     date: 'January 26, 2026',
-    link: '/news', // etc
+    link: '/news',
+    content: `PRIXAIR RESOURCES LIMITED is pleased to announce the signing of a Memorandum of Understanding (MoU) with Chuangxing Capital Co. Ltd for a strategic partnership in gold mining operations. 
+
+The MoU outlines a framework for cooperation covering investment, technical support, and operational development in identified gold mining projects. This partnership reflects both companies’ shared vision to promote responsible mining, economic growth, and sustainable resource development.`,
+    additionalImages: [
+      '/pxm/pxm2.jpeg',
+      '/pxm/pxm3.jpeg',
+     
+    ]
   },
-  // Other example items
+  
     {
     title: 'New Lithium Discovery in Eastern Belt',
     description:
       'Our geologists confirmed a significant lithium reserve in the Eastern Belt zone during Q2 exploration.',
     image: '/newss.png',
     date: 'July 17, 2025',
-    link: '',
     content: `
 **Prixair Resources**, a fast-growing Nigerian mining company, has announced the discovery of a significant lithium deposit in the Eastern Belt Zone during its second-quarter 2025 exploration campaign. This breakthrough marks a pivotal milestone in the company’s mission to unlock Nigeria’s vast mineral wealth and contribute meaningfully to the global shift toward sustainable energy.
 
@@ -47,8 +47,7 @@ According to internal reports from Prixair’s geology and field operations unit
     description: 'Recognized for sustainable and high-yield farming innovations across Nigeria.',
     image: '/newss.png',
     date: 'July 2025',
-    link: '',
-    content: `Prixair Farms receives top honors for sustainable agriculture...`,
+    content: `Prixair Farms receives top honors for sustainable agriculture and high-yield farming innovations across Nigeria. The award recognizes the company's commitment to food security and innovative agricultural practices that benefit local communities and the environment.`,
   },
 ];
 
@@ -74,6 +73,7 @@ const fadeInUp = {
 
 export default function NewsRoomSection() {
   const [selectedNews, setSelectedNews] = useState<NewsItem | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [hovered, setHovered] = useState(false);
   const controls = useAnimation();
   const [ref, inView] = useInView({ threshold: 0.2, triggerOnce: false });
@@ -86,35 +86,10 @@ export default function NewsRoomSection() {
     }
   }, [controls, inView]);
 
-  if (selectedNews) {
-    return (
-      <section className="bg-white py-16 px-6 lg:px-24">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-2xl font-bold">{selectedNews.title}</h2>
-            <button
-              onClick={() => setSelectedNews(null)}
-              className="text-sm text-blue-600 underline"
-            >
-              ← Back to News
-            </button>
-          </div>
-          <p className="text-sm text-gray-500 mb-4">{selectedNews.date}</p>
-          <div className="relative w-full h-64 mb-6">
-            <Image
-              src={selectedNews.image}
-              alt={selectedNews.title}
-              fill
-              className="object-cover rounded"
-            />
-          </div>
-          <div className="prose max-w-none text-gray-800 whitespace-pre-wrap">
-            {selectedNews.content}
-          </div>
-        </div>
-      </section>
-    );
-  }
+  const handleNewsClick = (news: NewsItem) => {
+    setSelectedNews(news);
+    setIsModalOpen(true);
+  };
 
   return (
     <section className="py-12 sm:py-16 lg:py-20 bg-white px-4 sm:px-6 lg:px-8 xl:px-24">
@@ -153,7 +128,7 @@ export default function NewsRoomSection() {
           <motion.div
             variants={fadeInUp}
             className="w-full lg:w-[58%]"
-            onClick={() => setSelectedNews(newsList[0])}
+            onClick={() => handleNewsClick(newsList[0])}
           >
             <div
               className="relative group block cursor-pointer"
@@ -189,7 +164,7 @@ export default function NewsRoomSection() {
               <motion.div
                 key={idx}
                 variants={fadeInUp}
-                onClick={() => setSelectedNews(news)}
+                onClick={() => handleNewsClick(news)}
                 className="cursor-pointer"
               >
                 <div className="flex gap-3 sm:gap-4 items-center hover:bg-gray-50 p-2 sm:p-3 rounded-lg transition-colors duration-200">
@@ -218,6 +193,13 @@ export default function NewsRoomSection() {
           </motion.div>
         </div>
       </motion.div>
+
+      <NewsModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        news={selectedNews} 
+      />
     </section>
   );
 }
+
