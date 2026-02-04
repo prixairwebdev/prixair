@@ -90,16 +90,19 @@ export default function TopSellers() {
                 </div>
                 <p className="text-xs text-gray-600">{dish.desc}</p>
               </div>
-              <button className="mt-4 bg-red-600 hover:bg-red-700 text-white text-xs font-medium py-4 px-4 w-[100px] self-end">
+              <a 
+                href="/buka/products"
+                className="mt-4 bg-red-600 hover:bg-red-700 text-white text-xs font-medium py-4 px-4 w-fit self-end text-center"
+              >
                 Order Now
-              </button>
+              </a>
             </div>
           </motion.div>
         ))}
       </motion.div>
 
       <motion.a
-        href="/order"
+        href="/buka/products"
         className="mt-10 bg-red-600 hover:bg-red-700 text-white px-6 py-3 text-sm font-semibold flex items-center gap-2"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}

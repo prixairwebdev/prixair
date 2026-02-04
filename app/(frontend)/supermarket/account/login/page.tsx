@@ -23,7 +23,7 @@ export default function LoginPage() {
       if (success) {
         router.push('/supermarket/account');
       } else {
-        setError('Invalid email or password. Try: john.doe@example.com');
+        setError('Invalid email or password.');
       }
     } catch (err) {
       setError('An error occurred. Please try again.');

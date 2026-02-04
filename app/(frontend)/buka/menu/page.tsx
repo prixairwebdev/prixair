@@ -1,5 +1,4 @@
 "use client";
-import { useState, useEffect } from "react";
 import { motion, easeInOut } from "framer-motion";
 import Image from "next/image";
 import OurCategories from "../sections/ourcategories";
@@ -7,15 +6,6 @@ import { menuItems } from "./data/menu";
 import MenuSection from "./menu";
 
 export default function Home() {
-
-  const [showModal, setShowModal] = useState(true);
-
-  useEffect(() => {
-    const savedLocation = localStorage.getItem("selectedLocation");
-    if (savedLocation) {
-      setShowModal(false);
-    }
-  }, []);
 
   const container = {
     hidden: { opacity: 0 },
@@ -55,7 +45,6 @@ export default function Home() {
 
   return (
     <div className="overflow-hidden">
-      {!showModal && (
         <>
           <section
             className="relative h-screen w-full overflow-hidden"
@@ -157,7 +146,6 @@ export default function Home() {
             />
           </main>
         </>
-      )}
     </div>
   );
 }

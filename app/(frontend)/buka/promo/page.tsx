@@ -1,5 +1,4 @@
 "use client";
-import { useState, useEffect } from "react";
 import { motion, Variants } from "framer-motion";
 import Image from "next/image";
 import SpecialPromoBanner from "../sections/SpecialPromoBanner";
@@ -8,23 +7,6 @@ import SpecialPromoBanner from "../sections/SpecialPromoBanner";
 import CompositionEvent from "./CompetitionsEvents";
 
 export default function Home() {
-  const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
-  const [showModal, setShowModal] = useState(true);
-
-  useEffect(() => {
-    const savedLocation = localStorage.getItem("selectedLocation");
-    if (savedLocation) {
-      setSelectedLocation(savedLocation);
-      setShowModal(false);
-    }
-  }, []);
-
-  const handleSelectLocation = (location: string) => {
-    setSelectedLocation(location);
-    localStorage.setItem("selectedLocation", location);
-    setShowModal(false);
-  };
-
   const container: Variants = {
     hidden: { opacity: 0 },
     show: {
@@ -53,59 +35,8 @@ export default function Home() {
     },
   };
 
-  const locations = [
-    "PRIXAIR BUKA GADUWA",
-    "PRIXAIR BUKA ZONE 6",
-    "PRIXAIR BUKA JABI MALL",
-    "PRIXAIR BUKA GATEWAY MALL",
-    "PRIXAIR BUKA MINNA",
-  ];
-
   return (
     <div className="overflow-hidden">
-      {/* Location Selection Modal */}
-      {showModal && (
-        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center">
-          <div className="bg-white rounded-lg shadow-lg w-[90%] max-w-md p-6">
-            <h2 className="text-xl font-bold mb-4 text-center">
-              Select Your Location or Branch
-            </h2>
-            <p className="text-sm text-gray-600 mb-4 text-center">
-              Each branch offers a unique menu experience. Choose your nearest
-              location.
-            </p>
-            <div className="space-y-3">
-              {locations.map((location) => (
-                <div
-                  key={location}
-                  className={`border rounded px-4 py-2 cursor-pointer transition-all ${
-                    selectedLocation === location
-                      ? "border-red-500 bg-red-100"
-                      : "border-gray-300 hover:border-red-400"
-                  }`}
-                  onClick={() => handleSelectLocation(location)}
-                >
-                  {location}
-                </div>
-              ))}
-            </div>
-            <button
-              onClick={() => selectedLocation && setShowModal(false)}
-              disabled={!selectedLocation}
-              className={`mt-6 w-full py-2 text-white font-semibold rounded ${
-                selectedLocation
-                  ? "bg-red-600 hover:bg-red-700"
-                  : "bg-gray-300 cursor-not-allowed"
-              }`}
-            >
-              Select
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Main Page Content */}
-      {!showModal && (
         <>
           <section
             className="relative h-screen w-full overflow-hidden"
@@ -175,7 +106,6 @@ export default function Home() {
           <CompositionEvent />
           <SpecialPromoBanner />
         </>
-      )}
     </div>
   );
 }

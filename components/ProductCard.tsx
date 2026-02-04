@@ -9,9 +9,10 @@ import Link from 'next/link';
 
 interface ProductCardProps {
   product: Product;
+  accentColor?: string;
 }
 
-export default function ProductCard({ product }: ProductCardProps) {
+export default function ProductCard({ product, accentColor = '#f97316' }: ProductCardProps) {
   const { addItem, carts, updateQty } = useCart();
   const { addToWishlist, isInWishlist, removeFromWishlist } = useWishlist();
   const inWishlist = isInWishlist(product.id);
@@ -69,7 +70,10 @@ export default function ProductCard({ product }: ProductCardProps) {
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-2">
           {typeof product.stock === 'number' && product.stock < 10 && product.stock > 0 && (
-            <div className="bg-orange-500 text-white text-[10px] font-black px-2 py-1 rounded-lg uppercase tracking-wider shadow-lg">
+            <div 
+              style={{ backgroundColor: accentColor }}
+              className="text-white text-[10px] font-black px-2 py-1 rounded-lg uppercase tracking-wider shadow-lg"
+            >
               Low Stock
             </div>
           )}
@@ -97,9 +101,18 @@ export default function ProductCard({ product }: ProductCardProps) {
 
       <div className="p-5 flex flex-col flex-1">
         <div className="mb-2">
-          <span className="text-[10px] font-bold text-orange-500 uppercase tracking-widest">{categoryName}</span>
+          <span 
+            style={{ color: accentColor }}
+            className="text-[10px] font-bold uppercase tracking-widest"
+          >
+            {categoryName}
+          </span>
           <Link href={productLink}>
-            <h3 className="text-black font-extrabold text-base mb-1 hover:text-orange-600 transition-colors line-clamp-1">
+            <h3 
+              className="text-black font-extrabold text-base mb-1 transition-colors line-clamp-1"
+              onMouseEnter={(e) => e.currentTarget.style.color = accentColor}
+              onMouseLeave={(e) => e.currentTarget.style.color = 'black'}
+            >
               {product.name}
             </h3>
           </Link>
@@ -113,7 +126,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         {typeof product.rating === 'number' && (
           <div className="flex items-center gap-1.5 mb-4">
-            <div className="flex text-orange-400 text-xs">
+            <div className="flex text-xs" style={{ color: '#fbbf24' }}>
               {[...Array(5)].map((_, i) => (
                 <span key={i}>
                   {i < Math.floor(product.rating!) ? '★' : '☆'}
@@ -138,7 +151,8 @@ export default function ProductCard({ product }: ProductCardProps) {
             <div className="flex items-center justify-between bg-gray-50 border-2 border-gray-100 rounded-xl p-1">
               <button
                 onClick={() => updateQty(product.id, storeSlug, cartItem.qty - 1)}
-                className="w-10 h-10 flex items-center justify-center text-orange-600 font-black text-xl hover:bg-white hover:shadow-sm rounded-lg transition-all"
+                style={{ color: accentColor }}
+                className="w-10 h-10 flex items-center justify-center font-black text-xl hover:bg-white hover:shadow-sm rounded-lg transition-all"
               >
                 -
               </button>
@@ -146,7 +160,8 @@ export default function ProductCard({ product }: ProductCardProps) {
               <button
                 onClick={() => updateQty(product.id, storeSlug, cartItem.qty + 1)}
                 disabled={product.stock !== undefined && cartItem.qty >= product.stock}
-                className="w-10 h-10 flex items-center justify-center text-orange-600 font-black text-xl hover:bg-white hover:shadow-sm rounded-lg transition-all disabled:opacity-20"
+                style={{ color: accentColor }}
+                className="w-10 h-10 flex items-center justify-center font-black text-xl hover:bg-white hover:shadow-sm rounded-lg transition-all disabled:opacity-20"
               >
                 +
               </button>
@@ -155,7 +170,10 @@ export default function ProductCard({ product }: ProductCardProps) {
             <button
               onClick={handleAddToCart}
               disabled={product.stock === 0}
-              className="w-full bg-black text-white py-3.5 rounded-xl font-black text-sm hover:bg-orange-600 hover:shadow-lg hover:shadow-orange-100 transition-all duration-300 disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed"
+              style={{ backgroundColor: product.stock === 0 ? undefined : 'black' }}
+              className="w-full text-white py-3.5 rounded-xl font-black text-sm transition-all duration-300 disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed"
+              onMouseEnter={(e) => { if (product.stock !== 0) e.currentTarget.style.backgroundColor = accentColor; }}
+              onMouseLeave={(e) => { if (product.stock !== 0) e.currentTarget.style.backgroundColor = 'black'; }}
             >
               {product.stock === 0 ? 'SOLD OUT' : 'ADD TO BAG'}
             </button>

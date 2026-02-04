@@ -87,7 +87,7 @@ export default function OurCategories() {
       </motion.div>
 
       <motion.a
-        href="/order"
+        href="/buka/products"
         className="text-white bg-[#FE0000] hover:bg-[#D90000] px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base font-semibold shadow-md rounded-md"
         variants={buttonItem}
         initial="hidden"

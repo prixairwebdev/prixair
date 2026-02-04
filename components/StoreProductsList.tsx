@@ -12,6 +12,7 @@ interface StoreProductsListProps {
     categories: Category[];
     storeSlug: string;
     storeName: string;
+    accentColor?: string;
 }
 
 const ITEMS_PER_PAGE = 12;
@@ -20,7 +21,8 @@ export default function StoreProductsList({
     products,
     categories,
     storeSlug,
-    storeName
+    storeName,
+    accentColor = '#f97316'
 }: StoreProductsListProps) {
     const searchParams = useSearchParams();
     const router = useRouter();
@@ -97,7 +99,15 @@ export default function StoreProductsList({
                 <div className="max-w-7xl mx-auto px-4 py-8">
                     <h1 className="text-4xl font-extrabold text-black mb-4">{storeName} Catalog</h1>
                     <div className="flex items-center gap-2 text-sm text-gray-500">
-                        <Link href={`/${storeSlug}`} className="hover:text-orange-600 transition-colors font-medium">Home</Link>
+                        <Link 
+                            href={`/${storeSlug}`} 
+                            className="transition-colors font-medium"
+                            style={{ color: 'inherit' }}
+                            onMouseEnter={(e) => e.currentTarget.style.color = accentColor}
+                            onMouseLeave={(e) => e.currentTarget.style.color = 'inherit'}
+                        >
+                            Home
+                        </Link>
                         <span className="text-gray-400">/</span>
                         <span className="text-black font-semibold uppercase tracking-wider">Products</span>
                     </div>
@@ -120,7 +130,9 @@ export default function StoreProductsList({
                                         value={searchQuery}
                                         onChange={(e) => setSearchQuery(e.target.value)}
                                         placeholder="What are you looking for?"
-                                        className="w-full border-2 border-gray-100 rounded-xl px-4 py-3 text-black focus:border-orange-500 focus:outline-none transition-all placeholder:text-gray-400"
+                                        className="w-full border-2 border-gray-100 rounded-xl px-4 py-3 text-black focus:outline-none transition-all placeholder:text-gray-400"
+                                        onFocus={(e) => e.currentTarget.style.borderColor = accentColor}
+                                        onBlur={(e) => e.currentTarget.style.borderColor = '#F3F4F6'}
                                     />
                                     <span className="absolute right-4 top-3.5 text-gray-400">🔍</span>
                                 </div>
@@ -134,10 +146,26 @@ export default function StoreProductsList({
                                         <button
                                             key={category}
                                             onClick={() => handleCategoryChange(category)}
+                                            style={{ 
+                                                backgroundColor: selectedCategory === category ? accentColor : undefined,
+                                                color: selectedCategory === category ? 'white' : undefined,
+                                            }}
                                             className={`w-full text-left px-5 py-3 rounded-xl transition-all font-medium ${selectedCategory === category
-                                                ? 'bg-orange-500 text-white shadow-lg shadow-orange-200 scale-[1.02]'
-                                                : 'bg-gray-50 text-gray-700 hover:bg-orange-50 hover:text-orange-600'
+                                                ? 'shadow-lg scale-[1.02]'
+                                                : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
                                                 }`}
+                                            onMouseEnter={(e) => {
+                                                if (selectedCategory !== category) {
+                                                    e.currentTarget.style.color = accentColor;
+                                                    e.currentTarget.style.backgroundColor = `${accentColor}10`;
+                                                }
+                                            }}
+                                            onMouseLeave={(e) => {
+                                                if (selectedCategory !== category) {
+                                                    e.currentTarget.style.color = '#374151';
+                                                    e.currentTarget.style.backgroundColor = '#F9FAFB';
+                                                }
+                                            }}
                                         >
                                             {category}
                                         </button>
@@ -151,7 +179,9 @@ export default function StoreProductsList({
                                 <select
                                     value={sortBy}
                                     onChange={(e) => setSortBy(e.target.value)}
-                                    className="w-full border-2 border-gray-100 rounded-xl px-4 py-3 text-black focus:border-orange-500 focus:outline-none transition-all appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20viewBox%3D%220%200%2020%2020%22%20fill%3D%22none%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cpath%20d%3D%22M5%207L10%2012L15%207%22%20stroke%3D%22%236B7280%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E')] bg-no-repeat bg-[right_1rem_center]"
+                                    className="w-full border-2 border-gray-100 rounded-xl px-4 py-3 text-black focus:outline-none transition-all appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20viewBox%3D%220%200%2020%2020%22%20fill%3D%22none%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cpath%20d%3D%22M5%207L10%2012L15%207%22%20stroke%3D%22%236B7280%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E')] bg-no-repeat bg-[right_1rem_center]"
+                                    onFocus={(e) => e.currentTarget.style.borderColor = accentColor}
+                                    onBlur={(e) => e.currentTarget.style.borderColor = '#F3F4F6'}
                                 >
                                     <option value="name">Alphabetical (A-Z)</option>
                                     <option value="price-low">Price: Low to High</option>
@@ -166,8 +196,8 @@ export default function StoreProductsList({
                     <div className="lg:col-span-3">
                         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 mb-8 flex justify-between items-center">
                             <p className="text-gray-700 font-medium">
-                                Showing <span className="text-orange-600 font-bold">{paginatedProducts.length}</span> of <span className="text-black font-bold">{filteredProducts.length}</span> results
-                                {selectedCategory !== 'All' && <span> in <span className="text-orange-600 font-bold">{selectedCategory}</span></span>}
+                                Showing <span style={{ color: accentColor }} className="font-bold">{paginatedProducts.length}</span> of <span className="text-black font-bold">{filteredProducts.length}</span> results
+                                {selectedCategory !== 'All' && <span> in <span style={{ color: accentColor }} className="font-bold">{selectedCategory}</span></span>}
                             </p>
                         </div>
 
@@ -191,7 +221,7 @@ export default function StoreProductsList({
                             <>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                                     {paginatedProducts.map(product => (
-                                        <ProductCard key={product.id} product={product} />
+                                        <ProductCard key={product.id} product={product} accentColor={accentColor} />
                                     ))}
                                 </div>
 
@@ -201,7 +231,9 @@ export default function StoreProductsList({
                                         <button
                                             onClick={() => handlePageChange(currentPage - 1)}
                                             disabled={currentPage === 1}
-                                            className="px-6 py-3 rounded-xl border-2 border-gray-100 bg-white font-bold text-gray-700 hover:border-orange-500 hover:text-orange-600 disabled:opacity-30 disabled:hover:border-gray-100 disabled:hover:text-gray-700 transition-all"
+                                            className="px-6 py-3 rounded-xl border-2 border-gray-100 bg-white font-bold text-gray-700 disabled:opacity-30 transition-all"
+                                            onMouseEnter={(e) => { if (currentPage !== 1) e.currentTarget.style.borderColor = accentColor; e.currentTarget.style.color = accentColor; }}
+                                            onMouseLeave={(e) => { if (currentPage !== 1) e.currentTarget.style.borderColor = '#F3F4F6'; e.currentTarget.style.color = '#374151'; }}
                                         >
                                             Previous
                                         </button>
@@ -219,10 +251,27 @@ export default function StoreProductsList({
                                                         <button
                                                             key={pageNum}
                                                             onClick={() => handlePageChange(pageNum)}
+                                                            style={{ 
+                                                                backgroundColor: currentPage === pageNum ? accentColor : 'white',
+                                                                borderColor: currentPage === pageNum ? accentColor : '#F3F4F6',
+                                                                color: currentPage === pageNum ? 'white' : '#374151'
+                                                            }}
                                                             className={`w-12 h-12 rounded-xl border-2 font-bold transition-all ${currentPage === pageNum
-                                                                ? 'bg-orange-500 border-orange-500 text-white shadow-lg shadow-orange-100'
-                                                                : 'bg-white border-gray-100 text-gray-700 hover:border-orange-500 hover:text-orange-600'
+                                                                ? 'shadow-lg shadow-gray-100'
+                                                                : 'hover:border-gray-300'
                                                                 }`}
+                                                            onMouseEnter={(e) => {
+                                                                if (currentPage !== pageNum) {
+                                                                    e.currentTarget.style.borderColor = accentColor;
+                                                                    e.currentTarget.style.color = accentColor;
+                                                                }
+                                                            }}
+                                                            onMouseLeave={(e) => {
+                                                                if (currentPage !== pageNum) {
+                                                                    e.currentTarget.style.borderColor = '#F3F4F6';
+                                                                    e.currentTarget.style.color = '#374151';
+                                                                }
+                                                            }}
                                                         >
                                                             {pageNum}
                                                         </button>
@@ -240,7 +289,9 @@ export default function StoreProductsList({
                                         <button
                                             onClick={() => handlePageChange(currentPage + 1)}
                                             disabled={currentPage === totalPages}
-                                            className="px-6 py-3 rounded-xl border-2 border-gray-100 bg-white font-bold text-gray-700 hover:border-orange-500 hover:text-orange-600 disabled:opacity-30 disabled:hover:border-gray-100 disabled:hover:text-gray-700 transition-all"
+                                            className="px-6 py-3 rounded-xl border-2 border-gray-100 bg-white font-bold text-gray-700 disabled:opacity-30 transition-all"
+                                            onMouseEnter={(e) => { if (currentPage !== totalPages) e.currentTarget.style.borderColor = accentColor; e.currentTarget.style.color = accentColor; }}
+                                            onMouseLeave={(e) => { if (currentPage !== totalPages) e.currentTarget.style.borderColor = '#F3F4F6'; e.currentTarget.style.color = '#374151'; }}
                                         >
                                             Next
                                         </button>

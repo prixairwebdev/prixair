@@ -30,6 +30,7 @@ export default async function BukaProductsPage() {
                 categories={data.categories}
                 storeSlug={storeSlug}
                 storeName={store.name}
+                accentColor={accentColor}
             />
             <FloatingCheckout storeSlug={storeSlug} accentColor={accentColor} />
         </Suspense>
