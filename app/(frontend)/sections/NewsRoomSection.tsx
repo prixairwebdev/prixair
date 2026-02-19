@@ -3,52 +3,46 @@ import { motion, useAnimation, easeIn, easeOut } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
-
-interface NewsItem {
-  title: string;
-  description: string;
-  image: string;
-  date: string;
-  link: string;
-}
+import { NewsItem } from "@/types/news";
+import NewsModal from "@/components/NewsModal";
 
 const newsList: NewsItem[] = [
-  // {
-  //   title: "Prixair Hotels Launches New Luxury Suite In Abuja",
-  //   description: "Prixair expands its footprint in premium hospitality with the unveiling of a state-of-the-art luxury suite tailored for business travelers and dignitaries.",
-  //   image: "/subsidiaries/mining.png",
-  //   date: "01/07/2025",
-  //   link: "https://prixair.com/news/hotel-launch",
-  // },
-      {
+  {
+    title: "PRIXAIR RESOURCES LIMITED AND CHUANGXING CAPITAL CO. Ltd signs MOU on partnership for Gold mining",
+    description: "PRIXAIR RESOURCES LIMITED is pleased to announce the signing of a Memorandum of Understanding (MoU) with Chuangxing Capital Co. Ltd for a strategic partnership in gold mining operations.",
+    image: "/pxm/pxm1.jpeg",
+    date: "January 26, 2026",
+    content: `PRIXAIR RESOURCES LIMITED is pleased to announce the signing of a Memorandum of Understanding (MoU) with Chuangxing Capital Co. Ltd for a strategic partnership in gold mining operations. 
+
+The MoU outlines a framework for cooperation covering investment, technical support, and operational development in identified gold mining projects. This partnership reflects both companies’ shared vision to promote responsible mining, economic growth, and sustainable resource development.`,
+    additionalImages: [
+      '/pxm/pxm2.jpeg',
+      '/pxm/pxm3.jpeg',
+      
+    ]
+  },
+  {
     title: "NIGER STATE GOVERNMENT PARTNERS WITH PRIX AIR MINING COMPANY",
-    description:
-      "The Commissioner of Mineral Resources, Alhaji Garba Sabo Yahaya made this disclosure when he received a delegation of investors from the Prix Air Mining Company Limited.",
+    description: "The Commissioner of Mineral Resources, Alhaji Garba Sabo Yahaya made this disclosure when he received a delegation of investors from the Prix Air Mining Company Limited.",
     image: "https://platinumnews.com.ng/wp-content/uploads/2023/12/IMG-20231207-WA0157-750x375.jpg",
     date: "12/07/2023",
-    link: "https://platinumnews.com.ng/2023/12/07/niger-state-government-partners-with-prix-air-mining-company/",
+    content: `The Commissioner of Mineral Resources, Alhaji Garba Sabo Yahaya made this disclosure when he received a delegation of investors from the Prix Air Mining Company Limited. 
+
+The partnership aims to boost mining activities in Niger State, creating jobs and driving local economic development through responsible mineral extraction and processing.`
   },
   {
     title: "Prixair Logistics Acquires 10 New Delivery Trucks",
     description: "The new fleet marks a major investment in operational capacity, improving speed and nationwide coverage.",
     image: "https://images.unsplash.com/photo-1590504805643-bb1f94cde7fd?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     date: "July 2025",
-    link: "https://prixair.com/news/logistics",
+    content: `Prixair Logistics is proud to announce the acquisition of 10 new delivery trucks. This strategic investment is aimed at significantly increasing our operational capacity, allowing for faster delivery times and broader nationwide coverage. Our commitment to excellence in logistics remains our top priority.`
   },
   {
     title: "Prixair Farms Wins Agricultural Excellence Award",
     description: "Prixair Farms has been recognized for sustainable and high-yield farming innovations across Nigeria.",
     image: "https://images.unsplash.com/photo-1677335594135-9a38aa4ded23?q=80&w=2673&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     date: "July 2025",
-    link: "https://prixair.com/news/farm-award",
-  },
-  {
-    title: "Prixair Water Launches New Ultra-Pure Bottling Line",
-    description: "The new bottling line increases daily production by 40%, ensuring safer, fresher bottled water.",
-    image: "https://images.unsplash.com/photo-1616118132534-381148898bb4?q=80&w=1364&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    date: "July 2025",
-    link: "https://prixair.com/news/bottling",
+    content: `Prixair Farms has been honored with the Agricultural Excellence Award for its outstanding contributions to sustainable and high-yield farming innovations. The award highlights our dedication to modernizing agriculture in Nigeria while maintaining environmental stewardship.`
   },
 ];
 
@@ -73,6 +67,8 @@ const fadeInUp = {
 };
 
 export default function NewsRoomSection() {
+  const [selectedNews, setSelectedNews] = useState<NewsItem | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const mainNews = newsList[0];
   const sideNews = newsList.slice(1);
   const [hovered, setHovered] = useState(false);
@@ -89,6 +85,11 @@ export default function NewsRoomSection() {
       controls.start("exit");
     }
   }, [controls, inView]);
+
+  const handleNewsClick = (news: NewsItem) => {
+    setSelectedNews(news);
+    setIsModalOpen(true);
+  };
 
   return (
     <section 
@@ -130,11 +131,9 @@ export default function NewsRoomSection() {
         <div className="flex flex-col lg:flex-row gap-4 sm:gap-6">
           {/* Main News Card */}
           <motion.div variants={fadeInUp} className="w-full lg:w-[58%]">
-            <Link 
-              href={mainNews.link} 
-              target="_blank"
-              rel="noopener noreferrer"
-              className="relative group block"
+            <div 
+              onClick={() => handleNewsClick(mainNews)}
+              className="relative group block cursor-pointer"
               aria-label={`Read more about: ${mainNews.title}`}
             >
               <div 
@@ -164,7 +163,7 @@ export default function NewsRoomSection() {
                   <span className="text-xs mt-2 opacity-90">{mainNews.date}</span>
                 </div>
               </div>
-            </Link>
+            </div>
           </motion.div>
 
           {/* Side News Cards */}
@@ -193,42 +192,41 @@ export default function NewsRoomSection() {
                 key={idx}
                 variants={fadeInUp}
                 transition={{ duration: 0.5, ease: "easeOut" }}
+                onClick={() => handleNewsClick(news)}
               >
-                <Link 
-                  href={news.link} 
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`Read more about: ${news.title}`}
-                >
-                  <div className="flex gap-3 sm:gap-4 items-center cursor-pointer hover:bg-gray-50 p-2 sm:p-3 rounded-lg transition-colors duration-200">
-                    <div className="w-24 sm:w-28 h-20 sm:h-24 relative flex-shrink-0 overflow-hidden">
-                      <Image
-                        src={news.image}
-                        alt={`News thumbnail: ${news.title}`}
-                      
-                        className="object-cover"
-                        sizes="(max-width: 640px) 100px, 120px"
-                        fill
-                      />
-                    </div>
-                    <div className="flex-1 flex flex-col min-w-0">
-                      <h4 className="text-sm sm:text-base font-semibold text-gray-800 line-clamp-2">
-                        {news.title}
-                      </h4>
-                      <p className="text-xs sm:text-sm text-gray-600 line-clamp-2 mt-1">
-                        {news.description}
-                      </p>
-                      <span className="text-xs text-gray-500 mt-1 sm:mt-2">
-                        {news.date}
-                      </span>
-                    </div>
+                <div className="flex gap-3 sm:gap-4 items-center cursor-pointer hover:bg-gray-50 p-2 sm:p-3 rounded-lg transition-colors duration-200">
+                  <div className="w-24 sm:w-28 h-20 sm:h-24 relative flex-shrink-0 overflow-hidden">
+                    <Image
+                      src={news.image}
+                      alt={`News thumbnail: ${news.title}`}
+                    
+                      className="object-cover"
+                      sizes="(max-width: 640px) 100px, 120px"
+                      fill
+                    />
                   </div>
-                </Link>
+                  <div className="flex-1 flex flex-col min-w-0">
+                    <h4 className="text-sm sm:text-base font-semibold text-gray-800 line-clamp-2">
+                      {news.title}
+                    </h4>
+                    <p className="text-xs sm:text-sm text-gray-600 line-clamp-2 mt-1">
+                      {news.description}
+                    </p>
+                    <span className="text-xs text-gray-500 mt-1 sm:mt-2">
+                      {news.date}
+                    </span>
+                  </div>
+                </div>
               </motion.div>
             ))}
           </motion.div>
         </div>
       </motion.div>
+      <NewsModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        news={selectedNews} 
+      />
     </section>
   );
 }
