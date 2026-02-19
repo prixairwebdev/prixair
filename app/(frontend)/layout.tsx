@@ -10,7 +10,6 @@ export const metadata: Metadata = {
 // Import the Montserrat font
 import { Montserrat } from 'next/font/google';
 import { CartProvider } from "@/components/CartContext";
-import LiveChat from "./components/LiveChat";
 import { WishlistProvider } from "@/components/contexts/WishlistContext";
 import { AuthProvider } from "@/components/contexts/AuthContext";
 import { OrderProvider } from "@/components/contexts/OrderContext";
@@ -44,11 +43,6 @@ export default function RootLayout({
                 s1.charset='UTF-8';
                 s1.setAttribute('crossorigin','*');
                 s0.parentNode.insertBefore(s1,s0);
-                
-                // Hide default widget until manually triggered
-                Tawk_API.onLoad = function() {
-                  Tawk_API.hideWidget();
-                };
               })();
             `,
           }}
@@ -63,7 +57,6 @@ export default function RootLayout({
             <WishlistProvider>
               <OrderProvider>
                 {children}
-          <LiveChat />
               </OrderProvider>
             </WishlistProvider>
           </CartProvider>
