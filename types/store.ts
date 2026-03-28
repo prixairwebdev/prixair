@@ -86,7 +86,7 @@ export interface Order {
     total: number;
     status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
     shippingAddress: Address;
-    paymentMethod: 'paypal' | 'card' | 'paystack';
+    paymentMethod: 'paypal' | 'card' | 'paystack' | 'whatsapp';
     trackingNumber?: string;
     store?: string | { id: string; name: string; slug: string };
     createdAt: string;

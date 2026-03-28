@@ -12,6 +12,7 @@ import { createOrder } from '@/app/actions/orders';
 import { useOrders } from '@/components/contexts/OrderContext';
 import { getStoreBySlug } from '@/app/actions/products';
 import { validatePromotion } from '@/app/actions/promotions';
+import { getRestaurantWhatsAppNumber, sanitizeWhatsAppNumber } from '@/lib/whatsapp';
 
 interface CheckoutViewProps {
     storeSlug: string;
@@ -19,19 +20,6 @@ interface CheckoutViewProps {
     primaryColorCls?: string;
     textColorCls?: string;
     accentColorCls?: string; // used for border/bg-5
-    loginPath?: string;
-}
-
-interface PaystackTransaction {
-    reference: string;
-    status: string;
-    [key: string]: string | number | boolean | undefined;
-}
-
-interface PaystackReference {
-    reference: string;
-    status?: string;
-    [key: string]: string | number | boolean | undefined;
 }
 
 export default function CheckoutView({
@@ -40,7 +28,6 @@ export default function CheckoutView({
     primaryColorCls = "bg-orange-500 hover:bg-orange-600 shadow-orange-100",
     textColorCls = "text-orange-600",
     accentColorCls = "border-orange-500 bg-orange-50",
-    loginPath,
 }: CheckoutViewProps) {
     const { getCartItems, getCartTotal, clear, promoCodes } = useCart();
     const { user } = useAuth();
@@ -50,7 +37,7 @@ export default function CheckoutView({
     // Initialize state
     const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
     const [userAddresses, setUserAddresses] = useState<Address[]>([]);
-    const [paymentMethod, setPaymentMethod] = useState<'paystack' | 'paypal' | 'card'>('paystack');
+    const [paymentMethod, setPaymentMethod] = useState<'whatsapp'>('whatsapp');
     const [processing, setProcessing] = useState(false);
     const [storeId, setStoreId] = useState<string | null>(null);
 
@@ -61,6 +48,10 @@ export default function CheckoutView({
 
     const items = useMemo(() => getCartItems(storeSlug), [getCartItems, storeSlug]);
     const subtotal = useMemo(() => getCartTotal(storeSlug), [getCartTotal, storeSlug]);
+    const whatsappNumber = useMemo(
+        () => sanitizeWhatsAppNumber(getRestaurantWhatsAppNumber(storeSlug)),
+        [storeSlug]
+    );
 
     // Calculate final total
     const finalTotal = Math.max(0, subtotal - discountAmount);
@@ -68,21 +59,20 @@ export default function CheckoutView({
     // Fetch user addresses and store ID
     useEffect(() => {
         async function fetchData() {
-            if (user) {
-                try {
+            try {
+                const storeDoc = await getStoreBySlug(storeSlug);
+                if (storeDoc) {
+                    setStoreId(storeDoc.id);
+                } else {
+                    console.error(`Store not found: ${storeSlug}`);
+                }
+
+                if (user) {
                     const addresses = await getAddresses();
                     setUserAddresses(addresses);
-
-                    // Fetch store ID for the current store slug
-                    const storeDoc = await getStoreBySlug(storeSlug);
-                    if (storeDoc) {
-                        setStoreId(storeDoc.id);
-                    } else {
-                        console.error(`Store not found: ${storeSlug}`);
-                    }
-                } catch (error) {
-                    console.error("Failed to load checkout data", error);
                 }
+            } catch (error) {
+                console.error("Failed to load checkout data", error);
             }
         }
         fetchData();
@@ -129,16 +119,7 @@ export default function CheckoutView({
         }
     }, [userAddresses, selectedAddress]);
 
-    const loginPathValue = loginPath || `/${storeSlug}/account/login`;
     const addAddressPath = `/${storeSlug}/account/addresses`;
-
-    if (!user) {
-        return (
-            <div className="min-h-screen flex items-center justify-center">
-                <p>Please <Link href={loginPathValue} className={textColorCls}>login</Link> to continue.</p>
-            </div>
-        );
-    }
 
     if (items.length === 0) {
         return (
@@ -153,15 +134,46 @@ export default function CheckoutView({
         );
     }
 
-    // Paystack Config
-    const publicKey = process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY || 'pk_test_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
+    const formatCurrency = (amount: number) => `NGN ${amount.toLocaleString()}`;
 
-    const handlePaystackPayment = async () => {
-        if (!selectedAddress) {
-            alert('Please select a shipping address');
-            return;
-        }
+    const buildWhatsAppMessage = () => {
+        const address = selectedAddress;
+        const customerName = user?.name || address?.name || 'Guest customer';
+        const customerPhone = address?.phone || user?.phone || 'Not provided';
+        const customerEmail = user?.email || 'Not provided';
+        const itemLines = items.map((item, index) => {
+            const lineTotal = item.price * item.qty;
+            return `${index + 1}. ${item.name} x${item.qty} - ${formatCurrency(lineTotal)}`;
+        });
 
+        const addressLine = [address?.street, address?.city, address?.state, address?.country]
+            .filter(Boolean)
+            .join(', ');
+
+        return [
+            `Hello ${storeName}, I'd like to place this order.`,
+            '',
+            'Customer Details',
+            `Name: ${customerName}`,
+            `Phone: ${customerPhone}`,
+            `Email: ${customerEmail}`,
+            '',
+            'Delivery Details',
+            `Recipient: ${address?.name || 'To be confirmed on WhatsApp'}`,
+            `Address: ${addressLine || 'To be confirmed on WhatsApp'}`,
+            `Zip Code: ${address?.zipCode || 'Not provided'}`,
+            '',
+            'Order Details',
+            ...itemLines,
+            '',
+            `Subtotal: ${formatCurrency(subtotal)}`,
+            ...(discountAmount > 0 ? [`Discount: -${formatCurrency(discountAmount)}`] : []),
+            `Total: ${formatCurrency(finalTotal)}`,
+            ...(promoCodes?.[storeSlug] ? [`Promo Code: ${promoCodes[storeSlug]}`] : []),
+        ].join('\n');
+    };
+
+    const handleWhatsAppCheckout = async () => {
         if (!storeId) {
             alert('Error: Store information not found. Please try again or contact support.');
             return;
@@ -172,33 +184,26 @@ export default function CheckoutView({
             return;
         }
 
-        const PaystackPop = (await import('@paystack/inline-js')).default;
-        const paystack = new PaystackPop();
-        paystack.newTransaction({
-            key: publicKey,
-            email: user.email,
-            amount: Math.round(finalTotal * 100), // Use discounted total
-            metadata: {
-                name: user.name,
-                phone: user.phone || '',
-                store: storeSlug,
-                promoCode: promoCodes?.[storeSlug] || '',
-            } as Record<string, string>,
-            onSuccess: (transaction: PaystackTransaction) => {
-                handlePaystackSuccess(transaction);
-            },
-            onCancel: () => {
-                alert("Wait! You need to pay to order.");
-            },
-        });
-    };
+        if (!whatsappNumber) {
+            alert('WhatsApp ordering is not configured for this restaurant yet. Please contact support.');
+            return;
+        }
 
-    const handlePaystackSuccess = async (reference: PaystackReference) => {
         setProcessing(true);
 
         try {
-            const orderData = {
-                userId: user.id,
+            const message = buildWhatsAppMessage();
+            const fallbackAddress = {
+                name: selectedAddress?.name || user?.name || 'WhatsApp customer',
+                phone: selectedAddress?.phone || user?.phone || 'Not provided',
+                street: selectedAddress?.street || 'To be confirmed on WhatsApp',
+                city: selectedAddress?.city || 'To be confirmed on WhatsApp',
+                state: selectedAddress?.state || 'To be confirmed on WhatsApp',
+                zipCode: selectedAddress?.zipCode || 'Not provided',
+                country: selectedAddress?.country || 'Nigeria',
+            };
+            const result = await createOrder({
+                userId: user?.id,
                 items: items.map(item => ({
                     product_id: item.id,
                     name: item.name,
@@ -206,40 +211,33 @@ export default function CheckoutView({
                     quantity: item.qty,
                     image: item.image,
                 })),
-                total: finalTotal, // Final discounted total
+                total: finalTotal,
                 subtotal: subtotal,
                 discountTotal: discountAmount,
                 couponCode: promoCodes?.[storeSlug],
                 promotionId: promotionId,
                 status: 'pending' as const,
-                customerEmail: user.email,
-                shippingAddress: {
-                    name: selectedAddress!.name,
-                    phone: selectedAddress!.phone,
-                    street: selectedAddress!.street,
-                    city: selectedAddress!.city,
-                    state: selectedAddress!.state,
-                    zipCode: selectedAddress!.zipCode,
-                    country: selectedAddress!.country,
-                },
-                paymentMethod: 'paystack' as const,
-                paymentReference: reference.reference,
-                storeId: storeId!,
-            };
+                customerEmail: user?.email,
+                shippingAddress: fallbackAddress,
+                paymentMethod: 'whatsapp' as const,
+                paymentReference: `whatsapp-${Date.now()}`,
+                storeId,
+            });
 
-            const result = await createOrder(orderData);
-
-            if (result.success && result.order) {
-                clear(storeSlug);
-                await refreshOrders();
-                router.push(`/${storeSlug}/order-confirmation?orderId=${result.order.id}`);
-            } else {
-                alert('Failed to create order. Please contact support.');
+            if (!result.success || !result.order) {
+                alert('Failed to prepare your order. Please try again.');
                 setProcessing(false);
+                return;
             }
+
+            clear(storeSlug);
+            if (user) {
+                await refreshOrders();
+            }
+            window.location.href = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
         } catch (err) {
             console.error('Checkout error:', err);
-            alert('An error occurred during checkout.');
+            alert('An error occurred while preparing your WhatsApp order.');
             setProcessing(false);
         }
     };
@@ -255,30 +253,39 @@ export default function CheckoutView({
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     <div className="lg:col-span-2 space-y-6">
                         <div className="bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
-                            <h2 className="text-xl font-bold text-black mb-4">Shipping Address</h2>
-                            {userAddresses.length === 0 ? (
+                            <h2 className="text-xl font-bold text-black mb-4">Delivery Details</h2>
+                            {!user ? (
                                 <div className="text-center py-8">
-                                    <p className="text-gray-600 mb-4">No saved addresses</p>
-                                    <Link href={addAddressPath} className={`${textColorCls} hover:opacity-80 font-medium`}>Add Address →</Link>
+                                    <p className="text-gray-600 mb-2">Login is not required for checkout.</p>
+                                    <p className="text-gray-500 text-sm">You can share your delivery details with the restaurant directly on WhatsApp after placing the order.</p>
+                                </div>
+                            ) : userAddresses.length === 0 ? (
+                                <div className="text-center py-8">
+                                    <p className="text-gray-600 mb-2">Saved addresses are optional for WhatsApp checkout.</p>
+                                    <p className="text-gray-500 text-sm mb-4">You can continue now or add one for faster ordering next time.</p>
+                                    <Link href={addAddressPath} className={`${textColorCls} hover:opacity-80 font-medium`}>Add Address</Link>
                                 </div>
                             ) : (
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    {userAddresses.map(address => (
-                                        <div
-                                            key={address.id}
-                                            onClick={() => setSelectedAddress(address)}
-                                            className={`border-2 rounded-xl p-4 cursor-pointer transition-all ${selectedAddress?.id === address.id ? accentColorCls : 'border-gray-100 hover:border-gray-200'}`}
-                                        >
-                                            <div className="flex items-start justify-between">
-                                                <div>
-                                                    <h3 className="text-black font-semibold">{address.name}</h3>
-                                                    <p className="text-gray-700 text-sm mt-1">{address.phone}</p>
-                                                    <p className="text-gray-600 text-sm mt-1">{address.street}, {address.city}</p>
+                                <div>
+                                    <p className="text-gray-500 text-sm mb-4">Choose a saved address if you want it included in the WhatsApp message. You can also skip this step.</p>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        {userAddresses.map(address => (
+                                            <div
+                                                key={address.id}
+                                                onClick={() => setSelectedAddress(address)}
+                                                className={`border-2 rounded-xl p-4 cursor-pointer transition-all ${selectedAddress?.id === address.id ? accentColorCls : 'border-gray-100 hover:border-gray-200'}`}
+                                            >
+                                                <div className="flex items-start justify-between">
+                                                    <div>
+                                                        <h3 className="text-black font-semibold">{address.name}</h3>
+                                                        <p className="text-gray-700 text-sm mt-1">{address.phone}</p>
+                                                        <p className="text-gray-600 text-sm mt-1">{address.street}, {address.city}</p>
+                                                    </div>
+                                                    {address.isDefault && <span className={`text-white text-[10px] px-2 py-0.5 rounded-full uppercase font-bold ${primaryColorCls.split(' ')[0]}`}>Default</span>}
                                                 </div>
-                                                {address.isDefault && <span className={`text-white text-[10px] px-2 py-0.5 rounded-full uppercase font-bold ${primaryColorCls.split(' ')[0]}`}>Default</span>}
                                             </div>
-                                        </div>
-                                    ))}
+                                        ))}
+                                    </div>
                                 </div>
                             )}
                         </div>
@@ -287,14 +294,14 @@ export default function CheckoutView({
                             <h2 className="text-xl font-bold text-black mb-4">Payment Method</h2>
                             <div className="space-y-3">
                                 <div
-                                    onClick={() => setPaymentMethod('paystack')}
-                                    className={`border-2 rounded-xl p-4 cursor-pointer transition-all ${paymentMethod === 'paystack' ? accentColorCls : 'border-gray-100 hover:border-gray-200'}`}
+                                    onClick={() => setPaymentMethod('whatsapp')}
+                                    className={`border-2 rounded-xl p-4 cursor-pointer transition-all ${paymentMethod === 'whatsapp' ? accentColorCls : 'border-gray-100 hover:border-gray-200'}`}
                                 >
                                     <div className="flex items-center gap-4">
-                                        <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center text-2xl">💳</div>
+                                        <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center text-2xl">💬</div>
                                         <div>
-                                            <h3 className="text-black font-semibold">Paystack</h3>
-                                            <p className="text-gray-600 text-sm">Pay securely with card, bank transfer or USSD</p>
+                                            <h3 className="text-black font-semibold">WhatsApp</h3>
+                                            <p className="text-gray-600 text-sm">Send your order details to the restaurant on WhatsApp to complete checkout</p>
                                         </div>
                                     </div>
                                 </div>
@@ -347,16 +354,22 @@ export default function CheckoutView({
                             </div>
 
                             <button
-                                onClick={handlePaystackPayment}
-                                disabled={!selectedAddress || processing || !storeId || isValidatingPromo}
-                                className={`w-full text-white py-4 rounded-xl font-bold text-lg mb-4 transition-all shadow-xl ${!selectedAddress || processing || !storeId || isValidatingPromo ? 'bg-gray-200 cursor-not-allowed text-gray-400 shadow-none' : primaryColorCls + ' active:scale-[0.98]'}`}
+                                onClick={handleWhatsAppCheckout}
+                                disabled={processing || !storeId || isValidatingPromo}
+                                className={`w-full text-white py-4 rounded-xl font-bold text-lg mb-4 transition-all shadow-xl ${processing || !storeId || isValidatingPromo ? 'bg-gray-200 cursor-not-allowed text-gray-400 shadow-none' : primaryColorCls + ' active:scale-[0.98]'}`}
                             >
-                                {processing ? 'Processing...' : (isValidatingPromo ? 'Validating...' : 'Complete Payment')}
+                                {processing ? 'Preparing WhatsApp...' : (isValidatingPromo ? 'Validating...' : 'Complete Payment')}
                             </button>
 
                             <p className="text-center text-xs text-gray-400 flex items-center justify-center gap-1">
-                                🔒 Your payment is secured and encrypted
+                                💬 You will be redirected to WhatsApp with your order details
                             </p>
+
+                            {!user && (
+                                <p className="text-center text-xs text-gray-400 mt-2">
+                                    Guest checkout is enabled. Delivery details can be shared on WhatsApp.
+                                </p>
+                            )}
                         </div>
                     </div>
                 </div>

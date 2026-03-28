@@ -28,7 +28,7 @@ interface CMSOrder {
         zipCode?: string;
         country?: string;
     };
-    paymentMethod: 'paypal' | 'card' | 'paystack';
+    paymentMethod: 'paypal' | 'card' | 'paystack' | 'whatsapp';
     trackingNumber?: string;
     createdAt: string;
     updatedAt: string;

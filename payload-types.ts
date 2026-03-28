@@ -251,7 +251,7 @@ export interface Order {
   }[];
   total: number;
   status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
-  paymentMethod: 'paypal' | 'card' | 'paystack';
+  paymentMethod: 'paypal' | 'card' | 'paystack' | 'whatsapp';
   paymentReference?: string | null;
   shippingAddress: {
     name: string;

@@ -29,6 +29,15 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   const [promoCodes, setPromoCodes] = useState<PromoState>({});
   const [isInitialized, setIsInitialized] = useState(false);
 
+  const persistCartState = (nextCarts: CartState, nextPromoCodes: PromoState) => {
+    try {
+      localStorage.setItem("prixair_carts_v2", JSON.stringify(nextCarts));
+      localStorage.setItem("prixair_promos", JSON.stringify(nextPromoCodes));
+    } catch (e) {
+      console.error("Failed to save cart to local storage", e);
+    }
+  };
+
   useEffect(() => {
     try {
       const raw = localStorage.getItem("prixair_carts_v2");
@@ -62,12 +71,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (!isInitialized) return;
-    try {
-      localStorage.setItem("prixair_carts_v2", JSON.stringify(carts));
-      localStorage.setItem("prixair_promos", JSON.stringify(promoCodes));
-    } catch (e) {
-      console.error("Failed to save cart to local storage", e);
-    }
+    persistCartState(carts, promoCodes);
   }, [carts, promoCodes, isInitialized]);
 
   const addItem = (item: CartItem, qty = 1) => {
@@ -107,7 +111,18 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const clear = (store: string) => {
-    setCarts((cur) => ({ ...cur, [store]: [] }));
+    const nextCarts = { ...carts };
+    const nextPromoCodes = { ...promoCodes };
+
+    delete nextCarts[store];
+    delete nextPromoCodes[store];
+
+    setCarts(nextCarts);
+    setPromoCodes(nextPromoCodes);
+
+    if (isInitialized) {
+      persistCartState(nextCarts, nextPromoCodes);
+    }
   };
 
   const getCartItems = (store: string) => carts[store] || [];

@@ -156,7 +156,7 @@ export default function AdminOrdersPage() {
 
               <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
                 <div>
-                  <p className="text-gray-600 text-sm">Payment: {order.paymentMethod === 'paypal' ? 'PayPal' : 'Card'}</p>
+                  <p className="text-gray-600 text-sm">Payment: {order.paymentMethod === 'paypal' ? 'PayPal' : order.paymentMethod === 'paystack' ? 'Paystack' : order.paymentMethod === 'whatsapp' ? 'WhatsApp' : 'Card'}</p>
                   {order.trackingNumber && (
                     <p className="text-gray-600 text-sm">Tracking: {order.trackingNumber}</p>
                   )}
