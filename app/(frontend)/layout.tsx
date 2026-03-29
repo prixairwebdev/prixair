@@ -5,6 +5,13 @@ import PageWrapper from "./components/PageWrapper";
 export const metadata: Metadata = {
   title: "Prixair Group",
   description: "Prixair Group",
+  icons: {
+    icon: [
+      { url: "/iconlogo.png", type: "image/png" },
+    ],
+    shortcut: "/iconlogo.png",
+    apple: "/iconlogo.png",
+  },
 };
 
 // Import the Montserrat font
@@ -30,6 +37,9 @@ export default function RootLayout({
     <html lang="en" className={`${montserrat.variable} overflow-x-hidden scroll-smooth`}>
       
       <head>
+        <link rel="icon" href="/iconlogo.png" type="image/png" />
+        <link rel="shortcut icon" href="/iconlogo.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/iconlogo.png" />
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
         <script
