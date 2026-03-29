@@ -75,6 +75,7 @@ export const Orders: CollectionConfig = {
                 { label: 'PayPal', value: 'paypal' },
                 { label: 'Card', value: 'card' },
                 { label: 'Paystack', value: 'paystack' },
+                { label: 'WhatsApp', value: 'whatsapp' },
             ],
             required: true,
         },

@@ -120,7 +120,7 @@ export default function OrdersPage() {
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-gray-600">Payment Method:</span>
                     <span className="text-black font-medium">
-                      {order.paymentMethod === 'paypal' ? 'PayPal' : order.paymentMethod === 'paystack' ? 'Paystack' : 'Card'}
+                      {order.paymentMethod === 'paypal' ? 'PayPal' : order.paymentMethod === 'paystack' ? 'Paystack' : order.paymentMethod === 'whatsapp' ? 'WhatsApp' : 'Card'}
                     </span>
                   </div>
                   {order.trackingNumber && (

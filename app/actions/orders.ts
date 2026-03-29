@@ -7,7 +7,7 @@ import { shipdayService } from '../(frontend)/supermarket/lib/shipday'
 
 // Define Order type based on our collection
 export type OrderData = {
-    userId: string
+    userId?: string
     customerEmail?: string
     items: {
         product_id: string
@@ -27,7 +27,7 @@ export type OrderData = {
         zipCode: string
         country: string
     }
-    paymentMethod: 'paypal' | 'card' | 'paystack'
+    paymentMethod: 'paypal' | 'card' | 'paystack' | 'whatsapp'
     paymentReference?: string
     storeId: string
     subtotal?: number
@@ -91,7 +91,7 @@ export async function createOrder(data: OrderData) {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             collection: 'orders' as any,
             data: {
-                user: data.userId,
+                ...(data.userId ? { user: data.userId } : {}),
                 items: validatedItems,
                 total: data.total,
                 status: data.status,
