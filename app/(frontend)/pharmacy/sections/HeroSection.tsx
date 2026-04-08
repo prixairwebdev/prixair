@@ -1,5 +1,7 @@
 // components/HeroSection.tsx
+'use client';
 import Image from 'next/image';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 // Animation variants
@@ -44,11 +46,20 @@ export default function HeroSection() {
         </motion.p>
         
         <motion.div className="flex flex-wrap gap-4" variants={item}>
-          <button className="bg-green-500 text-white font-semibold py-2 px-4 rounded hover:bg-green-600 transition">
-            Start Shopping
-          </button>
-          <button className="bg-white text-[#0060DC] font-semibold py-2 px-4 rounded hover:bg-gray-100 transition">
-            Upload Prescription
+          <Link href="/pharmacy/products">
+            <button className="bg-green-500 text-white font-semibold py-2 px-4 rounded hover:bg-green-600 transition">
+              Start Shopping
+            </button>
+          </Link>
+          <button
+            onClick={() => {
+              const el = document.getElementById('prescription-search');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+              else window.location.href = '/pharmacy#prescription-search';
+            }}
+            className="bg-white text-[#0060DC] font-semibold py-2 px-4 rounded hover:bg-gray-100 transition"
+          >
+            Search Prescription
           </button>
         </motion.div>
         

@@ -1,54 +1,16 @@
 // app/components/TopSellersAndReviews.tsx
 'use client';
 
-import React from 'react';
-import Image from 'next/image';
-import { Heart, Star } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Star } from 'lucide-react';
 import { motion, Variants } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import { searchProducts } from '@/app/actions/products';
+import { Product } from '@/app/actions/supermarket';
+import ProductCard from '@/components/ProductCard';
+import Link from 'next/link';
 
-const topProducts = [
-  {
-    name: 'Panadol Extra 500mg',
-    price: '₦1,200',
-    image: '/products/panadol.png',
-  },
-  {
-    name: 'Multivitamin Gummies',
-    price: '₦8,500',
-    image: '/products/gummies.png',
-  },
-  {
-    name: 'Dettol Antibacterial Soap',
-    price: '₦2,000',
-    image: '/products/dettol.png',
-  },
-  {
-    name: 'Pampers Baby-Dry size 3',
-    price: '₦4,500',
-    image: '/products/pampers.png',
-  },
-  {
-    name: 'Pregnacare Original Tablets',
-    price: '₦6,000',
-    image: '/products/pregnacare.png',
-  },
-  {
-    name: 'Vitamin C 1000mg',
-    price: '₦3,500',
-    image: '/products/vitaminc.png',
-  },
-  {
-    name: 'Ventolin Inhaler',
-    price: '₦12,000',
-    image: '/products/ventolin.png',
-  },
-  {
-    name: 'Moko Hand Sanitizer 250ml',
-    price: '₦1,000',
-    image: '/products/sanitizer.png',
-  },
-];
+const accentColor = '#8AD52E';
 
 const testimonials = [
   {
@@ -93,10 +55,16 @@ const itemVariants: Variants = {
 };
 
 export default function TopSellersAndReviews() {
-  const [ref, inView] = useInView({
-    triggerOnce: false,
-    threshold: 0.1,
-  });
+  const [ref, inView] = useInView({ triggerOnce: false, threshold: 0.1 });
+  const [topProducts, setTopProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    searchProducts('pharmacy', { sortBy: 'rating', limit: 8, page: 1 }).then(result => {
+      setTopProducts(result.products);
+      setIsLoading(false);
+    });
+  }, []);
 
   return (
     <div ref={ref} className="w-full px-6 py-12 space-y-12 text-black">
@@ -110,35 +78,28 @@ export default function TopSellersAndReviews() {
           <motion.h3 variants={itemVariants} className="text-lg font-semibold">
             Top Sellers
           </motion.h3>
-          <motion.button variants={itemVariants} className="text-sm text-gray-500 hover:underline">
-            See all
-          </motion.button>
+          <Link href="/pharmacy/products">
+            <motion.span variants={itemVariants} className="text-sm text-gray-500 hover:underline cursor-pointer">
+              See all
+            </motion.span>
+          </Link>
         </div>
 
-        <motion.div
-          variants={containerVariants}
-          className="grid grid-cols-2 md:grid-cols-4 gap-6"
-        >
-          {topProducts.map((product, idx) => (
-            <motion.div
-              key={idx}
-              variants={itemVariants}
-              className="bg-white p-4 rounded-lg shadow-sm border hover:shadow-md transition"
-            >
-              <div className="relative w-full h-40 mb-3">
-                <Image
-                  src={product.image}
-                  alt={product.name}
-                  fill
-                  className="object-contain"
-                />
-                <Heart className="absolute top-2 right-2 w-5 h-5 text-gray-400 hover:text-red-500 cursor-pointer" />
-              </div>
-              <h4 className="text-sm font-medium">{product.name}</h4>
-              <p className="text-green-600 text-sm mt-1">{product.price}</p>
-            </motion.div>
-          ))}
-        </motion.div>
+        {isLoading ? (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {[...Array(8)].map((_, i) => (
+              <div key={i} className="bg-white p-4 rounded-lg shadow-sm border animate-pulse h-64" />
+            ))}
+          </div>
+        ) : (
+          <motion.div variants={containerVariants} className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {topProducts.map((product) => (
+              <motion.div key={product.id} variants={itemVariants}>
+                <ProductCard product={product} accentColor={accentColor} />
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
       </motion.div>
 
       {/* Testimonials */}
