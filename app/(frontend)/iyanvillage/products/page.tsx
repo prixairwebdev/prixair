@@ -1,4 +1,4 @@
-import { getProductsAndCategories, getStoreBySlug } from '@/app/actions/products';
+import { searchProducts, getStoreBySlug, getProductsAndCategories } from '@/app/actions/products';
 import StoreProductsList from '@/components/StoreProductsList';
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
@@ -10,9 +10,10 @@ export default async function IyanVillageProductsPage() {
     const storeSlug = 'iyanvillage';
     const accentColor = '#FE0000';
 
-    const [store, data] = await Promise.all([
+    const [store, initialData, categoriesData] = await Promise.all([
         getStoreBySlug(storeSlug),
-        getProductsAndCategories(storeSlug)
+        searchProducts(storeSlug, { page: 1, limit: 12 }),
+        getProductsAndCategories(storeSlug),
     ]);
 
     if (!store) {
@@ -26,8 +27,10 @@ export default async function IyanVillageProductsPage() {
             </div>
         }>
             <StoreProductsList
-                products={data.products}
-                categories={data.categories}
+                initialProducts={initialData.products}
+                initialTotal={initialData.total}
+                initialTotalPages={initialData.totalPages}
+                categories={categoriesData.categories}
                 storeSlug={storeSlug}
                 storeName={store.name}
             />

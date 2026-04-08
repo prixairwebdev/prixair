@@ -152,6 +152,104 @@ export async function getProductById(id: string, storeSlug?: string): Promise<Pr
     }
 }
 
+export async function searchProducts(
+    storeSlug: string,
+    {
+        query = '',
+        category = 'All',
+        page = 1,
+        sortBy = 'name',
+        limit = 12,
+    }: {
+        query?: string
+        category?: string
+        page?: number
+        sortBy?: string
+        limit?: number
+    } = {}
+): Promise<{ products: Product[]; total: number; totalPages: number }> {
+    const payload = await getPayload({ config })
+
+    try {
+        const storeResult = await payload.find({
+            collection: 'stores',
+            where: { slug: { equals: storeSlug } },
+            limit: 1,
+        })
+
+        if (storeResult.docs.length === 0) {
+            return { products: [], total: 0, totalPages: 0 }
+        }
+
+        const storeId = storeResult.docs[0].id
+
+        // Build where clause
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const where: Record<string, any> = {
+            store: { equals: storeId },
+        }
+
+        if (query.trim()) {
+            where.or = [
+                { name: { like: query } },
+                { description: { like: query } },
+            ]
+        }
+
+        if (category && category !== 'All') {
+            // Find category id by name
+            const categoryResult = await payload.find({
+                collection: 'categories',
+                where: {
+                    and: [
+                        { store: { equals: storeId } },
+                        { name: { equals: category } },
+                    ],
+                },
+                limit: 1,
+            })
+            if (categoryResult.docs.length > 0) {
+                where.category = { equals: categoryResult.docs[0].id }
+            }
+        }
+
+        // Map sortBy to Payload sort field
+        const sortMap: Record<string, string> = {
+            name: 'name',
+            'price-low': 'price',
+            'price-high': '-price',
+            rating: '-rating',
+        }
+        const sort = sortMap[sortBy] || 'name'
+
+        const result = await payload.find({
+            collection: 'products',
+            where,
+            sort,
+            page,
+            limit,
+            depth: 1,
+        })
+
+        const products = result.docs.map(doc => {
+            const product = doc as unknown as Product
+            return {
+                ...product,
+                store: typeof product.store === 'string' ? product.store : (product.store?.slug || storeSlug),
+            }
+        }) as unknown as Product[]
+
+        return {
+            products,
+            total: result.totalDocs,
+            totalPages: result.totalPages,
+        }
+    } catch (error) {
+        console.error(`Error searching products for store ${storeSlug}:`, error)
+        return { products: [], total: 0, totalPages: 0 }
+    }
+}
+
 export async function getStoreBySlug(slug: string) {
     const payload = await getPayload({ config })
 
