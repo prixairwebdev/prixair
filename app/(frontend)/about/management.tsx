@@ -10,16 +10,16 @@ interface TeamMember {
 
 const teamMembers: TeamMember[] = [
 
-    {
+  {
     name: "Adenike Ogunwusi",
     title: "COO, Prixair Group",
     image: "/team/prixaircoo.jpg",
   },
-    {
-    name: "Mr Babatunde Adegbola",
-    title: "CFO, Prixair Group",
-    image:"/team/mrbabatunde.jpg"
-  },
+  //   {
+  //   name: "Mr Babatunde Adegbola",
+  //   title: "CFO, Prixair Group",
+  //   image:"/team/mrbabatunde.jpg"
+  // },
   {
     name: " Mr Bankole Banjo",
     title: "COO, Prixair Resources",
