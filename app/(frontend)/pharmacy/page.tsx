@@ -6,6 +6,7 @@ import HomeCategories from "./sections/HomeCategories";
 import HowItWorks from "./sections/HowItWorks";
 import TopSellersAndReviews from "./sections/TopSellersAndReviews";
 import HeroSection from "./sections/HeroSection";
+import PrescriptionSearch from "./sections/PrescriptionSearch";
 
 export default function Home() {
   const [isInView, setIsInView] = useState({
@@ -95,10 +96,14 @@ export default function Home() {
                 </motion.div>
                 <motion.div variants={item}>
                   <button
+                    onClick={() => {
+                      const el = document.getElementById('prescription-search');
+                      if (el) el.scrollIntoView({ behavior: 'smooth' });
+                    }}
                     className="px-6 py-3 sm:px-8 sm:py-3 bg-white hover:bg-gray-200 text-black font-medium  transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#FB6404] focus:ring-opacity-50 w-full sm:w-auto"
-                    aria-label="Upload prescription to Prixair Pharmacy"
+                    aria-label="Search prescription at Prixair Pharmacy"
                   >
-                    Upload Prescription
+                    Search Prescription
                   </button>
                 </motion.div>
               </div>
@@ -119,6 +124,7 @@ export default function Home() {
         </div>
       </section>
       <HomeCategories />
+      <PrescriptionSearch />
       <HowItWorks />
       <TopSellersAndReviews />
       <HeroSection />
