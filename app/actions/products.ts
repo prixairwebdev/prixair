@@ -115,6 +115,43 @@ export async function getProductsAndCategories(storeSlug: string) {
     }
 }
 
+export async function getProductById(id: string, storeSlug?: string): Promise<Product | null> {
+    const payload = await getPayload({ config })
+
+    try {
+        const whereClause: Record<string, unknown> = { id: { equals: id } }
+
+        if (storeSlug) {
+            const storeResult = await payload.find({
+                collection: 'stores',
+                where: { slug: { equals: storeSlug } },
+                limit: 1,
+            })
+            if (storeResult.docs.length > 0) {
+                whereClause.store = { equals: storeResult.docs[0].id }
+            }
+        }
+
+        const result = await payload.find({
+            collection: 'products',
+            where: whereClause,
+            limit: 1,
+            depth: 2,
+        })
+
+        if (result.docs.length === 0) return null
+
+        const product = result.docs[0] as unknown as Product
+        return {
+            ...product,
+            store: typeof product.store === 'string' ? product.store : (product.store?.slug || storeSlug || '')
+        } as unknown as Product
+    } catch (error) {
+        console.error(`Error fetching product with id ${id}:`, error)
+        return null
+    }
+}
+
 export async function getStoreBySlug(slug: string) {
     const payload = await getPayload({ config })
 
