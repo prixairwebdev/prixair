@@ -7,6 +7,7 @@ import HowItWorks from "./sections/HowItWorks";
 import TopSellersAndReviews from "./sections/TopSellersAndReviews";
 import HeroSection from "./sections/HeroSection";
 import PrescriptionSearch from "./sections/PrescriptionSearch";
+import FloatingCheckout from "@/app/(frontend)/components/brand/FloatingCheckout";
 
 export default function Home() {
   const [isInView, setIsInView] = useState({
@@ -128,6 +129,7 @@ export default function Home() {
       <HowItWorks />
       <TopSellersAndReviews />
       <HeroSection />
+      <FloatingCheckout storeSlug="pharmacy" accentColor="#8AD52E" />
     </div>
   );
 }

@@ -1,11 +1,12 @@
 // app/components/HowItWorks.tsx
 'use client';
 
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
-import { useDropzone } from 'react-dropzone';
-import { UploadCloud } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
+
+const accentColor = '#8AD52E';
 
 // Animation variants
 const container = {
@@ -24,27 +25,19 @@ const item = {
 };
 
 export default function HowItWorks() {
-  const [files, setFiles] = useState<File[]>([]);
+  const [query, setQuery] = useState('');
+  const router = useRouter();
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    setFiles(acceptedFiles);
-    // Handle file upload here (e.g. upload to server or show preview)
-  }, []);
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
-    accept: {
-      'image/jpeg': ['.jpeg', '.jpg'],
-      'application/pdf': ['.pdf'],
-      'image/png': ['.png'],
-    },
-    maxFiles: 1,
-  });
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!query.trim()) return;
+    router.push(`/pharmacy/products?q=${encodeURIComponent(query.trim())}&category=Prescription`);
+  };
 
   return (
     <div className="w-full px-6 py-12 space-y-12 text-black">
       {/* How it Works Section */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -55,7 +48,7 @@ export default function HowItWorks() {
         <p className="text-gray-500 text-sm">Order your medications in just a few easy steps.</p>
       </motion.div>
 
-      <motion.div 
+      <motion.div
         variants={container}
         initial="hidden"
         whileInView="show"
@@ -64,8 +57,8 @@ export default function HowItWorks() {
       >
         {[
           {
-            title: 'Upload or Search',
-            desc: 'Either upload your prescription or browse our catalog for the medications you need.',
+            title: 'Search Your Medication',
+            desc: 'Type the name of your prescription or browse our catalog for the medications you need.',
             icon: '/icons/upload.png',
             step: '01',
           },
@@ -95,13 +88,13 @@ export default function HowItWorks() {
         ))}
       </motion.div>
 
-      {/* Prescription Upload */}
-      <motion.div 
+      {/* Prescription Search */}
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         viewport={{ once: false, margin: "-100px" }}
-        className="grid md:grid-cols-2 gap-8 items-start bg-[#F6F6F6] px-6 py-10 w-full h-[500px]"
+        className="grid md:grid-cols-2 gap-8 items-center bg-[#F6F6F6] px-6 py-10 w-full rounded-xl"
       >
         <motion.div
           initial={{ opacity: 0, x: -20 }}
@@ -111,36 +104,50 @@ export default function HowItWorks() {
         >
           <h3 className="text-lg font-semibold mb-2">Have a Prescription?</h3>
           <p className="text-sm text-gray-600">
-            Upload a clear photo or PDF of your doctor&apos;s prescription, and our licensed pharmacists
-            will handle the rest—verify your needs, recommend options if needed, and prepare your
-            order for fast delivery right to your doorstep.
+            Type the name of your prescribed medication and our pharmacists will verify availability,
+            recommend alternatives if needed, and prepare your order for fast delivery to your doorstep.
           </p>
         </motion.div>
 
-        {/* Drag-and-drop area */}
+        {/* Search input */}
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
           viewport={{ once: false }}
         >
-          <div
-            {...getRootProps()}
-            className={`border-2 border-dashed rounded-lg p-8 flex flex-col items-center h-[70%] bg-white justify-center text-center cursor-pointer transition ${
-              isDragActive ? 'border-blue-400 bg-blue-50' : 'border-gray-300'
-            }`}
-          >
-            <input {...getInputProps()} />
-            <UploadCloud className="w-8 h-8 text-gray-500 mb-2" />
-            {files.length > 0 ? (
-              <p className="text-sm text-green-600">{files[0].name} uploaded successfully</p>
-            ) : (
-              <>
-                <p className="text-sm text-gray-500">Drop image here or click to <span className="text-blue-500 underline">browse</span></p>
-                <p className="text-xs text-gray-400 mt-1">JPG, PNG, PDF (max 10MB)</p>
-              </>
-            )}
-          </div>
+          <form onSubmit={handleSearch} className="flex flex-col gap-3">
+            <label className="text-sm font-medium text-gray-700">Search prescription by name</label>
+            <div className="relative">
+              <input
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="e.g. Amoxicillin, Metformin, Ventolin..."
+                className="w-full border-2 rounded-xl px-5 py-3.5 text-black text-sm focus:outline-none transition-all placeholder:text-gray-400 pr-12 bg-white shadow-sm"
+                style={{ borderColor: query ? accentColor : '#E5E7EB' }}
+                onFocus={(e) => (e.currentTarget.style.borderColor = accentColor)}
+                onBlur={(e) => (e.currentTarget.style.borderColor = query ? accentColor : '#E5E7EB')}
+              />
+              <button
+                type="submit"
+                className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-lg transition-all"
+                style={{ backgroundColor: query ? accentColor : '#E5E7EB' }}
+              >
+                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" />
+                </svg>
+              </button>
+            </div>
+            <button
+              type="submit"
+              disabled={!query.trim()}
+              className="w-full py-3 rounded-xl font-semibold text-white text-sm transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+              style={{ backgroundColor: accentColor }}
+            >
+              Search Prescriptions
+            </button>
+          </form>
         </motion.div>
       </motion.div>
     </div>

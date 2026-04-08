@@ -22,6 +22,20 @@ interface CheckoutViewProps {
     accentColorCls?: string; // used for border/bg-5
 }
 
+const storeLabels: Record<string, string> = {
+    pharmacy: 'pharmacy',
+    supermarket: 'store',
+    seaside: 'restaurant',
+    noodlelicious: 'restaurant',
+    iyanvillage: 'restaurant',
+    gavi: 'restaurant',
+    buka: 'restaurant',
+};
+
+function getStoreLabel(slug: string) {
+    return storeLabels[slug] ?? 'store';
+}
+
 export default function CheckoutView({
     storeSlug,
     storeName,
@@ -185,7 +199,7 @@ export default function CheckoutView({
         }
 
         if (!whatsappNumber) {
-            alert('WhatsApp ordering is not configured for this restaurant yet. Please contact support.');
+            alert(`WhatsApp ordering is not configured for this ${getStoreLabel(storeSlug)} yet. Please contact support.`);
             return;
         }
 
@@ -257,7 +271,7 @@ export default function CheckoutView({
                             {!user ? (
                                 <div className="text-center py-8">
                                     <p className="text-gray-600 mb-2">Login is not required for checkout.</p>
-                                    <p className="text-gray-500 text-sm">You can share your delivery details with the restaurant directly on WhatsApp after placing the order.</p>
+                                    <p className="text-gray-500 text-sm">You can share your delivery details with the {getStoreLabel(storeSlug)} directly on WhatsApp after placing the order.</p>
                                 </div>
                             ) : userAddresses.length === 0 ? (
                                 <div className="text-center py-8">
@@ -301,7 +315,7 @@ export default function CheckoutView({
                                         <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center text-2xl">💬</div>
                                         <div>
                                             <h3 className="text-black font-semibold">WhatsApp</h3>
-                                            <p className="text-gray-600 text-sm">Send your order details to the restaurant on WhatsApp to complete checkout</p>
+                                            <p className="text-gray-600 text-sm">Send your order details to the {getStoreLabel(storeSlug)} on WhatsApp to complete checkout</p>
                                         </div>
                                     </div>
                                 </div>
