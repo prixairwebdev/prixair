@@ -76,6 +76,8 @@ export interface Config {
     addresses: Address;
     stores: Store;
     promotions: Promotion;
+    hotels: Hotel;
+    rooms: Room;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -92,6 +94,8 @@ export interface Config {
     addresses: AddressesSelect<false> | AddressesSelect<true>;
     stores: StoresSelect<false> | StoresSelect<true>;
     promotions: PromotionsSelect<false> | PromotionsSelect<true>;
+    hotels: HotelsSelect<false> | HotelsSelect<true>;
+    rooms: RoomsSelect<false> | RoomsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -324,6 +328,78 @@ export interface Address {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hotels".
+ */
+export interface Hotel {
+  id: number;
+  name: string;
+  slug?: string | null;
+  location: string;
+  address?: string | null;
+  city?: string | null;
+  state?: string | null;
+  description?: string | null;
+  image?: (number | null) | Media;
+  gallery?:
+    | {
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
+  amenities?:
+    | {
+        amenity: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * WhatsApp number for booking inquiries (e.g. 2348012345678)
+   */
+  whatsappNumber?: string | null;
+  email?: string | null;
+  phone?: string | null;
+  starRating?: ('1' | '2' | '3' | '4' | '5') | null;
+  isActive?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "rooms".
+ */
+export interface Room {
+  id: number;
+  name: string;
+  hotel: number | Hotel;
+  roomType: 'standard' | 'executive' | 'deluxe' | 'suite' | 'business' | 'presidential';
+  pricePerNight: number;
+  description?: string | null;
+  image: number | Media;
+  gallery?:
+    | {
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
+  maxGuests?: number | null;
+  bedType?: ('single' | 'double' | 'queen' | 'king' | 'twin') | null;
+  /**
+   * e.g. 32 sqm
+   */
+  size?: string | null;
+  amenities?:
+    | {
+        amenity: string;
+        id?: string | null;
+      }[]
+    | null;
+  rating?: number | null;
+  isAvailable?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -381,6 +457,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'promotions';
         value: number | Promotion;
+      } | null)
+    | ({
+        relationTo: 'hotels';
+        value: number | Hotel;
+      } | null)
+    | ({
+        relationTo: 'rooms';
+        value: number | Room;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -598,6 +682,70 @@ export interface PromotionsSelect<T extends boolean = true> {
   targetCategories?: T;
   targetProducts?: T;
   isActive?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hotels_select".
+ */
+export interface HotelsSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  location?: T;
+  address?: T;
+  city?: T;
+  state?: T;
+  description?: T;
+  image?: T;
+  gallery?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  amenities?:
+    | T
+    | {
+        amenity?: T;
+        id?: T;
+      };
+  whatsappNumber?: T;
+  email?: T;
+  phone?: T;
+  starRating?: T;
+  isActive?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "rooms_select".
+ */
+export interface RoomsSelect<T extends boolean = true> {
+  name?: T;
+  hotel?: T;
+  roomType?: T;
+  pricePerNight?: T;
+  description?: T;
+  image?: T;
+  gallery?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  maxGuests?: T;
+  bedType?: T;
+  size?: T;
+  amenities?:
+    | T
+    | {
+        amenity?: T;
+        id?: T;
+      };
+  rating?: T;
+  isAvailable?: T;
   updatedAt?: T;
   createdAt?: T;
 }

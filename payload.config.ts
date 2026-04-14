@@ -13,6 +13,8 @@ import { Users } from "./collections/Users.ts";
 import { Media } from "./collections/Media.ts";
 import { Orders } from "./collections/Orders.ts";
 import { Stores } from "./collections/Stores.ts";
+import { Hotels } from "./collections/Hotels.ts";
+import { Rooms } from "./collections/Rooms.ts";
 
 const dirname = path.resolve(process.cwd());
 
@@ -25,7 +27,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Categories, Products, FlashSales, Orders, Addresses, Stores, Promotions],
+  collections: [Users, Media, Categories, Products, FlashSales, Orders, Addresses, Stores, Promotions, Hotels, Rooms],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "",
   typescript: {
