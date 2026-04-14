@@ -12,7 +12,8 @@
     "seed:toastpan": "npx tsx scripts/seed-toastpan.ts",
     "seed:gavi": "npx tsx scripts/seed-gavi.ts",
     "seed:seaside": "npx tsx scripts/seed-seaside.ts",
-    "seed:buka": "npx tsx scripts/seed-buka.ts"
+    "seed:buka": "npx tsx scripts/seed-buka.ts",
+    "seed:shawarmanomnow": "npx tsx scripts/seed-shawarmanomnow.ts"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "^3.70.0",

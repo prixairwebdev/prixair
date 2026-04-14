@@ -45,6 +45,11 @@ const foods = [
     imageUrl: "/partyjollof/pjlogo.jpeg", // Placeholder
     href: "/party-jollof",
   },
+  {
+    name: "Shawarma Now Now",
+    imageUrl: "/logos/shawarmanomnow.jpg",
+    href: "/shawarmanomnow",
+  },
 ];
 
 // Animation variants
