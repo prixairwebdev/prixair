@@ -1,14 +1,22 @@
 "use client";
 
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { FaBed, FaCrown, FaSuitcase, FaBriefcase } from "react-icons/fa";
 
 export default function RoomsCategories() {
+  const searchParams = useSearchParams();
+  const currentType = searchParams.get("type");
+
   const categories = [
-    { name: "Standard", icon: <FaBed size={28} /> },
-    { name: "Executive", icon: <FaSuitcase size={28} /> },
-    { name: "Deluxe", icon: <FaCrown size={28} /> },
-    { name: "Business", icon: <FaBriefcase size={28} /> },
+    { name: "All", value: "all", icon: <FaBed size={28} /> },
+    { name: "Standard", value: "standard", icon: <FaBed size={28} /> },
+    { name: "Executive", value: "executive", icon: <FaSuitcase size={28} /> },
+    { name: "Deluxe", value: "deluxe", icon: <FaCrown size={28} /> },
+    { name: "Business", value: "business", icon: <FaBriefcase size={28} /> },
+    { name: "Suite", value: "suite", icon: <FaCrown size={28} /> },
+    { name: "Presidential", value: "presidential", icon: <FaCrown size={28} /> },
   ];
 
   return (
@@ -25,19 +33,32 @@ export default function RoomsCategories() {
         Curated comfort for every type of traveler — from elegant standard rooms to indulgent luxury suites.
       </p>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
-        {categories.map((cat, i) => (
-          <motion.div
-            key={i}
-            className="border border-gray-400 rounded-lg p-6 hover:shadow-md transition text-center flex flex-col items-center justify-center space-y-2"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.1, duration: 0.6 }}
-          >
-            <div className="text-[#FB6404]">{cat.icon}</div>
-            <h3 className="font-medium text-gray-800">{cat.name}</h3>
-          </motion.div>
-        ))}
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 max-w-6xl mx-auto px-4">
+        {categories.map((cat, i) => {
+          const isActive = (currentType === cat.value) || (!currentType && cat.value === "all");
+          
+          return (
+            <Link
+              key={i}
+              href={cat.value === "all" ? "/hotel/rooms" : `/hotel/rooms?type=${cat.value}`}
+              scroll={false}
+            >
+              <motion.div
+                className={`border rounded-lg p-6 hover:shadow-md transition text-center flex flex-col items-center justify-center space-y-2 cursor-pointer h-full ${
+                  isActive ? "border-[#FB6404] bg-orange-50" : "border-gray-200"
+                }`}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1, duration: 0.6 }}
+              >
+                <div className={isActive ? "text-[#FB6404]" : "text-gray-400"}>{cat.icon}</div>
+                <h3 className={`font-medium text-sm ${isActive ? "text-[#FB6404]" : "text-gray-800"}`}>
+                  {cat.name}
+                </h3>
+              </motion.div>
+            </Link>
+          );
+        })}
       </div>
     </section>
   );
