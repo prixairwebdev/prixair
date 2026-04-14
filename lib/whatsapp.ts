@@ -10,6 +10,7 @@ const STORE_WHATSAPP_NUMBERS: Record<string, string | undefined> = {
     hotel: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER_HOTEL,
     beautybar: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER_BEAUTYBAR,
     partyjollof: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER_PARTYJOLLOF,
+    shawarmanomnow: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER_SHAWARMANOMNOW,
 };
 
 export function getRestaurantWhatsAppNumber(storeSlug: string) {

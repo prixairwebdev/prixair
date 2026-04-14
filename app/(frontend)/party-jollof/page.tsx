@@ -1,72 +1,15 @@
 'use client';
+import { useEffect, useState } from "react";
 import BrandHero from "../components/brand/BrandHero";
 import BrandInfo from "../components/brand/BrandInfo";
-import BrandMenu from "../components/brand/BrandMenu";
+import BrandMenu, { MenuItem } from "../components/brand/BrandMenu";
 import BrandLocation from "../components/brand/BrandLocation";
 import BrandTestimonials from "../components/brand/BrandTestimonials";
 import BrandHowToOrder from "../components/brand/BrandHowToOrder";
-
-const bestSellers = [
-  {
-    id: "pj-1",
-    name: "Regular plus",
-    price: "₦7,000",
-    image: "/partyjollof/pj3.jpeg",
-    description: "Smoky, authentic Nigerian Jollof rice served with your choice of protein and sides."
-  },
-  {
-    id: "pj-2",
-    name: "Maxi",
-    price: "₦25,000",
-    image: "/partyjollof/pj2.jpeg",
-    description: "Succulent chicken thighs grilled and tossed in our signature spicy pepper sauce."
-  },
-  {
-    id: "pj-3",
-    name: "Maxi plus",
-    price: "₦40,000",
-    image: "/partyjollof/pj1.jpeg",
-    description: "Arromatic fried rice with mixed vegetables, liver, and shrimps."
-  },
-  {
-    id: "pj-4",
-    name: "Regular",
-    price: "₦3,000",
-    image: "/partyjollof/pj4.jpeg",
-    description: "Perfectly ripe, sweet, and golden-brown dodo."
-  },
-];
-
-const dailySpecials = [
-  {
-    id: "pj-5",
-    name: "Native Jollof",
-    price: "₦4,000",
-    image: "/partyjollof/pj7.jpeg",
-    description: "Jollof rice topped with grilled croaker fish, prawns, and calamari."
-  },
-  {
-    id: "pj-6",
-    name: "Asun jollof",
-    price: "₦5,000",
-    image: "/partyjollof/pj6.jpeg",
-    description: "Chopped goat meat grilled with habanero peppers and onions."
-  },
-  {
-    id: "pj-7",
-    name: "Native Rice",
-    price: "₦30,000",
-    image: "/partyjollof/pj5.jpeg",
-    description: "Traditionally cooked rice with palm oil, locust beans, and dried fish."
-  },
-  {
-    id: "pj-8",
-    name: "Regular Jollof",
-    price: "₦3,000",
-    image: "/partyjollof/pj4.jpeg",
-    description: "Steamed bean pudding with egg and fish."
-  },
-];
+import FloatingCart from "../components/brand/FloatingCart";
+import { getProductsByStore } from "@/app/actions/products";
+import { Product } from "@/app/actions/supermarket";
+import { useRouter } from "next/navigation";
 
 const reviews = [
   {
@@ -87,6 +30,38 @@ const reviews = [
 ];
 
 const PartyJollofLanding = () => {
+  const router = useRouter();
+  const [products, setProducts] = useState<MenuItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchPartyJollofData() {
+      try {
+        const pjProducts = await getProductsByStore('party-jollof');
+
+        const mappedProducts: MenuItem[] = pjProducts.map((p: Product) => ({
+          id: p.id,
+          name: p.name,
+          price: p.price,
+          description: p.description,
+          image: typeof p.image === 'string' ? p.image : (p.image?.url || "/partyjollof/pj3.jpeg"),
+          store: 'party-jollof'
+        }));
+
+        setProducts(mappedProducts);
+      } catch (error) {
+        console.error("Failed to fetch Party Jollof products:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchPartyJollofData();
+  }, []);
+
+  const bestSellers = products.slice(0, 4);
+  const dailySpecials = products.slice(4, 8);
+
   return (
     <div className="overflow-hidden">
       <BrandHero
@@ -98,6 +73,8 @@ const PartyJollofLanding = () => {
         bgImage="/partyjollof/pjhm.jpeg"
         primaryColor="#FF4500"
         secondaryColor="#FFA500"
+        store="party-jollof"
+        onOrderClick={() => router.push('/party-jollof/products')}
       />
 
       <BrandInfo
@@ -108,11 +85,19 @@ const PartyJollofLanding = () => {
         buttonText="Our Process"
       />
 
-      <BrandMenu
-        bestSellers={bestSellers}
-        dailySpecials={dailySpecials}
-        accentColor="#FF4500"
-      />
+      {loading ? (
+        <div className="flex justify-center py-20">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#FF4500]"></div>
+        </div>
+      ) : (
+        <BrandMenu
+          bestSellers={bestSellers}
+          dailySpecials={dailySpecials}
+          accentColor="#FF4500"
+          store="party-jollof"
+          onViewAllClick={() => router.push('/party-jollof/products')}
+        />
+      )}
 
       <BrandTestimonials
         reviews={reviews}
@@ -126,6 +111,12 @@ const PartyJollofLanding = () => {
 
       <BrandHowToOrder
         primaryColor="#FF4500"
+        store="party-jollof"
+      />
+
+      <FloatingCart 
+        storeSlug="party-jollof"
+        accentColor="#FF4500"
       />
     </div>
   );

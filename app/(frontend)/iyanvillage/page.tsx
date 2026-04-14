@@ -74,6 +74,7 @@ const IyanVillageLanding = () => {
         primaryColor="#FE0000"
         secondaryColor="#F3A35C"
         store="iyanvillage"
+        onOrderClick={() => router.push('/iyanvillage/products')}
       />
 
       <BrandInfo 
@@ -94,6 +95,7 @@ const IyanVillageLanding = () => {
           dailySpecials={dailySpecials}
           accentColor="#FE0000"
           store="iyanvillage"
+          onViewAllClick={() => router.push('/iyanvillage/products')}
         />
       )}
 

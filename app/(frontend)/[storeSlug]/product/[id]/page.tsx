@@ -12,6 +12,7 @@ const STORE_ACCENT_COLORS: Record<string, string> = {
     seaside: '#0077CC',
     toastpan: '#f59e0b',
     pharmacy: '#8AD52E',
+    shawarmanomnow: '#F5A623',
 };
 
 interface PageProps {

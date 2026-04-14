@@ -11,7 +11,7 @@ export interface MenuItem {
   price: string | number;
   image: string;
   description?: string;
-  store?: 'supermarket' | 'bakery' | 'pharmacy' | 'noodlelicious' | 'toastpan' | 'gavi' | 'seaside' | 'iyanvillage';
+  store?: 'supermarket' | 'bakery' | 'pharmacy' | 'noodlelicious' | 'toastpan' | 'gavi' | 'seaside' | 'iyanvillage' | 'shawarmanomnow';
 }
 
 interface BrandMenuProps {
@@ -19,7 +19,7 @@ interface BrandMenuProps {
   dailySpecials: MenuItem[];
   accentColor?: string;
   onViewAllClick?: () => void;
-  store?: 'supermarket' | 'bakery' | 'pharmacy' | 'noodlelicious' | 'toastpan' | 'gavi' | 'seaside' | 'iyanvillage';
+  store?: 'supermarket' | 'bakery' | 'pharmacy' | 'noodlelicious' | 'toastpan' | 'gavi' | 'seaside' | 'iyanvillage' | 'shawarmanomnow';
 }
 
 const containerVariants = {

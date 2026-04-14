@@ -30,6 +30,7 @@ const storeLabels: Record<string, string> = {
     iyanvillage: 'restaurant',
     gavi: 'restaurant',
     buka: 'restaurant',
+    shawarmanomnow: 'restaurant',
 };
 
 function getStoreLabel(slug: string) {
