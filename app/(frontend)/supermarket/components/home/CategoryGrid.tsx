@@ -2,64 +2,43 @@
 
 import Link from "next/link";
 
-export function CategoryGrid() {
-  const categories = [
-    {
-      name: "Fruits & Vegetables",
-      icon: "🍎", // Could use "🌽" or "🥦" - Google doesn't have a perfect single icon
-      googleIcon: "🌿", // or use emoji with fallback
-    },
-    {
-      name: "Meat & Poultry",
-      icon: "🥩",
-      googleIcon: "🍗",
-    },
-    {
-      name: "Household",
-      icon: "🏠",
-      googleIcon: "🧴",
-    },
-    {
-      name: "Dairy & Eggs",
-      icon: "🥛",
-      googleIcon: "🥚",
-    },
-    {
-      name: "Beverages",
-      icon: "🧃",
-      googleIcon: "🥤",
-    },
-    {
-      name: "Snacks",
-      icon: "🍪",
-      googleIcon: "🍿",
-    },
-    {
-      name: "Canned Food",
-      icon: "🥫",
-      googleIcon: "🫙",
-    },
-    {
-      name: "Sea Food",
-      icon: "🦐",
-      googleIcon: "🐟",
-    },
-  ];
+const categories = [
+  { name: "Fruits & Veg", icon: "🥦", slug: "Fruits and Vegetables" },
+  { name: "Meat & Poultry", icon: "🥩", slug: "Meat and Poultry" },
+  { name: "Dairy & Eggs", icon: "🥛", slug: "Dairy and Eggs" },
+  { name: "Beverages", icon: "🧃", slug: "Beverages" },
+  { name: "Snacks", icon: "🍪", slug: "Snacks" },
+  { name: "Household", icon: "🧴", slug: "Household Essentials" },
+  { name: "Seafood", icon: "🦐", slug: "Sea Food" },
+  { name: "Canned Food", icon: "🥫", slug: "Canned Food" },
+];
 
+export function CategoryGrid() {
   return (
-    <section className="text-black">
-      <h3 className="font-semibold mb-3">Categories</h3>
-      <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-4">
-        {categories.map((category) => (
-          <Link 
-            key={category.name}
-            href={`/supermarket/products?category=${encodeURIComponent(category.name)}`}
-            className="bg-white rounded-xl shadow-sm p-4 text-center text-xs text-black hover:shadow-md transition-shadow cursor-pointer block"
+    <section>
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-lg font-bold text-gray-900">Shop by Category</h2>
+        <Link
+          href="/supermarket/products"
+          className="text-xs text-orange-500 font-bold hover:text-orange-600 transition-colors"
+        >
+          All categories →
+        </Link>
+      </div>
+
+      <div className="grid grid-cols-4 sm:grid-cols-8 gap-3">
+        {categories.map((cat) => (
+          <Link
+            key={cat.name}
+            href={`/supermarket/products?category=${encodeURIComponent(cat.slug)}`}
+            className="group flex flex-col items-center gap-2 p-3 rounded-2xl border border-gray-100 bg-white hover:border-orange-200 hover:bg-orange-50 transition-all text-center"
           >
-            <div className="h-10 w-10 bg-orange-100 mx-auto rounded-full mb-2 flex items-center justify-center text-lg">
-              {category.icon}
+            <div className="w-11 h-11 rounded-xl bg-orange-50 group-hover:bg-orange-100 flex items-center justify-center text-xl transition-colors">
+              {cat.icon}
             </div>
-            <span className="line-clamp-1">{category.name}</span>
+            <span className="text-[11px] font-semibold text-gray-700 group-hover:text-orange-600 transition-colors leading-tight line-clamp-2">
+              {cat.name}
+            </span>
           </Link>
         ))}
       </div>
