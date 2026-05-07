@@ -7,6 +7,7 @@ interface BrandLocationProps {
   brandName: string;
   bgImage?: string;
   accentColor?: string;
+  location?: string;
   openingHours?: {
     weekday: string;
     saturday: string;
@@ -41,13 +42,14 @@ const BrandLocation: React.FC<BrandLocationProps> = ({
   brandName,
   bgImage = "/iconbg.png",
   accentColor = "#F3A35C",
+  location: locationProp,
   openingHours = {
     weekday: "8:00am - 8:00pm",
     saturday: "9:00am - 5:00pm",
     sunday: "Closed",
   }
 }) => {
-  const location = "Plot 688, Markus Kangye Blvd, Off Oladipo Diya Way, Gaduwa, Abuja";
+  const location = locationProp ?? "Plot 688, Markus Kangye Blvd, Off Oladipo Diya Way, Gaduwa, Abuja";
 
   return (
     <motion.section

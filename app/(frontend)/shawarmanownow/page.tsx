@@ -107,6 +107,7 @@ const ShawarmaNomnowLanding = () => {
       <BrandLocation
         brandName="Shawarma Now Now"
         accentColor="#F5A623"
+        location="No 14 Cotonou Crescent, off Bissau Street, Wuse Zone 6, Abuja"
       />
 
       <BrandHowToOrder

@@ -48,7 +48,7 @@ const foods = [
   {
     name: "Shawarma Now Now",
     imageUrl: "/logos/shawarmanomnow.jpg",
-    href: "/shawarmanomnow",
+    href: "/shawarmanownow",
   },
 ];
 
