@@ -77,7 +77,7 @@ const Footer = () => {
 
       {/* Bottom Bar */}
       <div className="mt-10 border-t border-gray-200 pt-4 text-center text-xs text-gray-500">
-        <p>&copy; 2025 GAVI BAKERY. ALL RIGHTS RESERVED.</p>
+        <p>&copy; 2026 GAVI BAKERY. ALL RIGHTS RESERVED.</p>
         <div className="mt-1 space-x-2">
           <Link href="/privacy" className="hover:underline">
             Privacy Policy
