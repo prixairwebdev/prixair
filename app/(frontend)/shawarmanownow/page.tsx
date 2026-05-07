@@ -81,7 +81,7 @@ const ShawarmaNomnowLanding = () => {
       <BrandInfo
         title="Wrapped in Flavour"
         description="At Shawarma Now Now, every wrap is a work of art. We use only the finest chicken and beef, flame-grilled to perfection and stuffed with fresh veggies, our signature sauces, and warm, fluffy bread. Fast service. Big flavour. Every time."
-        image="/restaurantplaceholder.jpg"
+        image="https://images.unsplash.com/photo-1719282431565-3b30bb7d2658?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         imageAlt="Shawarma Now Now wrap"
         buttonText="Our Story"
       />
