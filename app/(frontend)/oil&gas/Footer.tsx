@@ -68,9 +68,18 @@ export default function Footer() {
           </h3>
 
           <ul className="space-y-3 text-gray-300">
-            <li><a href="/oil&gas" className="hover:text-orange-500">Home</a></li>
-            <li><a href="/oil&gas/services" className="hover:text-orange-500">Services</a></li>
-            <li><a href="/oil&gas/about" className="hover:text-orange-500">About Us</a></li>
+            {[
+              { label: "Home", href: "/oil&gas" },
+              { label: "Services", href: "/oil&gas/services" },
+              { label: "About Us", href: "/oil&gas/about" },
+            ].map(({ label, href }) => (
+              <li key={label}>
+                <a href={href} className="relative group w-fit inline-block hover:text-white transition-colors duration-200 pb-0.5">
+                  {label}
+                  <span className="absolute bottom-0 left-0 h-px w-0 bg-white group-hover:w-full transition-[width] duration-300 ease-out" />
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
 
@@ -81,11 +90,19 @@ export default function Footer() {
           </h3>
 
           <ul className="space-y-3 text-gray-300">
-            <li><a href="/track" className="hover:text-orange-500">Track your item</a></li>
-            <li><a href="/quote" className="hover:text-orange-500">Request Quote</a></li>
-            <li><a href="/faqs" className="hover:text-orange-500">FAQs</a></li>
-            <li><a href="/terms" className="hover:text-orange-500">Terms & Conditions</a></li>
-            <li><a href="/privacy" className="hover:text-orange-500">Privacy Policy</a></li>
+            {[
+              { label: "Request Quote", href: "/oil&gas/contact" },
+              { label: "FAQs", href: "/faqs" },
+              { label: "Terms & Conditions", href: "/terms" },
+              { label: "Privacy Policy", href: "/privacy" },
+            ].map(({ label, href }) => (
+              <li key={label}>
+                <a href={href} className="relative group w-fit inline-block hover:text-white transition-colors duration-200 pb-0.5">
+                  {label}
+                  <span className="absolute bottom-0 left-0 h-px w-0 bg-white group-hover:w-full transition-[width] duration-300 ease-out" />
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
 

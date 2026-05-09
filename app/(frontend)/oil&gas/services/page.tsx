@@ -1,52 +1,43 @@
-import React from "react";
-import Navbar from "../Navbar";
 import { WhyChooseUs } from "../comps/WhyChooseUs";
 import CoreServices from "../comps/CoreServices";
 import { CtaSection } from "../comps/CtaSection";
 import { Testimonials } from "../comps/Testimonials";
-import Footer from "../Footer"
+import Link from "next/link";
+import OilGasHero from "../comps/OilGasHero";
 
-export default function LandingPage() {
+export default function ServicesPage() {
   return (
-    <div className="w-full h-screen relative">
-      <Navbar />
-
-      {/* Background Image */}
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{
-          backgroundImage:
-            "url('/oil&gasbg.png')", // replace with your image path
-        }}
+    <div className="w-full">
+      <OilGasHero
+        label="Our Services"
+        title="Delivering Energy. Powering Progress."
+        subtitle="Explore our full range of petroleum distribution, logistics, and consultancy services — designed to keep industries running without interruption."
+        ctas={[
+          { text: "Request a Quote", href: "/oil&gas/contact" },
+          { text: "Learn About Us", href: "/oil&gas/about", variant: "outline" },
+        ]}
       />
-      <div className="absolute inset-0 bg-black/50" />
 
-      {/* Hero Section */}
-      <div className="relative z-10 flex flex-col items-center justify-center text-center h-full px-6">
-        <h1 className="text-white text-4xl md:text-6xl font-bold max-w-4xl">
-         Delivering Energy. Powering Progress.
-        </h1>
-        <p className="text-white mt-4 max-w-2xl text-lg">
-          Explore our full range of petroleum and energy services designed to keep industries running efficiently.
-        </p>
-
-        {/* CTA Buttons */}
-        <div className="mt-8 flex gap-4">
-          <button className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3  font-semibold shadow-md">
-            Explore Our Services
-          </button>
-          <button className="bg-white hover:bg-gray-100 text-black px-6 py-3  font-semibold shadow-md">
-            Partner With Us
-          </button>
+      <div className="bg-gray-50 border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-5 sm:px-8 md:px-12 py-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+          <p className="text-gray-600 text-sm leading-relaxed max-w-2xl">
+            From sourcing and storage to last-mile distribution, every service we
+            offer is underpinned by the same commitment — reliable delivery,
+            strict safety compliance, and a team available around the clock.
+          </p>
+          <Link
+            href="/oil&gas/contact"
+            className="shrink-0 bg-gray-900 text-white px-6 py-3 text-sm font-semibold hover:bg-gray-700 transition-colors"
+          >
+            Talk to Our Team →
+          </Link>
         </div>
       </div>
-     
-      
+
       <CoreServices />
       <WhyChooseUs />
       <Testimonials />
       <CtaSection />
-      <Footer />
     </div>
   );
 }

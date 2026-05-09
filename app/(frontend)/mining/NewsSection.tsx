@@ -95,8 +95,8 @@ We presented our latest sustainability initiatives and digital innovations that 
             </p>
           </div>
           <a
-            href="/news"
-            className="hidden md:inline-block text-sm font-semibold border-b-2 border-orange-500"
+            href="/mining/news"
+            className="hidden md:inline-block text-sm font-medium border-b border-gray-900 hover:opacity-60 transition-opacity"
           >
             See All
           </a>
@@ -106,7 +106,7 @@ We presented our latest sustainability initiatives and digital innovations that 
       <motion.div variants={fadeUp} custom={1}>
         <div 
           onClick={() => handleNewsClick(featuredNews)}
-          className="relative w-full aspect-[16/9] rounded overflow-hidden cursor-pointer group"
+          className="relative w-full aspect-[16/9] overflow-hidden cursor-pointer group"
         >
           <Image
             src={featuredNews.image}
@@ -120,7 +120,7 @@ We presented our latest sustainability initiatives and digital innovations that 
             <p className="text-sm mb-3 line-clamp-2">{featuredNews.description}</p>
             <span className="text-xs mb-1">{featuredNews.date}</span>
             <button
-              className="text-sm font-semibold border-b-2 border-orange-500 inline-block w-fit"
+              className="text-sm font-medium border-b border-gray-900 hover:opacity-60 transition-opacity inline-block w-fit"
             >
               Read More
             </button>
@@ -154,7 +154,7 @@ We presented our latest sustainability initiatives and digital innovations that 
                 <h4 className="text-md font-bold line-clamp-2">{news.title}</h4>
                 <p className="text-sm text-gray-600 mb-2 line-clamp-2">{news.description}</p>
                 <button
-                  className="text-sm font-semibold border-b-2 border-orange-500 inline-block w-fit"
+                  className="text-sm font-medium border-b border-gray-900 hover:opacity-60 transition-opacity inline-block w-fit"
                 >
                   Read More
                 </button>
@@ -174,8 +174,8 @@ We presented our latest sustainability initiatives and digital innovations that 
         viewport={{ once: false, amount: 0.2 }}
       >
         <a
-          href="/news"
-          className="text-sm font-semibold border-b-2 border-orange-500 inline-block w-fit"
+          href="/mining/news"
+          className="text-sm font-medium border-b border-gray-900 hover:opacity-60 transition-opacity inline-block w-fit"
         >
           See all
         </a>

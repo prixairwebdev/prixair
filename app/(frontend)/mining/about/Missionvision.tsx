@@ -1,105 +1,65 @@
 "use client";
-import React from "react";
+
 import Image from "next/image";
 import { motion } from "framer-motion";
 
 const Mission = () => {
-  // Animation variants
-  const container = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.3,
-      },
-    },
-  };
-
-  const item = {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-  };
-
   return (
-    <div className="relative w-full bg-white py-12 px-4">
-      {/* Mobile background image (hidden on md+) */}
-      <div className="md:hidden absolute inset-0 z-0 opacity-20">
-        <Image
-          src="/mission.png"
-          alt="Mining operations"
-          fill
-          className="object-cover"
-        />
+    <section className="py-20 bg-white">
+      <div className="max-w-7xl mx-auto px-6 md:px-14 grid grid-cols-1 md:grid-cols-2 gap-14 items-center">
+        {/* Image */}
+        <motion.div
+          className="relative w-full h-[380px] overflow-hidden"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <Image
+            src="/mission.png"
+            alt="Prixair Resources mission"
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 50vw"
+          />
+        </motion.div>
+
+        {/* Content */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.15 }}
+        >
+          <p className="text-xs uppercase tracking-widest text-gray-400 font-medium mb-3">
+            Our Mission
+          </p>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight mb-4">
+            What We're Here to Do
+          </h2>
+          <div className="w-12 h-0.5 bg-gray-900 mb-6" />
+          <p className="text-gray-600 text-sm leading-relaxed mb-4">
+            Prixair Resources is committed to exploring, extracting, and
+            processing high-quality gold and rare earth minerals with precision
+            and responsibility.
+          </p>
+          <p className="text-gray-600 text-sm leading-relaxed mb-8">
+            The company seeks to contribute to national development by creating
+            employment opportunities, promoting local content, and implementing
+            environmentally sound practices. Through strategic alliances,
+            technological innovation, and operational excellence, Prixair aims
+            to build long-term value for shareholders, communities, and industry
+            partners while meeting global demand for critical minerals.
+          </p>
+          <a
+            href="/mining/contact"
+            className="text-sm font-medium border-b border-gray-900 hover:opacity-60 transition-opacity"
+          >
+            Get in Touch
+          </a>
+        </motion.div>
       </div>
-
-      {/* Main content container */}
-      <motion.div
-        className="relative max-w-7xl mx-auto z-10"
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: false, margin: "-100px" }}
-        variants={container}
-      >
-        <div className="flex flex-col md:flex-row items-center justify-start">
-          {/* Left image (visible on md+ screens) - your original layout */}
-          <motion.div 
-            className="hidden md:block md:w-1/2 mt-8 md:mt-0 md:ml-10 h-1/2"
-            variants={item}
-          >
-            <Image
-              src="/mission.png"
-              alt="Mining operations"
-              width={800}
-              height={500}
-              className="rounded object-cover"
-            />
-          </motion.div>
-
-          {/* Right content - your original layout with responsive adjustments */}
-          <motion.div 
-            className="w-full md:w-1/2 bg-white shadow-lg rounded p-6 md:p-10 md:absolute md:left-1/2 md:bottom-[1/2]"
-            variants={item}
-          >
-            <motion.div 
-              className="text-orange-600 text-3xl font-bold mb-4"
-              variants={item}
-            >
-              “
-            </motion.div>
-            <motion.p 
-              className="flex flex-col gap-2 text-gray-800 text-lg leading-relaxed mb-6 font-medium text-justify"
-              variants={item}
-            >
-                            <span className="text-black font-bold">Mission</span>
-
-            Prixair Resources is committed to exploring, extracting, and processing high-quality  gold and rare earth minerals with precision and responsibility. The company seeks  to contribute to national development by creating employment opportunities,  promoting local content, and implementing environmentally sound practices.  Through strategic alliances, technological innovation, and operational excellence,  Prixair aims to build long-term value for shareholders, communities, and industry  partners while meeting global demand for critical minerals.
-            </motion.p>
-            <motion.div 
-              className="text-orange-600 text-3xl font-bold text-right mb-6"
-              variants={item}
-            >
-              ”
-            </motion.div>
-
-            {/* Footer */}
-            <motion.div 
-              className="flex items-center justify-between"
-              variants={container}
-            >
-           
-              <motion.a 
-                href="#" 
-                className="text-sm font-semibold text-black hover:text-orange-600 border-b-2 border-orange-600"
-                variants={item}
-              >
-                Find out more
-              </motion.a>
-            </motion.div>
-          </motion.div>
-        </div>
-      </motion.div>
-    </div>
+    </section>
   );
 };
 

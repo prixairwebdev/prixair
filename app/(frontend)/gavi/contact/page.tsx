@@ -31,6 +31,7 @@ function ContactPage() {
     businessUnit: "",
     message: "",
   });
+  const [status, setStatus] = useState<\'idle\' | \'sending\' | \'success\' | \'error\'>(\'idle\');
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -40,25 +41,30 @@ function ContactPage() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Create mailto link with form data
-    const subject = encodeURIComponent(`Contact Form: ${formData.businessUnit || 'Gavi Bakery'}`);
-    const bodyText = `Name: ${formData.name}\r\nEmail: ${formData.email}\r\nBusiness Unit: ${formData.businessUnit}\r\n\r\nMessage:\r\n${formData.message}`;
-    const body = encodeURIComponent(bodyText);
-    
-    const mailtoLink = `mailto:info@prixairgroup.com?subject=${subject}&body=${body}`;
-    window.location.href = mailtoLink;
-    
-    // Reset form
-    setFormData({
-      name: "",
-      email: "",
-      businessUnit: "",
-      message: "",
-    });
+    setStatus('sending');
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name || formData.firstName || '',
+          email: formData.email,
+          department: formData.businessUnit || formData.department || '',
+          message: formData.message,
+          source: 'Gavi Bakery',
+        }),
+      });
+      if (!res.ok) throw new Error('Failed');
+      setStatus('success');
+      setFormData({name: "", email: "", businessUnit: "", message: ""});
+    } catch {
+      setStatus('error');
+    }
   };
+
 
   return (
     <>
@@ -183,8 +189,8 @@ We’d love to hear from you — whether it’s feedback, questions, or custom o
             className="w-full bg-orange-500 text-white py-2 rounded hover:bg-orange-600 transition"
             variants={itemVariants}
           >
-            Send
-          </motion.button>
+              {status === 'sending' ? 'Sending…' : status === 'success' ? '✓ Message Sent!' : status === 'error' ? 'Error — Try Again' : 'Send'}
+            </motion.button>
         </form>
       </motion.div>
     </div>

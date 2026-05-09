@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 export default function ContactForm() {
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [formData, setFormData] = useState({
     firstName: "",
     email: "",
@@ -17,21 +18,24 @@ export default function ContactForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Create mailto link with form data
-    const subject = encodeURIComponent('Contact Form: Water Products');
-    const bodyText = `First Name: ${formData.firstName}\r\nEmail: ${formData.email}\r\n\r\nMessage:\r\n${formData.message}`;
-    const body = encodeURIComponent(bodyText);
-    
-    const mailtoLink = `mailto:info@prixairgroup.com?subject=${subject}&body=${body}`;
-    window.location.href = mailtoLink;
-    
-    // Reset form
-    setFormData({
-      firstName: "",
-      email: "",
-      message: "",
-    });
+    setStatus('sending');
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.firstName,
+          email: formData.email,
+          message: formData.message,
+          source: 'Prixair Water',
+        }),
+      });
+      if (!res.ok) throw new Error('Failed');
+      setStatus('success');
+      setFormData({ firstName: "", email: "", message: "" });
+    } catch {
+      setStatus('error');
+    }
   };
 
   return (
@@ -92,8 +96,8 @@ export default function ContactForm() {
           type="submit"
           className="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 rounded font-semibold"
         >
-          Send
-        </button>
+              {status === 'sending' ? 'Sending…' : status === 'success' ? '✓ Message Sent!' : status === 'error' ? 'Error — Try Again' : 'Send'}
+            </button>
       </form>
     </section>
   );

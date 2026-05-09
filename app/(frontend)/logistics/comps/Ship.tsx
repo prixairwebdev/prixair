@@ -1,45 +1,50 @@
 "use client";
-import React from "react";
+
 import { motion } from "framer-motion";
-function Ship() {
+import Link from "next/link";
+
+export default function Ship() {
   return (
-    <section
-      className="relative py-12 w-full flex items-center justify-center text-center bg-cover bg-center"
-      style={{
-        backgroundImage: "url('/shipbg.png')", // replace with your hero image
-      }}
-    >
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-black/40 bg-opacity-50" />
+    <section className="py-24 bg-gray-950">
+      <div className="max-w-7xl mx-auto px-6 md:px-14 flex flex-col md:flex-row md:items-end md:justify-between gap-10">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="max-w-xl"
+        >
+          <span className="text-xs tracking-[0.3em] uppercase text-white/40 font-medium">Ship Smarter</span>
+          <h2 className="mt-3 text-3xl md:text-4xl font-bold text-white leading-tight">
+            Ready to Ship Smarter?
+          </h2>
+          <p className="mt-4 text-white/60 leading-relaxed">
+            Partner with a logistics company that understands speed, reliability, and simplicity.
+            Whether you're shipping across the city or across continents, we've got you covered.
+          </p>
+        </motion.div>
 
-      <motion.div
-        className="relative z-10 px-6 md:px-12 max-w-4xl"
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-      >
-        <h1 className="text-white text-3xl md:text-5xl font-bold mb-4 leading-tight">
-          Ready to Ship Smarter?{" "}
-        </h1>
-        <p className="text-gray-200 mb-8 text-sm md:text-lg">
-          Partner with a logistics company that understands speed, reliability,
-          and simplicity. Whether you're shipping across the city or across
-          continents, we've got you covered.
-        </p>
-
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <motion.a
-            href="/quote"
-            className="bg-[#FB6404] text-white px-6 py-3 rounded-md font-medium hover:bg-[#E55A00] transition-colors duration-200"
-            whileHover={{ scale: 1.05 }}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="flex flex-wrap gap-4"
+        >
+          <Link
+            href="/logistics/contact"
+            className="px-6 py-3 bg-white text-gray-900 text-sm font-semibold hover:bg-gray-100 transition-colors"
           >
             Request a Quote
-          </motion.a>
-       
-        </div>
-      </motion.div>
+          </Link>
+          <Link
+            href="/logistics/services"
+            className="px-6 py-3 border border-white/20 text-white text-sm font-semibold hover:bg-white/10 transition-colors"
+          >
+            View Services
+          </Link>
+        </motion.div>
+      </div>
     </section>
   );
 }
-
-export default Ship;

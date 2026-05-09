@@ -38,6 +38,7 @@ function ContactPage() {
   });
 
   const [captchaValue, setCaptchaValue] = useState<string | null>(null);
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const validate = () => {
@@ -60,10 +61,6 @@ function ContactPage() {
       newErrors.message = "Message must be at least 10 characters.";
     }
 
-    if (!captchaValue) {
-      newErrors.recaptcha = "Please verify that you're not a robot.";
-    }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -78,25 +75,27 @@ function ContactPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!validate()) return;
-
-    // Create mailto link with form data
-    const subject = encodeURIComponent(`Contact Form: ${formData.businessUnit || 'General Inquiry'}`);
-    const bodyText = `Name: ${formData.name}\r\nEmail: ${formData.email}\r\nBusiness Unit: ${formData.businessUnit}\r\n\r\nMessage:\r\n${formData.message}`;
-    const body = encodeURIComponent(bodyText);
-    
-    const mailtoLink = `mailto:info@prixairgroup.com?subject=${subject}&body=${body}`;
-    window.location.href = mailtoLink;
-
-    // Reset form
-    setFormData({
-      name: "",
-      email: "",
-      businessUnit: "",
-      message: "",
-    });
-    setCaptchaValue(null);
+    setStatus('sending');
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          department: formData.businessUnit,
+          message: formData.message,
+          source: 'Prixair Group',
+        }),
+      });
+      if (!res.ok) throw new Error('Failed');
+      setStatus('success');
+      setFormData({ name: "", email: "", businessUnit: "", message: "" });
+      setCaptchaValue(null);
+    } catch {
+      setStatus('error');
+    }
   };
 
   return (
@@ -226,8 +225,8 @@ function ContactPage() {
             className="w-full bg-orange-500 text-white py-2 rounded hover:bg-orange-600 transition"
             variants={itemVariants}
           >
-            Send
-          </motion.button>
+              {status === 'sending' ? 'Sending…' : status === 'success' ? '✓ Message Sent!' : status === 'error' ? 'Error — Try Again' : 'Send'}
+            </motion.button>
         </form>
       </motion.div>
 

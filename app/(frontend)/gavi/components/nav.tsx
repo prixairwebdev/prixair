@@ -5,6 +5,7 @@ import { useState, FC, ReactNode } from 'react';
 import { FiShoppingCart, FiSearch, FiMenu, FiX } from 'react-icons/fi';
 import { useCart } from '@/components/CartContext';
 import { useRouter } from 'next/navigation';
+import SubsidiaryBar from '../../components/SubsidiaryBar';
 
 // Types for NavLink
 type NavLinkProps = {
@@ -33,7 +34,8 @@ const Navbar: FC = () => {
 
   return (
     <>
-      <nav className="bg-white shadow-md px-6 py-4 flex justify-between items-center fixed top-0 left-0 w-full z-[60]">
+      <SubsidiaryBar name="Prixair Gavi" color="#c2762d" />
+      <nav className="bg-white shadow-md px-6 py-4 flex justify-between items-center fixed top-9 left-0 w-full z-[60]">
         <div className="flex items-center gap-10">
           <Image
             src="/logo.png"

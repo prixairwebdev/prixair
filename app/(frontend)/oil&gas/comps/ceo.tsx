@@ -52,8 +52,8 @@ export default function PhilosophySection() {
             
           </div>
           <div className="mt-4 md:mt-6 flex justify-center sm:justify-start">
-            <button 
-              className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 sm:px-5 sm:py-2.5 text-xs sm:text-sm font-medium transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-opacity-50"
+            <button
+              className="bg-gray-900 hover:bg-gray-700 text-white px-4 py-2 sm:px-5 sm:py-2.5 text-xs sm:text-sm font-medium transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-opacity-50"
               aria-label="Learn more about Prixair's philosophy"
             >
               Learn More

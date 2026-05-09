@@ -1,31 +1,35 @@
-// app/components/HowItWorks.tsx
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import { Search, ShoppingCart, Truck } from "lucide-react";
 
-const accentColor = '#8AD52E';
+const accentColor = "#8AD52E";
 
-// Animation variants
-const container = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1
-    }
-  }
-};
-
-const item = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5 } }
-};
+const steps = [
+  {
+    icon: Search,
+    step: "01",
+    title: "Search Your Medication",
+    desc: "Type the name of your prescription or browse our catalog for the medications you need.",
+  },
+  {
+    icon: ShoppingCart,
+    step: "02",
+    title: "Add to Cart & Pay",
+    desc: "Select your items, review your cart, and checkout securely with multiple payment options.",
+  },
+  {
+    icon: Truck,
+    step: "03",
+    title: "Get Fast Delivery",
+    desc: "Your order is processed by a licensed pharmacist and delivered safely to your doorstep.",
+  },
+];
 
 export default function HowItWorks() {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
   const router = useRouter();
 
   const handleSearch = (e: React.FormEvent) => {
@@ -35,121 +39,106 @@ export default function HowItWorks() {
   };
 
   return (
-    <div className="w-full px-6 py-12 space-y-12 text-black">
-      {/* How it Works Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        viewport={{ once: false, margin: "-100px" }}
-        className="text-center"
-      >
-        <h2 className="text-xl font-semibold">How it works</h2>
-        <p className="text-gray-500 text-sm">Order your medications in just a few easy steps.</p>
-      </motion.div>
-
-      <motion.div
-        variants={container}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: false, margin: "-100px" }}
-        className="grid grid-cols-1 md:grid-cols-3 gap-6"
-      >
-        {[
-          {
-            title: 'Search Your Medication',
-            desc: 'Type the name of your prescription or browse our catalog for the medications you need.',
-            icon: '/icons/upload.png',
-            step: '01',
-          },
-          {
-            title: 'Add to Cart & Pay',
-            desc: 'Select your items, review your cart, and checkout securely with multiple payment options.',
-            icon: '/icons/cart.png',
-            step: '02',
-          },
-          {
-            title: 'Get Fast Delivery',
-            desc: 'Your order is processed by a licensed pharmacist and delivered safely to your doorstep.',
-            icon: '/icons/delivery.png',
-            step: '03',
-          },
-        ].map((itemData, idx) => (
+    <div className="bg-white">
+      {/* How It Works */}
+      <section className="py-16 px-6 md:px-14 border-t border-gray-100">
+        <div className="max-w-7xl mx-auto">
           <motion.div
-            key={idx}
-            variants={item}
-            className="border rounded-lg p-6 text-center space-y-4 bg-white shadow-sm"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="mb-10"
           >
-            <div className="text-2xl font-bold text-gray-300">{itemData.step}</div>
-            <Image src={itemData.icon} alt={itemData.title} width={60} height={60} className="mx-auto" />
-            <h3 className="font-medium text-lg">{itemData.title}</h3>
-            <p className="text-sm text-gray-500">{itemData.desc}</p>
+            <span className="text-xs tracking-[0.3em] uppercase text-gray-400 font-medium">Process</span>
+            <h2 className="mt-1 text-xl font-bold text-gray-900">How It Works</h2>
+            <p className="mt-1 text-gray-500 text-sm max-w-lg">
+              Order your medications in just a few easy steps.
+            </p>
           </motion.div>
-        ))}
-      </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {steps.map((s, i) => {
+              const Icon = s.icon;
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.15 }}
+                  transition={{ delay: i * 0.12, duration: 0.6 }}
+                  whileHover={{ y: -6 }}
+                  className="border-t-2 border-gray-200 hover:border-[#8AD52E] transition-all duration-300 pt-8 pb-6 group"
+                >
+                  <p className="text-4xl font-bold text-gray-100 mb-4 font-mono">{s.step}</p>
+                  <div className="mb-4 group-hover:scale-110 transition-transform duration-300 w-fit">
+                    <Icon className="w-8 h-8 text-[#8AD52E]" strokeWidth={1.5} />
+                  </div>
+                  <h3 className="font-bold text-gray-900 mb-2">{s.title}</h3>
+                  <p className="text-gray-500 text-sm leading-relaxed">{s.desc}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
 
       {/* Prescription Search */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        viewport={{ once: false, margin: "-100px" }}
-        className="grid md:grid-cols-2 gap-8 items-center bg-[#F6F6F6] px-6 py-10 w-full rounded-xl"
-      >
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          viewport={{ once: false }}
-        >
-          <h3 className="text-lg font-semibold mb-2">Have a Prescription?</h3>
-          <p className="text-sm text-gray-600">
-            Type the name of your prescribed medication and our pharmacists will verify availability,
-            recommend alternatives if needed, and prepare your order for fast delivery to your doorstep.
-          </p>
-        </motion.div>
+      <section id="prescription-search" className="py-16 bg-gray-50 px-6 md:px-14 border-t border-gray-100">
+        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <span className="text-xs tracking-[0.3em] uppercase text-gray-400 font-medium">Prescription</span>
+            <h2 className="mt-3 text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
+              Have a Prescription?
+            </h2>
+            <p className="mt-4 text-gray-500 leading-relaxed">
+              Type the name of your prescribed medication and our pharmacists will verify availability,
+              recommend alternatives if needed, and prepare your order for fast delivery.
+            </p>
+          </motion.div>
 
-        {/* Search input */}
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          viewport={{ once: false }}
-        >
-          <form onSubmit={handleSearch} className="flex flex-col gap-3">
-            <label className="text-sm font-medium text-gray-700">Search prescription by name</label>
-            <div className="relative">
-              <input
-                type="text"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="e.g. Amoxicillin, Metformin, Ventolin..."
-                className="w-full border-2 rounded-xl px-5 py-3.5 text-black text-sm focus:outline-none transition-all placeholder:text-gray-400 pr-12 bg-white shadow-sm"
-                style={{ borderColor: query ? accentColor : '#E5E7EB' }}
-                onFocus={(e) => (e.currentTarget.style.borderColor = accentColor)}
-                onBlur={(e) => (e.currentTarget.style.borderColor = query ? accentColor : '#E5E7EB')}
-              />
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <form onSubmit={handleSearch} className="flex flex-col gap-4">
+              <label className="text-sm font-medium text-gray-700">Search prescription by name</label>
+              <div className="relative">
+                <input
+                  type="text"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="e.g. Amoxicillin, Metformin, Ventolin..."
+                  className="w-full border border-gray-200 px-5 py-4 text-sm text-gray-900 focus:outline-none focus:border-[#8AD52E] transition-colors placeholder:text-gray-400 bg-white pr-12"
+                  onFocus={(e) => (e.currentTarget.style.borderColor = accentColor)}
+                  onBlur={(e) => (e.currentTarget.style.borderColor = query ? accentColor : "#E5E7EB")}
+                />
+                <button
+                  type="submit"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 transition-opacity"
+                >
+                  <Search className="w-4 h-4 text-gray-400 hover:text-gray-700" />
+                </button>
+              </div>
               <button
                 type="submit"
-                className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-lg transition-all"
-                style={{ backgroundColor: query ? accentColor : '#E5E7EB' }}
+                disabled={!query.trim()}
+                className="w-full py-4 font-semibold text-white text-sm transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                style={{ backgroundColor: accentColor }}
               >
-                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" />
-                </svg>
+                Search Prescriptions
               </button>
-            </div>
-            <button
-              type="submit"
-              disabled={!query.trim()}
-              className="w-full py-3 rounded-xl font-semibold text-white text-sm transition-all disabled:opacity-40 disabled:cursor-not-allowed"
-              style={{ backgroundColor: accentColor }}
-            >
-              Search Prescriptions
-            </button>
-          </form>
-        </motion.div>
-      </motion.div>
+            </form>
+          </motion.div>
+        </div>
+      </section>
     </div>
   );
 }

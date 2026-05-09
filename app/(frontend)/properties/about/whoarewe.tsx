@@ -33,7 +33,7 @@ export default function WhoWeAre() {
       <motion.div variants={itemVariants}>
         <h2 className="text-lg font-semibold mb-3">Who We Are</h2>
         <p className="text-sm text-gray-700 mb-4">
-          At Prixair Homes, we believe your home is more than just a place—it's where your story begins, where comfort meets style,
+          At Prixair Properties, we believe your home is more than just a place—it's where your story begins, where comfort meets style,
           and where lasting memories are created. That's why we've dedicated ourselves to being more than just a marketplace. We
           are your trusted partner in building and designing spaces that truly reflect your taste and lifestyle.
         </p>
@@ -44,7 +44,7 @@ export default function WhoWeAre() {
         </p>
         <p className="text-sm text-gray-700">
           Our mission is simple: to make home ownership and furnishing accessible, stylish, and stress-free. Whether you're moving
-          into your first house, renovating a space, or simply looking for that perfect finishing touch, Prixair Homes is here to
+          into your first house, renovating a space, or simply looking for that perfect finishing touch, Prixair Properties is here to
           guide you every step of the way.
         </p>
       </motion.div>
@@ -56,7 +56,7 @@ export default function WhoWeAre() {
       >
         <Image
           src="/prixairhome.jpg" // Update this path to your actual image
-          alt="Prixair Homes furniture store"
+          alt="Prixair Properties furniture store"
           fill
           className="object-cover rounded"
         />
