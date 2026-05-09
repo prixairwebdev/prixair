@@ -54,7 +54,7 @@ const businesses: Business[] = [
   {
     name: "Prixair Properties",
     imageUrl: "/subsidiaries/properties.png",
-    href: "/homes",
+    href: "/properties",
   },
   {
     name: "Prixair Transport & Logistics",

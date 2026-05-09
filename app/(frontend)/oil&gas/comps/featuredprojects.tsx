@@ -45,16 +45,16 @@ const item = {
 
 export default function FeaturedProjects() {
   return (
-    <motion.section 
-      className="px-6 md:px-16 py-12 bg-white text-black"
+    <motion.section
+      className="px-6 md:px-12 py-20 bg-white text-black max-w-7xl mx-auto w-full"
       initial="hidden"
       whileInView="show"
       viewport={{ once: false, margin: "-100px" }}
       variants={container}
     >
       <div className="flex justify-between items-center mb-8">
-        <h2 className="text-2xl font-semibold">Featured Project</h2>
-        <a href="#" className="text-sm font-medium border-b-2 border-orange-500 hover:opacity-75">
+        <h2 className="text-2xl font-semibold">Featured Projects</h2>
+        <a href="#" className="text-sm font-medium border-b border-gray-900 hover:opacity-60 transition-opacity">
           See All Projects
         </a>
       </div>
@@ -87,14 +87,14 @@ export default function FeaturedProjects() {
                 <span className="font-medium">Mineral:</span> {project.mineral}
               </p>
 
-              <p className="text-sm flex items-center mt-1">
-                <MapPin className="w-4 h-4 text-orange-600 mr-1" />
+              <p className="text-sm flex items-center mt-1 text-gray-500">
+                <MapPin className="w-4 h-4 text-gray-400 mr-1" />
                 {project.location}
               </p>
 
               <a
                 href="#"
-                className="mt-4 inline-block text-sm font-medium border-b-2 border-orange-500 hover:opacity-75"
+                className="mt-4 inline-block text-sm font-medium border-b border-gray-900 hover:opacity-60 transition-opacity"
               >
                 View Project
               </a>

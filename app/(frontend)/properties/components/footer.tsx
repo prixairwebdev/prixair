@@ -43,7 +43,7 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* Prixair Homes */}
+        {/* Prixair Properties */}
         <div>
           <h3 className="font-semibold mb-4 text-sm">PRIXAIR HOMES</h3>
           <ul className="space-y-2 text-gray-300 text-sm">

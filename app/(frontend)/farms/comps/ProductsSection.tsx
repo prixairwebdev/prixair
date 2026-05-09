@@ -1,63 +1,80 @@
-import Image from "next/image";
+"use client";
+
 import Link from "next/link";
+import { motion } from "framer-motion";
+import { Wheat, Bird, Package } from "lucide-react";
 
 const products = [
   {
+    icon: Wheat,
     title: "Crops",
-    desc: "We grow fresh, organic crops using sustainable farming methods. From staple grains to leafy greens, each harvest is nutrient-rich and carefully cultivated.",
-    image: "/images/crops.png",
-    link: "/contact",
+    desc: "Fresh organic produce grown without synthetic fertilizers. From staple grains to leafy greens, every harvest is nutrient-rich and carefully cultivated.",
+    items: ["Maize", "Rice", "Vegetables", "Leafy Greens"],
   },
   {
+    icon: Bird,
     title: "Livestock",
-    desc: "Our livestock are raised in clean, natural environments with ethical care practices. Healthy, well-fed animals mean quality products for our customers.",
-    image: "/images/livestock.png",
-    link: "/contact",
+    desc: "Animals raised in clean, natural environments with ethical care. Healthy, well-fed livestock means superior quality products for our customers.",
+    items: ["Poultry", "Cattle", "Goats", "Fish"],
   },
   {
+    icon: Package,
     title: "Processed Products",
-    desc: "We process select farm products with hygiene and quality control in mind — ready for homes, vendors, and wholesalers.",
-    image: "/images/processed-products.png",
-    link: "/contact",
+    desc: "Select farm products processed with hygiene and quality control — ready for homes, vendors, and wholesalers at scale.",
+    items: ["Packaged Grains", "Processed Poultry", "Dairy Derivatives", "Bulk Orders"],
   },
 ];
 
 const ProductsSection = () => {
   return (
-    <section className="py-20 bg-white text-black">
-      <div className="max-w-7xl mx-auto text-center px-6 lg:px-12">
-        <h2 className="text-2xl font-bold mb-2 text-black">Our Products</h2>
-        <p className="text-gray-600 mb-12">
-          Explore the variety of farm-fresh goods we grow, raise, and process with care.
-        </p>
+    <section className="py-24 bg-gray-50">
+      <div className="max-w-7xl mx-auto px-6 md:px-14">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="mb-14"
+        >
+          <span className="text-xs tracking-[0.3em] uppercase text-gray-400 font-medium">What We Offer</span>
+          <h2 className="mt-3 text-3xl md:text-4xl font-bold text-gray-900">Our Products</h2>
+          <p className="mt-3 text-gray-500 max-w-lg">
+            Farm-fresh goods grown, raised, and processed with care — from field to your door.
+          </p>
+        </motion.div>
 
         <div className="grid md:grid-cols-3 gap-8">
-          {products.map((item, idx) => (
-            <div
-              key={idx}
-              className="bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden"
-            >
-              <Image
-                src={item.image}
-                alt={item.title}
-                width={400}
-                height={300}
-                className="object-cover w-full h-56"
-              />
-              <div className="p-6 flex flex-col justify-between">
-                <div>
-                  <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
-                  <p className="text-gray-600 text-sm mb-4">{item.desc}</p>
+          {products.map((item, idx) => {
+            const Icon = item.icon;
+            return (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.15 }}
+                transition={{ duration: 0.6, delay: idx * 0.12 }}
+                whileHover={{ y: -6 }}
+                className="bg-white border-t-2 border-gray-200 hover:border-[#3a8c3f] p-8 transition-all duration-300 group"
+              >
+                <div className="mb-6 group-hover:scale-110 transition-transform duration-300 w-fit">
+                  <Icon className="w-8 h-8 text-[#3a8c3f]" strokeWidth={1.5} />
                 </div>
-                <Link
-                  href={item.link}
-                  className="text-green-700 font-semibold hover:underline mt-auto"
-                >
-                  Contact Us
+                <h3 className="text-lg font-bold text-gray-900 mb-3">{item.title}</h3>
+                <p className="text-gray-500 text-sm leading-relaxed mb-6">{item.desc}</p>
+                <ul className="space-y-1 mb-6">
+                  {item.items.map((i) => (
+                    <li key={i} className="text-xs text-gray-400 flex items-center gap-2">
+                      <span className="w-1 h-1 rounded-full bg-[#3a8c3f] inline-block" />
+                      {i}
+                    </li>
+                  ))}
+                </ul>
+                <Link href="/farms/contact" className="text-sm font-semibold text-gray-900 flex items-center gap-2 group-hover:gap-3 transition-all">
+                  Enquire Now <span className="text-[#3a8c3f]">→</span>
                 </Link>
-              </div>
-            </div>
-          ))}
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>

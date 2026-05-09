@@ -7,6 +7,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCart } from "@/components/CartContext";
 import { FiShoppingCart } from "react-icons/fi";
+import SubsidiaryBar from "../../components/SubsidiaryBar";
 
 function Nav() {
   const pathname = usePathname();
@@ -36,14 +37,10 @@ function Nav() {
 
   return (
     <>
-      <div
-        className={`flex justify-between items-center px-12 py-4 bg-[#FE0000] text-sm text-gray-300 transition-all duration-300 ${
-          isScrolled ? "fixed top-0 left-0 w-full z-40" : "relative"
-        }`}
-      ></div>
+      <SubsidiaryBar name="Prixair Buka" color="#FE0000" />
 
       <nav
-        className={`flex items-center justify-between px-6 py-4 fixed top-0 left-0 w-full z-[60] transition-all duration-300 ${
+        className={`flex items-center justify-between px-6 py-4 fixed top-9 left-0 w-full z-[60] transition-all duration-300 ${
           isScrolled ? "bg-white shadow-md text-black" : "bg-white text-black"
         }`}
       >

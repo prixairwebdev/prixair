@@ -19,130 +19,113 @@ const categories = [
   { name: "First Aid", icon: "/icons/drop.png", href: "/pharmacy/products?category=First+Aid" },
 ];
 
-// Animation variants
-const container = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
-
-const item = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-};
-
 export default function HomeCategories() {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    searchProducts('pharmacy', { sortBy: 'price-low', limit: 4, page: 1 }).then(result => {
+    searchProducts("pharmacy", { sortBy: "price-low", limit: 4, page: 1 }).then((result) => {
       setProducts(result.products);
       setIsLoading(false);
     });
   }, []);
 
   const handleCategoryClick = (href: string) => {
-    if (href.startsWith('#')) {
+    if (href.startsWith("#")) {
       const el = document.getElementById(href.slice(1));
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
+      if (el) el.scrollIntoView({ behavior: "smooth" });
     }
   };
 
   return (
-    <div className="w-full px-6 py-10 max-w-7xl mx-auto">
+    <div className="bg-white">
       {/* Categories */}
-      <motion.div
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: false, margin: "-100px" }}
-        variants={container}
-        className="text-center mb-8"
-      >
-        <motion.h2 variants={item} className="text-xl font-semibold">
-          Explore Our Categories
-        </motion.h2>
-        <motion.p variants={item} className="text-gray-500 text-sm">
-          Browse by category to get started.
-        </motion.p>
-      </motion.div>
-
-      <motion.div
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: false, margin: "-100px" }}
-        variants={container}
-        className="grid grid-cols-3 gap-4 sm:flex sm:gap-6 sm:overflow-x-auto sm:pb-4 sm:scrollbar-hide md:justify-center"
-      >
-        {categories.map((cat, idx) => (
+      <section className="py-24 px-6 md:px-14">
+        <div className="max-w-7xl mx-auto">
           <motion.div
-            key={idx}
-            variants={item}
-            className="flex flex-col items-center gap-2 p-2 sm:w-[200px] sm:flex-shrink-0 cursor-pointer"
-            onClick={() => cat.href.startsWith('#') ? handleCategoryClick(cat.href) : undefined}
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="mb-14"
           >
-            {cat.href.startsWith('#') ? (
-              <div className="flex flex-col items-center gap-2">
-                <div className="w-12 h-12 md:w-14 md:h-14 relative">
-                  <Image src={cat.icon} alt={cat.name} fill className="object-contain" />
-                </div>
-                <span className="text-sm text-center md:text-base hover:underline" style={{ color: accentColor }}>{cat.name}</span>
-              </div>
-            ) : (
-              <Link href={cat.href} className="flex flex-col items-center gap-2">
-                <div className="w-12 h-12 md:w-14 md:h-14 relative">
-                  <Image src={cat.icon} alt={cat.name} fill className="object-contain" />
-                </div>
-                <span className="text-sm text-center md:text-base hover:underline">{cat.name}</span>
-              </Link>
-            )}
+            <span className="text-xs tracking-[0.3em] uppercase text-gray-400 font-medium">Browse</span>
+            <h2 className="mt-3 text-3xl md:text-4xl font-bold text-gray-900">Explore Our Categories</h2>
+            <p className="mt-3 text-gray-500 max-w-lg">Find what you need — from prescriptions to wellness essentials.</p>
           </motion.div>
-        ))}
-      </motion.div>
+
+          <div className="grid grid-cols-3 sm:grid-cols-6 gap-4">
+            {categories.map((cat, i) => {
+              const content = (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.15 }}
+                  transition={{ delay: i * 0.08, duration: 0.5 }}
+                  whileHover={{ y: -4 }}
+                  className="flex flex-col items-center gap-3 p-5 border border-gray-100 hover:border-[#8AD52E] transition-all duration-300 cursor-pointer group"
+                  onClick={cat.href.startsWith("#") ? () => handleCategoryClick(cat.href) : undefined}
+                >
+                  <div className="w-10 h-10 relative group-hover:scale-110 transition-transform duration-300">
+                    <Image src={cat.icon} alt={cat.name} fill className="object-contain" />
+                  </div>
+                  <span className="text-xs text-center text-gray-600 font-medium leading-snug">{cat.name}</span>
+                </motion.div>
+              );
+
+              return cat.href.startsWith("#") ? (
+                <div key={i}>{content}</div>
+              ) : (
+                <Link key={i} href={cat.href}>{content}</Link>
+              );
+            })}
+          </div>
+        </div>
+      </section>
 
       {/* Today's Best Offer */}
-      <motion.div
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: false, margin: "-100px" }}
-        variants={container}
-        className="mt-12 flex justify-between items-center mb-4"
-      >
-        <motion.h3 variants={item} className="text-lg font-semibold">
-          Today&apos;s Best Offer
-        </motion.h3>
-        <Link href="/pharmacy/products">
-          <motion.span variants={item} className="text-sm text-gray-500 hover:underline cursor-pointer">
-            See all
-          </motion.span>
-        </Link>
-      </motion.div>
+      <section className="py-24 bg-gray-50 px-6 md:px-14">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="flex items-end justify-between mb-14"
+          >
+            <div>
+              <span className="text-xs tracking-[0.3em] uppercase text-gray-400 font-medium">Featured</span>
+              <h2 className="mt-3 text-3xl md:text-4xl font-bold text-gray-900">Today&apos;s Best Offers</h2>
+            </div>
+            <Link href="/pharmacy/products" className="text-sm font-semibold text-gray-900 border-b border-gray-900 pb-0.5 hover:border-gray-400 transition-colors whitespace-nowrap">
+              See all →
+            </Link>
+          </motion.div>
 
-      {isLoading ? (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {[...Array(4)].map((_, i) => (
-            <div key={i} className="bg-white p-4 rounded-lg shadow-sm border animate-pulse h-64" />
-          ))}
+          {isLoading ? (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className="bg-white border border-gray-100 animate-pulse h-64" />
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              {products.map((product, i) => (
+                <motion.div
+                  key={product.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.1 }}
+                  transition={{ delay: i * 0.1, duration: 0.5 }}
+                >
+                  <ProductCard product={product} accentColor={accentColor} />
+                </motion.div>
+              ))}
+            </div>
+          )}
         </div>
-      ) : (
-        <motion.div
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: false, margin: "-100px" }}
-          variants={container}
-          className="grid grid-cols-2 md:grid-cols-4 gap-6"
-        >
-          {products.map((product) => (
-            <motion.div key={product.id} variants={item}>
-              <ProductCard product={product} accentColor={accentColor} />
-            </motion.div>
-          ))}
-        </motion.div>
-      )}
+      </section>
     </div>
   );
 }

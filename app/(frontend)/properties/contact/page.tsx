@@ -11,6 +11,7 @@ export default function ContactForm() {
     businessUnit: "",
     message: "",
   });
+  const [status, setStatus] = useState<\'idle\' | \'sending\' | \'success\' | \'error\'>(\'idle\');
 
   const [loading, setLoading] = useState(false);
 
@@ -18,22 +19,30 @@ export default function ContactForm() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    
-    // Create mailto link with form data
-    const subject = encodeURIComponent(`Contact Form: ${formData.businessUnit || 'Prixair Homes'}`);
-    const bodyText = `Name: ${formData.name}\r\nEmail: ${formData.email}\r\nBusiness Unit: ${formData.businessUnit}\r\n\r\nMessage:\r\n${formData.message}`;
-    const body = encodeURIComponent(bodyText);
-    
-    const mailtoLink = `mailto:info@prixairgroup.com?subject=${subject}&body=${body}`;
-    window.location.href = mailtoLink;
-
-    // Reset form
-    setFormData({ name: "", email: "", businessUnit: "", message: "" });
-    setLoading(false);
+    setStatus('sending');
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name || formData.firstName || '',
+          email: formData.email,
+          department: formData.businessUnit || formData.department || '',
+          message: formData.message,
+          source: 'Prixair Properties',
+        }),
+      });
+      if (!res.ok) throw new Error('Failed');
+      setStatus('success');
+      setFormData({name: "", email: "", businessUnit: "", message: ""});
+    } catch {
+      setStatus('error');
+    }
   };
+
 
   return (
     <>
@@ -108,10 +117,10 @@ export default function ContactForm() {
           {/* Send Button */}
           <button
             type="submit"
-            disabled={loading}
+            disabled={status === 'sending'}
             className="w-full py-3 bg-orange-600 hover:bg-orange-700 text-white text-sm rounded transition-colors disabled:opacity-50"
           >
-            {loading ? "Sending..." : "Send"}
+            {status === 'sending' ? 'Sending…' : status === 'success' ? '✓ Message Sent!' : status === 'error' ? 'Error — Try Again' : 'Send'}
           </button>
         </form>
       </section>

@@ -29,61 +29,75 @@ const services = [
   },
 ];
 
+const container = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
+};
+
+const cardVariant = {
+  hidden: { opacity: 0, y: 40 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.25, 0.1, 0.25, 1] } },
+};
+
 export default function CoreServices() {
   return (
-    <section className="py-16 bg-white text-black">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold mb-4">Our Core Services</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-            Flexible, reliable, and secure logistics solutions — tailored to your business needs.
+    <section className="py-20 bg-gray-50">
+      <div className="max-w-7xl mx-auto px-6 md:px-12">
+        {/* Section Header */}
+        <motion.div
+          className="mb-14"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.55, ease: [0.25, 0.1, 0.25, 1] }}
+        >
+          <p className="text-xs uppercase tracking-widest text-gray-400 font-medium mb-3">
+            What We Do
           </p>
-        </div>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+            Our Core Services
+          </h2>
+          <div className="w-12 h-0.5 bg-gray-900 mt-4" />
+        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+          variants={container}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.15 }}
+        >
           {services.map((service, index) => (
             <motion.div
               key={index}
-              className="relative h-80 overflow-hidden shadow-lg group cursor-pointer"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              whileHover={{ y: -5 }}
+              className="bg-white group cursor-pointer overflow-hidden"
+              variants={cardVariant}
+              whileHover={{ y: -8, transition: { duration: 0.25, ease: "easeOut" } }}
             >
-              <Image
-                src={service.image}
-                alt={service.title}
-                fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                className="object-cover group-hover:scale-110 transition-transform duration-700"
-                priority={index < 2}
-              />
-              
-              {/* Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-              
-              {/* Content */}
-              <div className="absolute inset-0 p-6 flex flex-col justify-end text-white">
-                <h3 className="text-xl font-bold mb-3">{service.title}</h3>
-                <p className="text-sm text-gray-200 leading-relaxed">
+              <div className="relative h-52 overflow-hidden">
+                <Image
+                  src={service.image}
+                  alt={service.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  priority={index < 2}
+                />
+              </div>
+              <div className="p-6 border border-t-0 border-gray-100 group-hover:border-gray-300 transition-colors duration-300">
+                <span className="text-xs text-gray-400 font-mono font-medium">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <h3 className="text-base font-bold text-gray-900 mt-2 mb-2 leading-snug">
+                  {service.title}
+                </h3>
+                <p className="text-sm text-gray-500 leading-relaxed">
                   {service.description}
                 </p>
-                
-                {/* Learn More Button */}
-                <motion.button 
-                  className="mt-4 px-4 py-2 bg-orange-500 text-white text-sm font-medium self-start opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Learn More
-                </motion.button>
               </div>
             </motion.div>
           ))}
-        </div>
-
-        
+        </motion.div>
       </div>
     </section>
   );

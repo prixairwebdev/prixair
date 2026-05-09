@@ -9,19 +9,25 @@ export default function Loader() {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
-      className="fixed inset-0 bg-black/80 flex items-center justify-center z-[9999]"
+      className="fixed inset-0 bg-gray-950 flex items-center justify-center z-[9999]"
     >
-      <div className="flex flex-col items-center gap-4">
-        <motion.div
-          className="w-12 h-12 border-4 border-t-transparent border-[#FB6404] rounded-full"
-          animate={{ rotate: 360 }}
-          transition={{
-            duration: 1,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-        />
-      
+      <div className="flex flex-col items-center gap-6">
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+          className="text-white text-sm tracking-[0.25em] uppercase font-medium"
+        >
+          Prixair Hotels
+        </motion.p>
+        <div className="w-40 h-px bg-white/10 overflow-hidden">
+          <motion.div
+            className="h-full bg-[#FB6404]"
+            initial={{ x: "-100%" }}
+            animate={{ x: "100%" }}
+            transition={{ duration: 0.9, ease: "easeInOut", repeat: Infinity }}
+          />
+        </div>
       </div>
     </motion.div>
   );

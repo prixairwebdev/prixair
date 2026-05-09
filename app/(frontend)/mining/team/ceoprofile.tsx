@@ -1,3 +1,4 @@
+"use client"
 import React, { useRef } from "react";
 import Image from "next/image";
 import { motion, useInView, Variants } from "framer-motion";
@@ -31,7 +32,7 @@ function CeoProfile() {
   };
 
   return (
-    <motion.div 
+    <motion.div
       ref={ref}
       initial="hidden"
       animate={isInView ? "show" : "hidden"}
@@ -39,7 +40,7 @@ function CeoProfile() {
       className="w-full bg-black text-white min-h-screen flex flex-col lg:flex-row items-center justify-center p-6 gap-8 lg:gap-16"
     >
       {/* Image container with proper sizing and aspect ratio */}
-      <motion.div 
+      <motion.div
         variants={itemVariants}
         className="relative w-full lg:w-[40%] max-w-[500px] aspect-square"
       >
@@ -52,9 +53,9 @@ function CeoProfile() {
           sizes="(max-width: 768px) 100vw, 50vw"
         />
       </motion.div>
-      
+
       {/* Content container */}
-      <motion.div 
+      <motion.div
         variants={itemVariants}
         className="w-full lg:w-[50%] max-w-3xl flex flex-col gap-4 lg:gap-6 text-center lg:text-left"
       >

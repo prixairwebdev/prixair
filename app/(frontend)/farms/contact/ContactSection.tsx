@@ -11,6 +11,7 @@ interface FormData {
 }
 
 export default function ContactSection() {
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [formData, setFormData] = useState<FormData>({
     fullName: "",
     phone: "",
@@ -27,22 +28,25 @@ export default function ContactSection() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
-    // Create mailto link with form data
-    const subject = encodeURIComponent('Contact Form: Prixair Farms');
-    const bodyText = `Full Name: ${formData.fullName}\r\nPhone: ${formData.phone}\r\nAddress: ${formData.address}\r\n\r\nAdditional Details:\r\n${formData.additionalDetails}`;
-    const body = encodeURIComponent(bodyText);
-    
-    const mailtoLink = `mailto:info@prixairgroup.com?subject=${subject}&body=${body}`;
-    window.location.href = mailtoLink;
-    
-    // Reset form
-    setFormData({
-      fullName: "",
-      phone: "",
-      address: "",
-      additionalDetails: "",
-    });
+    setStatus('sending');
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.fullName,
+          email: `phone: ${formData.phone}`,
+          department: formData.address,
+          message: formData.additionalDetails,
+          source: 'Prixair Farms',
+        }),
+      });
+      if (!res.ok) throw new Error('Failed');
+      setStatus('success');
+      setFormData({ fullName: "", phone: "", address: "", additionalDetails: "" });
+    } catch {
+      setStatus('error');
+    }
   };
 
   return (
@@ -118,8 +122,8 @@ export default function ContactSection() {
             type="submit"
             className="w-full bg-[#4CAF50] text-white py-2 rounded-md font-medium hover:bg-[#2e160b] transition-colors"
           >
-            Send Message
-          </button>
+              {status === 'sending' ? 'Sending…' : status === 'success' ? '✓ Sent!' : status === 'error' ? 'Error — Try Again' : 'Send Message'}
+            </button>
         </form>
       </motion.div>
     </section>
