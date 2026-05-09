@@ -8,7 +8,7 @@ import { HeroSection } from "./components/HeroSection";
 import ProductCard from "@/components/ProductCard";
 import { dummyProducts } from "./data/dummy-data";
 import { getSupermarketProducts, getFlashSale } from "@/app/actions/supermarket";
-import { Product, FlashSale } from "@/types/store";
+import { Product, FlashSale } from "@/app/actions/supermarket";
 
 export default function SupermarketPage() {
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);

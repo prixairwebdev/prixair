@@ -34,7 +34,7 @@ export default function ProductDetail({ product }: { product: Product }) {
           <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
             <label>Qty:</label>
             <input type="number" value={qty} min={1} max={product.stock ?? 9999} onChange={(e) => setQty(Number(e.target.value) || 1)} style={{ width: 72 }} />
-            <button onClick={() => addItem({ id: product.id, name: product.name, price: product.price, qty, image: product.image, stock: product.stock })} style={{ padding: "8px 12px" }}>
+            <button onClick={() => addItem({ id: product.id, name: product.name, price: product.price, qty, image: product.image, stock: product.stock, store: 'supermarket' })} style={{ padding: "8px 12px" }}>
               Add to cart
             </button>
           </div>

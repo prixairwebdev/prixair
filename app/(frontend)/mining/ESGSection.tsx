@@ -17,7 +17,7 @@ const container = {
 
 const metricVariant = {
   hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] } },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" as const } },
 };
 
 export default function ESGSection() {
@@ -29,7 +29,7 @@ export default function ESGSection() {
           initial={{ opacity: 0, x: -30 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+          transition={{ duration: 0.6, ease: "easeOut" as const }}
         >
           <p className="text-xs uppercase tracking-widest text-gray-400 font-medium mb-3">
             ESG Commitment
@@ -83,7 +83,7 @@ export default function ESGSection() {
           initial={{ opacity: 0, x: 30 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1], delay: 0.1 }}
+          transition={{ duration: 0.6, ease: "easeOut" as const, delay: 0.1 }}
           whileHover={{ scale: 1.02, transition: { duration: 0.4 } }}
         >
           <Image

@@ -37,7 +37,7 @@ function ContactPage() {
   });
 
   const [captchaValue, setCaptchaValue] = useState<string | null>(null);
-  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const validate = () => {
@@ -84,9 +84,9 @@ function ContactPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name: formData.name || formData.firstName || '',
+          name: formData.name || '',
           email: formData.email,
-          department: formData.businessUnit || formData.department || '',
+          department: formData.businessUnit || '',
           message: formData.message,
           source: 'Prixair Real Estate',
         }),

@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
     const { data, error } = await resend.emails.send({
       from: `Prixair Contact Form <${FROM_EMAIL}>`,
       to: [TO_EMAIL],
-      reply_to: email,
+      replyTo: email,
       subject: emailSubject,
       html,
     });

@@ -124,7 +124,7 @@ export default function AdminOrdersPage() {
                 <div>
                   <h4 className="text-black font-semibold mb-2">Order Items</h4>
                   <div className="space-y-2">
-                    {order.items.map((item, idx) => (
+                    {order.items.map((item: Order['items'][number], idx: number) => (
                       <div key={idx} className="flex items-center gap-3 text-sm">
                         <div className="relative w-10 h-10">
                           <Image

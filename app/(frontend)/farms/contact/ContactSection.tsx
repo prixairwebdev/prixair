@@ -11,7 +11,7 @@ interface FormData {
 }
 
 export default function ContactSection() {
-  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [formData, setFormData] = useState<FormData>({
     fullName: "",
     phone: "",

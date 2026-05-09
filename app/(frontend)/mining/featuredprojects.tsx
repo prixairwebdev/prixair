@@ -35,7 +35,7 @@ const container = {
 
 const cardVariant = {
   hidden: { opacity: 0, y: 40 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.25, 0.1, 0.25, 1] } },
+  show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" as const } },
 };
 
 export default function FeaturedProjects() {
@@ -47,7 +47,7 @@ export default function FeaturedProjects() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.55, ease: [0.25, 0.1, 0.25, 1] }}
+          transition={{ duration: 0.55, ease: "easeOut" as const }}
         >
           <div>
             <p className="text-xs uppercase tracking-widest text-gray-400 font-medium mb-3">
@@ -78,7 +78,7 @@ export default function FeaturedProjects() {
               key={index}
               className="bg-white overflow-hidden group cursor-pointer"
               variants={cardVariant}
-              whileHover={{ y: -8, boxShadow: "0 20px 40px -12px rgba(0,0,0,0.12)", transition: { duration: 0.25, ease: "easeOut" } }}
+              whileHover={{ y: -8, boxShadow: "0 20px 40px -12px rgba(0,0,0,0.12)", transition: { duration: 0.25, ease: "easeOut" as const } }}
             >
               <div className="relative h-52 w-full overflow-hidden">
                 <Image

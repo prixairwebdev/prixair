@@ -30,7 +30,7 @@ const container = {
 
 const cardVariant = {
   hidden: { opacity: 0, y: 40 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.25, 0.1, 0.25, 1] } },
+  show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" as const } },
 };
 
 export function Testimonials() {
@@ -65,7 +65,7 @@ export function Testimonials() {
               key={index}
               className="bg-white p-8 border border-gray-100 cursor-default"
               variants={cardVariant}
-              whileHover={{ y: -6, boxShadow: "0 16px 40px -12px rgba(0,0,0,0.12)", transition: { duration: 0.25, ease: "easeOut" } }}
+              whileHover={{ y: -6, boxShadow: "0 16px 40px -12px rgba(0,0,0,0.12)", transition: { duration: 0.25, ease: "easeOut" as const } }}
             >
               <p className="text-6xl text-gray-200 font-serif leading-none select-none mb-4">
                 &ldquo;

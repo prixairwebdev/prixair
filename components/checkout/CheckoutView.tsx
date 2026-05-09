@@ -78,7 +78,7 @@ export default function CheckoutView({
             try {
                 const storeDoc = await getStoreBySlug(storeSlug);
                 if (storeDoc) {
-                    setStoreId(storeDoc.id);
+                    setStoreId(String(storeDoc.id));
                 } else {
                     console.error(`Store not found: ${storeSlug}`);
                 }
@@ -109,7 +109,7 @@ export default function CheckoutView({
                 const res = await validatePromotion(code, storeSlug, items.map(i => ({ id: i.id, price: i.price, qty: i.qty })));
                 if (res.isValid && res.discount !== undefined) {
                     setDiscountAmount(res.discount);
-                    setPromotionId(res.promo?.id);
+                    setPromotionId((res.promo as { id?: string } | undefined)?.id);
                 } else {
                     // Invalid in checkout? Just reset.
                     setDiscountAmount(0);
