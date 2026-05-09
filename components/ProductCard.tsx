@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { Heart, Plus, Minus, Star } from 'lucide-react';
+import { Heart, Plus, Minus, ShoppingBag } from 'lucide-react';
 import { Product } from '@/app/actions/supermarket';
 import { useCart } from '@/components/CartContext';
 import { useWishlist } from '@/components/contexts/WishlistContext';
@@ -53,7 +53,7 @@ export default function ProductCard({ product, accentColor = '#f97316' }: Produc
   const productLink = `/${storeSlug}/product/${product.id}`;
 
   return (
-    <div className="group bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-md hover:border-gray-200 transition-all duration-300 flex flex-col">
+    <div className="group bg-white border border-gray-100 hover:border-gray-300 transition-all duration-300 flex flex-col">
       {/* Image */}
       <Link href={productLink} className="relative block aspect-square bg-gray-50 overflow-hidden">
         <Image
@@ -65,21 +65,26 @@ export default function ProductCard({ product, accentColor = '#f97316' }: Produc
 
         {/* Stock badge */}
         {isOutOfStock && (
-          <div className="absolute top-2.5 left-2.5 bg-gray-800 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+          <div className="absolute top-3 left-3 bg-gray-800 text-white text-[10px] font-semibold px-2.5 py-1 tracking-wide">
             Sold Out
           </div>
         )}
         {isLowStock && !isOutOfStock && (
-          <div className="absolute top-2.5 left-2.5 text-white text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ backgroundColor: accentColor }}>
-            Only {product.stock} left
+          <div
+            className="absolute top-3 left-3 text-white text-[10px] font-semibold px-2.5 py-1 tracking-wide"
+            style={{ backgroundColor: accentColor }}
+          >
+            {product.stock} left
           </div>
         )}
 
         {/* Wishlist */}
         <button
           onClick={handleWishlistToggle}
-          className={`absolute top-2.5 right-2.5 w-8 h-8 rounded-full flex items-center justify-center transition-all shadow-sm ${
-            inWishlist ? 'bg-red-500 text-white' : 'bg-white/90 text-gray-400 hover:text-red-400'
+          className={`absolute top-3 right-3 w-8 h-8 flex items-center justify-center transition-all ${
+            inWishlist
+              ? 'bg-red-500 text-white'
+              : 'bg-white/90 text-gray-400 hover:text-red-400 opacity-0 group-hover:opacity-100'
           }`}
         >
           <Heart className={`w-3.5 h-3.5 ${inWishlist ? 'fill-white' : ''}`} />
@@ -89,67 +94,60 @@ export default function ProductCard({ product, accentColor = '#f97316' }: Produc
       {/* Content */}
       <div className="p-4 flex flex-col flex-1">
         {categoryName && (
-          <span className="text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: accentColor }}>
+          <span
+            className="text-[10px] font-semibold uppercase tracking-[0.15em] mb-1.5"
+            style={{ color: accentColor }}
+          >
             {categoryName}
           </span>
         )}
 
         <Link href={productLink}>
-          <h3 className="text-sm font-bold text-gray-900 hover:text-orange-500 transition-colors line-clamp-2 leading-snug mb-2">
+          <h3
+            className="text-sm font-semibold text-gray-900 transition-colors line-clamp-2 leading-snug mb-3"
+            style={{ ['--hover-color' as string]: accentColor }}
+          >
             {product.name}
           </h3>
         </Link>
 
-        {typeof product.rating === 'number' && product.rating > 0 && (
-          <div className="flex items-center gap-1 mb-2">
-            <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-            <span className="text-xs font-bold text-gray-700">{product.rating.toFixed(1)}</span>
-            {product.reviewCount ? (
-              <span className="text-[10px] text-gray-400">({product.reviewCount})</span>
-            ) : null}
-          </div>
-        )}
-
-        {product.description && (
-          <p className="text-gray-400 text-xs line-clamp-2 leading-relaxed mb-3 flex-1">
-            {product.description}
-          </p>
-        )}
-
         <div className="flex items-center justify-between mt-auto mb-3">
-          <span className="text-base font-black text-gray-900">
+          <span className="text-base font-bold text-gray-900">
             ₦{product.price.toLocaleString()}
           </span>
+          {typeof product.rating === 'number' && product.rating > 0 && (
+            <span className="text-xs text-gray-400">{product.rating.toFixed(1)} ★</span>
+          )}
         </div>
 
         {cartItem ? (
-          <div className="flex items-center justify-between rounded-xl p-1 bg-gray-50 border border-gray-100">
+          <div className="flex items-center justify-between bg-gray-50 border border-gray-100 p-1">
             <button
               onClick={() => updateQty(product.id, storeSlug, cartItem.qty - 1)}
-              className="w-9 h-9 flex items-center justify-center rounded-lg bg-white shadow-sm text-gray-600 hover:bg-gray-50 transition-all"
+              className="w-8 h-8 flex items-center justify-center bg-white border border-gray-200 text-gray-600 hover:border-gray-400 transition-colors"
             >
-              <Minus className="w-3.5 h-3.5" />
+              <Minus className="w-3 h-3" />
             </button>
-            <span className="font-black text-sm text-gray-900">{cartItem.qty}</span>
+            <span className="font-bold text-sm text-gray-900 min-w-[2ch] text-center">{cartItem.qty}</span>
             <button
               onClick={() => updateQty(product.id, storeSlug, cartItem.qty + 1)}
               disabled={product.stock !== undefined && cartItem.qty >= product.stock}
-              className="w-9 h-9 flex items-center justify-center rounded-lg text-white transition-all disabled:opacity-30"
+              className="w-8 h-8 flex items-center justify-center text-white transition-colors disabled:opacity-30"
               style={{ backgroundColor: accentColor }}
             >
-              <Plus className="w-3.5 h-3.5" />
+              <Plus className="w-3 h-3" />
             </button>
           </div>
         ) : (
           <button
             onClick={handleAddToCart}
             disabled={isOutOfStock}
-            className="w-full flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold text-white transition-all disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed"
+            className="w-full flex items-center justify-center gap-2 py-2.5 text-xs font-semibold text-white transition-all disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed"
             style={{ backgroundColor: isOutOfStock ? undefined : accentColor }}
           >
             {isOutOfStock ? 'Out of Stock' : (
               <>
-                <Plus className="w-3.5 h-3.5" />
+                <ShoppingBag className="w-3.5 h-3.5" />
                 Add to Cart
               </>
             )}

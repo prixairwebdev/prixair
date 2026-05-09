@@ -7,6 +7,7 @@ import { searchProducts } from "@/app/actions/products";
 import { Product } from "@/app/actions/supermarket";
 import ProductCard from "@/components/ProductCard";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 const accentColor = "#8AD52E";
 
@@ -24,7 +25,7 @@ export default function HomeCategories() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    searchProducts("pharmacy", { sortBy: "price-low", limit: 4, page: 1 }).then((result) => {
+    searchProducts("pharmacy", { sortBy: "price-low", limit: 8, page: 1 }).then((result) => {
       setProducts(result.products);
       setIsLoading(false);
     });
@@ -40,84 +41,79 @@ export default function HomeCategories() {
   return (
     <div className="bg-white">
       {/* Categories */}
-      <section className="py-24 px-6 md:px-14">
+      <section className="py-16 px-6 md:px-14 border-b border-gray-100">
         <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="mb-14"
-          >
-            <span className="text-xs tracking-[0.3em] uppercase text-gray-400 font-medium">Browse</span>
-            <h2 className="mt-3 text-3xl md:text-4xl font-bold text-gray-900">Explore Our Categories</h2>
-            <p className="mt-3 text-gray-500 max-w-lg">Find what you need — from prescriptions to wellness essentials.</p>
-          </motion.div>
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <span className="text-xs tracking-[0.3em] uppercase text-gray-400 font-medium">Browse</span>
+              <h2 className="mt-1 text-xl font-bold text-gray-900">Shop by Category</h2>
+            </div>
+            <Link href="/pharmacy/products" className="flex items-center gap-1 text-xs font-semibold text-gray-500 hover:text-gray-900 transition-colors">
+              All products <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
 
-          <div className="grid grid-cols-3 sm:grid-cols-6 gap-4">
+          <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
             {categories.map((cat, i) => {
-              const content = (
+              const inner = (
                 <motion.div
                   key={i}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 16 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.15 }}
-                  transition={{ delay: i * 0.08, duration: 0.5 }}
-                  whileHover={{ y: -4 }}
-                  className="flex flex-col items-center gap-3 p-5 border border-gray-100 hover:border-[#8AD52E] transition-all duration-300 cursor-pointer group"
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.06, duration: 0.4 }}
+                  whileHover={{ y: -3 }}
                   onClick={cat.href.startsWith("#") ? () => handleCategoryClick(cat.href) : undefined}
+                  className="flex flex-col items-center gap-2.5 py-5 px-3 bg-gray-50 hover:bg-white border border-gray-100 hover:border-gray-300 transition-all duration-200 cursor-pointer group"
                 >
-                  <div className="w-10 h-10 relative group-hover:scale-110 transition-transform duration-300">
+                  <div className="w-9 h-9 relative group-hover:scale-110 transition-transform duration-300">
                     <Image src={cat.icon} alt={cat.name} fill className="object-contain" />
                   </div>
-                  <span className="text-xs text-center text-gray-600 font-medium leading-snug">{cat.name}</span>
+                  <span className="text-[11px] text-center text-gray-600 font-medium leading-tight">{cat.name}</span>
                 </motion.div>
               );
 
               return cat.href.startsWith("#") ? (
-                <div key={i}>{content}</div>
+                <div key={i}>{inner}</div>
               ) : (
-                <Link key={i} href={cat.href}>{content}</Link>
+                <Link key={i} href={cat.href}>{inner}</Link>
               );
             })}
           </div>
         </div>
       </section>
 
-      {/* Today's Best Offer */}
-      <section className="py-24 bg-gray-50 px-6 md:px-14">
+      {/* Featured Products */}
+      <section className="py-16 px-6 md:px-14">
         <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="flex items-end justify-between mb-14"
-          >
+          <div className="flex items-end justify-between mb-8">
             <div>
               <span className="text-xs tracking-[0.3em] uppercase text-gray-400 font-medium">Featured</span>
-              <h2 className="mt-3 text-3xl md:text-4xl font-bold text-gray-900">Today&apos;s Best Offers</h2>
+              <h2 className="mt-1 text-xl font-bold text-gray-900">Today&apos;s Best Offers</h2>
             </div>
-            <Link href="/pharmacy/products" className="text-sm font-semibold text-gray-900 border-b border-gray-900 pb-0.5 hover:border-gray-400 transition-colors whitespace-nowrap">
-              See all →
+            <Link
+              href="/pharmacy/products"
+              className="flex items-center gap-1 text-xs font-semibold text-gray-500 hover:text-gray-900 transition-colors whitespace-nowrap"
+            >
+              See all <ArrowRight className="w-3.5 h-3.5" />
             </Link>
-          </motion.div>
+          </div>
 
           {isLoading ? (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              {[...Array(4)].map((_, i) => (
-                <div key={i} className="bg-white border border-gray-100 animate-pulse h-64" />
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[...Array(8)].map((_, i) => (
+                <div key={i} className="bg-gray-50 border border-gray-100 animate-pulse aspect-square" />
               ))}
             </div>
           ) : (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {products.map((product, i) => (
                 <motion.div
                   key={product.id}
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.1 }}
-                  transition={{ delay: i * 0.1, duration: 0.5 }}
+                  transition={{ delay: i * 0.06, duration: 0.4 }}
                 >
                   <ProductCard product={product} accentColor={accentColor} />
                 </motion.div>

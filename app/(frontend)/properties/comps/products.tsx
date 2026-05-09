@@ -23,21 +23,21 @@ const products: ProductsData = {
     {
       name: "Oakwood American Steel Door",
       price: "₦1,574,235.00",
-      img: "/properties/oakwood.png",
+      img: "/homes/oakwood.png",
       description:
         "Premium oakwood American steel door with enhanced security features and elegant finish. Perfect for modern homes seeking both style and safety.",
     },
     {
       name: "Quality Interior Hinged Door",
       price: "₦210,000.00",
-      img: "/properties/qshinged.png",
+      img: "/homes/qshinged.png",
       description:
         "High-quality interior hinged door designed for smooth operation and durability. Features a sleek design that complements any interior decor.",
     },
     {
       name: "Walnut American Steel Door",
       price: "₦1,574,235.00",
-      img: "/properties/wallnut.png",
+      img: "/homes/wallnut.png",
       description:
         "Luxurious walnut finish American steel door offering superior protection and aesthetic appeal. Built to last with weather-resistant properties.",
     },
@@ -46,21 +46,21 @@ const products: ProductsData = {
     {
       name: "Carrara Glossy Marble Tile",
       price: "₦13,235.00",
-      img: "/properties/carrara.png",
+      img: "/homes/carrara.png",
       description:
         "Elegant Carrara glossy marble tiles that bring luxury to any space. Easy to clean and maintain with high resistance to stains and moisture.",
     },
     {
       name: "Rustic Oak Wood-Look Tile",
       price: "₦12,000.00",
-      img: "/properties/rusticoak.png",
+      img: "/homes/rusticoak.png",
       description:
         "Rustic oak wood-look tiles combining the warmth of wood with the durability of ceramic. Perfect for creating a cosy yet practical living space.",
     },
     {
       name: "Dark Slate Outdoor Tile",
       price: "₦15,235.00",
-      img: "/properties/darkstate.png",
+      img: "/homes/darkstate.png",
       description:
         "Durable dark slate outdoor tiles designed to withstand harsh weather. Non-slip surface makes them ideal for patios and pool areas.",
     },
@@ -101,7 +101,7 @@ export default function PremiumProducts() {
           className="mt-12"
         >
           <Link
-            href="/properties/shop"
+            href="/homes/shop"
             className="inline-block px-6 py-3 border border-gray-900 text-gray-900 text-sm font-semibold hover:bg-gray-900 hover:text-white transition-colors"
           >
             View All Products
@@ -181,7 +181,7 @@ function CategorySection({
       <div className="flex items-center justify-between mb-8">
         <h3 className="text-lg font-bold text-gray-900">{title}</h3>
         <Link
-          href="/properties/shop"
+          href="/homes/shop"
           className="text-sm font-semibold text-gray-900 border-b border-gray-900 pb-0.5 hover:border-gray-400 transition-colors"
         >
           See all →

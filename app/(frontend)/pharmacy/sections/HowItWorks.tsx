@@ -41,18 +41,18 @@ export default function HowItWorks() {
   return (
     <div className="bg-white">
       {/* How It Works */}
-      <section className="py-24 px-6 md:px-14">
+      <section className="py-16 px-6 md:px-14 border-t border-gray-100">
         <div className="max-w-7xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="mb-14"
+            transition={{ duration: 0.5 }}
+            className="mb-10"
           >
             <span className="text-xs tracking-[0.3em] uppercase text-gray-400 font-medium">Process</span>
-            <h2 className="mt-3 text-3xl md:text-4xl font-bold text-gray-900">How It Works</h2>
-            <p className="mt-3 text-gray-500 max-w-lg">
+            <h2 className="mt-1 text-xl font-bold text-gray-900">How It Works</h2>
+            <p className="mt-1 text-gray-500 text-sm max-w-lg">
               Order your medications in just a few easy steps.
             </p>
           </motion.div>
@@ -84,7 +84,7 @@ export default function HowItWorks() {
       </section>
 
       {/* Prescription Search */}
-      <section id="prescription-search" className="py-24 bg-gray-50 px-6 md:px-14">
+      <section id="prescription-search" className="py-16 bg-gray-50 px-6 md:px-14 border-t border-gray-100">
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
