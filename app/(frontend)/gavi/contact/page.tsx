@@ -31,7 +31,7 @@ function ContactPage() {
     businessUnit: "",
     message: "",
   });
-  const [status, setStatus] = useState<\'idle\' | \'sending\' | \'success\' | \'error\'>(\'idle\');
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -50,9 +50,9 @@ function ContactPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name: formData.name || formData.firstName || '',
+          name: formData.name || '',
           email: formData.email,
-          department: formData.businessUnit || formData.department || '',
+          department: formData.businessUnit || '',
           message: formData.message,
           source: 'Gavi Bakery',
         }),

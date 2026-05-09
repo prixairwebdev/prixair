@@ -38,7 +38,7 @@ function ContactPage() {
   });
 
   const [captchaValue, setCaptchaValue] = useState<string | null>(null);
-  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const validate = () => {

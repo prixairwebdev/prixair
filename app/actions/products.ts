@@ -134,7 +134,8 @@ export async function getProductById(id: string, storeSlug?: string): Promise<Pr
 
         const result = await payload.find({
             collection: 'products',
-            where: whereClause,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            where: whereClause as any,
             limit: 1,
             depth: 2,
         })

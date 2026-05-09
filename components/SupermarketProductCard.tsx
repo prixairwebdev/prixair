@@ -23,7 +23,7 @@ export default function SupermarketProductCard({ product }: { product: Product }
       return;
     }
     
-    addItem({ id: product.id, name: product.name, price: product.price, qty: 1, image: product.image, stock: product.stock });
+    addItem({ id: product.id, name: product.name, price: product.price, qty: 1, image: product.image, stock: product.stock, store: 'supermarket' });
   };
 
   return (

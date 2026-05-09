@@ -188,7 +188,7 @@ export default function AdminProductsPage() {
                   <span className="text-gray-500 text-sm">Stock: {product.stock}</span>
                 </div>
                 <p className="text-gray-500 text-xs mb-3">
-                  {typeof product.category === 'string' ? product.category : product.category.name} • {product.store}
+                  {typeof product.category === 'string' ? product.category : product.category.name} • {typeof product.store === 'string' ? product.store : product.store?.slug ?? ''}
                 </p>
                 <button
                   onClick={() => handleDeleteProduct(product.id)}

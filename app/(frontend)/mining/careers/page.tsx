@@ -1,3 +1,5 @@
+"use client";
+
 import MiningHero from "../components/MiningHero";
 import Whyworkwithus from "./workwithus";
 import Link from "next/link";
