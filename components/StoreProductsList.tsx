@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { searchProducts } from '@/app/actions/products';
 import { Product, Category } from '@/app/actions/supermarket';
+import { SlidersHorizontal, X } from 'lucide-react';
 
 interface StoreProductsListProps {
     initialProducts: Product[];
@@ -41,6 +42,7 @@ export default function StoreProductsList({
     const [total, setTotal] = useState<number>(initialTotal);
     const [totalPages, setTotalPages] = useState<number>(initialTotalPages);
     const [isLoading, setIsLoading] = useState(false);
+    const [showMobileFilters, setShowMobileFilters] = useState(false);
 
     const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
     const latestQueryRef = useRef<string>('');
@@ -147,37 +149,17 @@ export default function StoreProductsList({
     const categoryNames = ['All', ...Array.from(new Set(categories.map(c => c.name)))];
     const paginatedProducts = products; // Already paginated by server
 
-    return (
-        <div className="min-h-screen bg-gray-50 pb-12">
-            {/* Header */}
-            <div className="bg-white border-b border-gray-200">
-                <div className="max-w-7xl mx-auto px-4 py-8">
-                    <h1 className="text-4xl font-extrabold text-black mb-4">{storeName} Catalog</h1>
-                    <div className="flex items-center gap-2 text-sm text-gray-500">
-                        <Link
-                            href={`/${storeSlug}`}
-                            className="transition-colors font-medium"
-                            style={{ color: 'inherit' }}
-                            onMouseEnter={(e) => e.currentTarget.style.color = accentColor}
-                            onMouseLeave={(e) => e.currentTarget.style.color = 'inherit'}
-                        >
-                            Home
-                        </Link>
-                        <span className="text-gray-400">/</span>
-                        <span className="text-black font-semibold uppercase tracking-wider">Products</span>
-                    </div>
-                </div>
-            </div>
-
-            <div className="max-w-7xl mx-auto px-4 py-10">
-                <div className="grid grid-cols-1 lg:grid-cols-4 gap-10">
-                    {/* Filters Sidebar */}
-                    <div className="lg:col-span-1">
-                        <div className="bg-white rounded-xl shadow-md p-8 sticky top-6 border border-gray-100">
-                            <h2 className="text-2xl font-bold text-black mb-6 border-b pb-4">Refine Search</h2>
+    const FilterPanel = () => (
+        <div className="bg-white rounded-xl shadow-md p-6 lg:p-8 border border-gray-100">
+                            <h2 className="text-xl lg:text-2xl font-bold text-black mb-6 border-b pb-4 flex items-center justify-between">
+                                Refine Search
+                                <button className="lg:hidden text-gray-400 hover:text-gray-600" onClick={() => setShowMobileFilters(false)}>
+                                    <X className="w-5 h-5" />
+                                </button>
+                            </h2>
 
                             {/* Search */}
-                            <div className="mb-8">
+                            <div className="mb-6 lg:mb-8">
                                 <label className="block text-sm font-bold text-gray-700 uppercase tracking-wide mb-3">Keyword Search</label>
                                 <div className="relative">
                                     <input
@@ -201,34 +183,22 @@ export default function StoreProductsList({
                             </div>
 
                             {/* Categories */}
-                            <div className="mb-8">
+                            <div className="mb-6 lg:mb-8">
                                 <label className="block text-sm font-bold text-gray-700 uppercase tracking-wide mb-3">Browse Categories</label>
-                                <div className="space-y-2 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                                <div className="space-y-1.5 max-h-[300px] lg:max-h-[400px] overflow-y-auto pr-2">
                                     {categoryNames.map(category => (
                                         <button
                                             key={category}
-                                            onClick={() => handleCategoryChange(category)}
+                                            onClick={() => { handleCategoryChange(category); setShowMobileFilters(false); }}
                                             disabled={isLoading}
                                             style={{
                                                 backgroundColor: selectedCategory === category ? accentColor : undefined,
                                                 color: selectedCategory === category ? 'white' : undefined,
                                             }}
-                                            className={`w-full text-left px-5 py-3 rounded-xl transition-all font-medium ${selectedCategory === category
+                                            className={`w-full text-left px-4 py-2.5 rounded-xl transition-all font-medium text-sm ${selectedCategory === category
                                                 ? 'shadow-lg scale-[1.02]'
                                                 : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
                                                 }`}
-                                            onMouseEnter={(e) => {
-                                                if (selectedCategory !== category) {
-                                                    e.currentTarget.style.color = accentColor;
-                                                    e.currentTarget.style.backgroundColor = `${accentColor}10`;
-                                                }
-                                            }}
-                                            onMouseLeave={(e) => {
-                                                if (selectedCategory !== category) {
-                                                    e.currentTarget.style.color = '#374151';
-                                                    e.currentTarget.style.backgroundColor = '#F9FAFB';
-                                                }
-                                            }}
                                         >
                                             {category}
                                         </button>
@@ -243,7 +213,7 @@ export default function StoreProductsList({
                                     value={sortBy}
                                     onChange={(e) => handleSortChange(e.target.value)}
                                     disabled={isLoading}
-                                    className="w-full border-2 border-gray-100 rounded-xl px-4 py-3 text-black focus:outline-none transition-all appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20viewBox%3D%220%200%2020%2020%22%20fill%3D%22none%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cpath%20d%3D%22M5%207L10%2012L15%207%22%20stroke%3D%22%236B7280%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E')] bg-no-repeat bg-[right_1rem_center]"
+                                    className="w-full border-2 border-gray-100 rounded-xl px-4 py-3 text-black focus:outline-none transition-all"
                                     onFocus={(e) => e.currentTarget.style.borderColor = accentColor}
                                     onBlur={(e) => e.currentTarget.style.borderColor = '#F3F4F6'}
                                 >
@@ -254,12 +224,71 @@ export default function StoreProductsList({
                                 </select>
                             </div>
                         </div>
+    );
+
+    return (
+        <div className="min-h-screen bg-gray-50 pb-12">
+            {/* Header */}
+            <div className="bg-white border-b border-gray-200">
+                <div className="max-w-7xl mx-auto px-4 py-6 lg:py-8">
+                    <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-black mb-2 lg:mb-4">{storeName} Catalog</h1>
+                    <div className="flex items-center gap-2 text-sm text-gray-500">
+                        <Link
+                            href={`/${storeSlug}`}
+                            className="transition-colors font-medium"
+                            style={{ color: 'inherit' }}
+                            onMouseEnter={(e) => e.currentTarget.style.color = accentColor}
+                            onMouseLeave={(e) => e.currentTarget.style.color = 'inherit'}
+                        >
+                            Home
+                        </Link>
+                        <span className="text-gray-400">/</span>
+                        <span className="text-black font-semibold uppercase tracking-wider">Products</span>
+                    </div>
+                </div>
+            </div>
+
+            <div className="max-w-7xl mx-auto px-4 py-6 lg:py-10">
+                {/* Mobile filter button */}
+                <div className="lg:hidden flex items-center justify-between mb-4">
+                    <p className="text-sm text-gray-500">
+                        <span className="font-bold text-gray-900">{total}</span> products
+                        {selectedCategory !== 'All' && <span> · {selectedCategory}</span>}
+                    </p>
+                    <button
+                        onClick={() => setShowMobileFilters(true)}
+                        className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 shadow-sm"
+                    >
+                        <SlidersHorizontal className="w-4 h-4" />
+                        Filters
+                        {selectedCategory !== 'All' && (
+                            <span className="w-5 h-5 rounded-full text-white text-xs flex items-center justify-center font-bold" style={{ backgroundColor: accentColor }}>1</span>
+                        )}
+                    </button>
+                </div>
+
+                {/* Mobile filter drawer overlay */}
+                {showMobileFilters && (
+                    <div className="lg:hidden fixed inset-0 z-50 flex">
+                        <div className="absolute inset-0 bg-black/40" onClick={() => setShowMobileFilters(false)} />
+                        <div className="relative ml-auto w-[85vw] max-w-sm bg-white h-full overflow-y-auto shadow-2xl p-4">
+                            <FilterPanel />
+                        </div>
+                    </div>
+                )}
+
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-10">
+                    {/* Filters Sidebar — desktop only */}
+                    <div className="hidden lg:block lg:col-span-1">
+                        <div className="sticky top-24">
+                            <FilterPanel />
+                        </div>
                     </div>
 
                     {/* Products Grid */}
                     <div className="lg:col-span-3">
-                        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 mb-8 flex justify-between items-center">
-                            <p className="text-gray-700 font-medium">
+                        <div className="hidden lg:flex bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-6 justify-between items-center">
+                            <p className="text-gray-700 font-medium text-sm">
                                 Showing <span style={{ color: accentColor }} className="font-bold">{paginatedProducts.length}</span> of <span className="text-black font-bold">{total}</span> results
                                 {selectedCategory !== 'All' && <span> in <span style={{ color: accentColor }} className="font-bold">{selectedCategory}</span></span>}
                                 {searchQuery && <span> for <span style={{ color: accentColor }} className="font-bold">&ldquo;{searchQuery}&rdquo;</span></span>}
@@ -270,20 +299,20 @@ export default function StoreProductsList({
                         </div>
 
                         {paginatedProducts.length === 0 && !isLoading ? (
-                            <div className="bg-white rounded-2xl shadow-md border border-gray-100 p-20 text-center">
-                                <div className="text-8xl mb-6">🏜️</div>
-                                <h2 className="text-3xl font-black text-black mb-4">No Products Found</h2>
-                                <p className="text-gray-500 text-lg mb-10 max-w-md mx-auto">We couldn&apos;t find any products matching your current criteria. Try resetting your filters.</p>
+                            <div className="bg-white rounded-2xl shadow-md border border-gray-100 p-10 sm:p-16 text-center">
+                                <div className="text-6xl sm:text-8xl mb-4 sm:mb-6">🏜️</div>
+                                <h2 className="text-2xl sm:text-3xl font-black text-black mb-3 sm:mb-4">No Products Found</h2>
+                                <p className="text-gray-500 mb-6 sm:mb-10 max-w-md mx-auto text-sm sm:text-lg">We couldn&apos;t find any products matching your current criteria. Try resetting your filters.</p>
                                 <button
                                     onClick={handleClearFilters}
-                                    className="bg-black text-white px-10 py-4 rounded-xl hover:bg-gray-800 transition-all font-bold shadow-lg"
+                                    className="bg-black text-white px-8 py-3 sm:px-10 sm:py-4 rounded-xl hover:bg-gray-800 transition-all font-bold shadow-lg"
                                 >
                                     Clear All Filters
                                 </button>
                             </div>
                         ) : (
                             <>
-                                <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 transition-opacity duration-200 ${isLoading ? 'opacity-40 pointer-events-none' : 'opacity-100'}`}>
+                                <div className={`grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5 lg:gap-6 transition-opacity duration-200 ${isLoading ? 'opacity-40 pointer-events-none' : 'opacity-100'}`}>
                                     {paginatedProducts.map(product => (
                                         <ProductCard key={product.id} product={product} accentColor={accentColor} />
                                     ))}
@@ -291,18 +320,18 @@ export default function StoreProductsList({
 
                                 {/* Pagination Controls */}
                                 {totalPages > 1 && (
-                                    <div className="mt-16 flex justify-center items-center gap-3">
+                                    <div className="mt-10 flex justify-center items-center gap-2">
                                         <button
                                             onClick={() => handlePageChange(currentPage - 1)}
                                             disabled={currentPage === 1 || isLoading}
-                                            className="px-6 py-3 rounded-xl border-2 border-gray-100 bg-white font-bold text-gray-700 disabled:opacity-30 transition-all"
+                                            className="px-4 py-2.5 rounded-xl border-2 border-gray-100 bg-white font-bold text-gray-700 disabled:opacity-30 transition-all text-sm"
                                             onMouseEnter={(e) => { if (currentPage !== 1) { e.currentTarget.style.borderColor = accentColor; e.currentTarget.style.color = accentColor; } }}
                                             onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#F3F4F6'; e.currentTarget.style.color = '#374151'; }}
                                         >
-                                            Previous
+                                            ← Prev
                                         </button>
 
-                                        <div className="flex gap-2">
+                                        <div className="flex gap-1.5">
                                             {[...Array(totalPages)].map((_, i) => {
                                                 const pageNum = i + 1;
                                                 if (
@@ -320,9 +349,7 @@ export default function StoreProductsList({
                                                                 borderColor: currentPage === pageNum ? accentColor : '#F3F4F6',
                                                                 color: currentPage === pageNum ? 'white' : '#374151'
                                                             }}
-                                                            className={`w-12 h-12 rounded-xl border-2 font-bold transition-all ${currentPage === pageNum ? 'shadow-lg' : 'hover:border-gray-300'}`}
-                                                            onMouseEnter={(e) => { if (currentPage !== pageNum) { e.currentTarget.style.borderColor = accentColor; e.currentTarget.style.color = accentColor; } }}
-                                                            onMouseLeave={(e) => { if (currentPage !== pageNum) { e.currentTarget.style.borderColor = '#F3F4F6'; e.currentTarget.style.color = '#374151'; } }}
+                                                            className={`w-9 h-9 sm:w-11 sm:h-11 rounded-xl border-2 font-bold transition-all text-sm ${currentPage === pageNum ? 'shadow-lg' : 'hover:border-gray-300'}`}
                                                         >
                                                             {pageNum}
                                                         </button>
@@ -331,7 +358,7 @@ export default function StoreProductsList({
                                                     (pageNum === 2 && currentPage > 3) ||
                                                     (pageNum === totalPages - 1 && currentPage < totalPages - 2)
                                                 ) {
-                                                    return <span key={pageNum} className="flex items-end pb-2 px-1 text-gray-400">...</span>;
+                                                    return <span key={pageNum} className="flex items-end pb-2 px-1 text-gray-400 text-sm">…</span>;
                                                 }
                                                 return null;
                                             })}
@@ -340,11 +367,11 @@ export default function StoreProductsList({
                                         <button
                                             onClick={() => handlePageChange(currentPage + 1)}
                                             disabled={currentPage === totalPages || isLoading}
-                                            className="px-6 py-3 rounded-xl border-2 border-gray-100 bg-white font-bold text-gray-700 disabled:opacity-30 transition-all"
+                                            className="px-4 py-2.5 rounded-xl border-2 border-gray-100 bg-white font-bold text-gray-700 disabled:opacity-30 transition-all text-sm"
                                             onMouseEnter={(e) => { if (currentPage !== totalPages) { e.currentTarget.style.borderColor = accentColor; e.currentTarget.style.color = accentColor; } }}
                                             onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#F3F4F6'; e.currentTarget.style.color = '#374151'; }}
                                         >
-                                            Next
+                                            Next →
                                         </button>
                                     </div>
                                 )}
