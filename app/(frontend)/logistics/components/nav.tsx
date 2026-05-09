@@ -38,14 +38,12 @@ export default function NavBar() {
           {/* Logo */}
           <Link href="/logistics">
             <Image
-              src="/mainlogo-dark.png"
+              src={isScrolled ? "/blacklogo.png" : "/mainlogo.png"}
               alt="Prixair Logistics"
               width={120}
               height={40}
               priority
-              className={`transition-all duration-300 ${
-                isScrolled ? "brightness-0" : "brightness-0 invert"
-              }`}
+              className="transition-all duration-300"
             />
           </Link>
 
