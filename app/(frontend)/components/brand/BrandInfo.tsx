@@ -1,7 +1,6 @@
 'use client';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
 
 interface BrandInfoProps {
   title: string;
@@ -11,8 +10,30 @@ interface BrandInfoProps {
   buttonText?: string;
   onLinkClick?: () => void;
   reverse?: boolean;
-  accentColor?: string;
 }
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.15,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
+    },
+  },
+};
 
 const BrandInfo = ({
   title,
@@ -22,63 +43,58 @@ const BrandInfo = ({
   buttonText = "Learn more",
   onLinkClick,
   reverse = false,
-  accentColor = "#F3A35C",
 }: BrandInfoProps) => {
   return (
-    <section className="w-full bg-[#fafaf8] py-24 px-6 md:px-12">
-      <div className={`max-w-6xl mx-auto flex flex-col ${reverse ? 'md:flex-row-reverse' : 'md:flex-row'} gap-16 items-center`}>
-
-        {/* Image block */}
-        <motion.div
-          className="w-full md:w-1/2 flex-shrink-0"
-          initial={{ opacity: 0, x: reverse ? 40 : -40 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+    <motion.section 
+      className="w-full bg-white py-16 px-4 md:px-12 p-10 text-black"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.3 }}
+      variants={containerVariants}
+    >
+      <div className={`max-w-6xl mx-auto flex justify-between items-center gap-10 flex-col ${reverse ? 'md:flex-row-reverse' : 'md:flex-row'}`}>
+        {/* Image */}
+        <motion.div 
+          className="flex-shrink-0 w-full md:w-1/2"
+          variants={itemVariants}
         >
-          <div className="relative w-full aspect-[4/3] rounded-3xl overflow-hidden">
+          <div className="relative w-full aspect-[3/2]">
             <Image
               src={image}
               alt={imageAlt}
               fill
-              className="object-cover"
+              className="rounded-2xl object-cover"
             />
-            {/* Subtle inner shadow */}
-            <div className="absolute inset-0 rounded-3xl shadow-[inset_0_0_0_1px_rgba(0,0,0,0.06)]" />
           </div>
         </motion.div>
 
-        {/* Text block */}
-        <motion.div
-          className="w-full md:w-1/2"
-          initial={{ opacity: 0, x: reverse ? -40 : 40 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+        {/* Text Content */}
+        <motion.div 
+          className="text-center md:text-left md:w-1/2"
+          variants={containerVariants}
         >
-          <div
-            className="w-10 h-1 rounded-full mb-6"
-            style={{ backgroundColor: accentColor }}
-          />
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-5 leading-snug tracking-tight">
+          <motion.h2 
+            className="text-3xl md:text-4xl font-bold mb-6 text-gray-900"
+            variants={itemVariants}
+          >
             {title}
-          </h2>
-          <p className="text-gray-500 leading-relaxed text-base mb-8">
+          </motion.h2>
+          <motion.p 
+            className="text-gray-700 mb-8 leading-relaxed text-lg"
+            variants={itemVariants}
+          >
             {description}
-          </p>
-          {onLinkClick && (
-            <button
-              onClick={onLinkClick}
-              className="inline-flex items-center gap-2 text-sm font-bold text-gray-900 hover:gap-3 transition-all group"
-            >
-              {buttonText}
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </button>
-          )}
+          </motion.p>
+          <motion.button 
+            className="bg-black text-white px-8 py-3 rounded-full hover:bg-gray-800 transition-all font-semibold"
+            variants={itemVariants}
+            onClick={onLinkClick}
+          >
+            {buttonText}
+          </motion.button>
         </motion.div>
-
       </div>
-    </section>
+    </motion.section>
   );
 };
 

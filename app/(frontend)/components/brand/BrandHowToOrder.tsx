@@ -19,17 +19,17 @@ interface BrandHowToOrderProps {
 const defaultSteps: OrderStep[] = [
   {
     title: "Browse the Menu",
-    description: "Explore our fresh selection and pick your favourites.",
+    description: "Explore our delicious range of fresh meals and traditional treats.",
     icon: "/notebook.png",
   },
   {
-    title: "Add to Cart",
-    description: "Choose your items and select pickup or delivery.",
+    title: "Add to Cart & Pay",
+    description: "Choose your favorites, add them to cart, and select pickup or delivery.",
     icon: "/cart.png",
   },
   {
-    title: "Enjoy Your Meal",
-    description: "We'll have it ready fast — piping hot, every time.",
+    title: "Enjoy Your Meal!",
+    description: "Pick up from our store or enjoy fast delivery right to your door.",
     icon: "/vehicle.png",
   },
 ];
@@ -40,62 +40,56 @@ const BrandHowToOrder: React.FC<BrandHowToOrderProps> = ({
   store = "noodlelicious"
 }) => {
   return (
-    <section className="bg-[#fafaf8] py-24 px-6 border-t border-gray-100">
-      <div className="max-w-5xl mx-auto">
+    <section className="bg-[#fcfbf9] py-24 px-6 border-t border-gray-100">
+      <div className="max-w-6xl mx-auto text-center">
+        <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-2">How to Order</h2>
+        <p className="text-gray-500 mb-16 text-lg">Deliciousness delivered in 3 simple steps</p>
 
-        <div className="text-center mb-16">
-          <p className="text-xs font-bold tracking-[0.2em] uppercase mb-3" style={{ color: primaryColor }}>
-            Simple & Fast
-          </p>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">How to Order</h2>
-        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
+          {/* Animated Connector Line (Desktop Only) */}
+          <div className="hidden md:block absolute top-1/4 left-1/4 right-1/4 h-px border-t-2 border-dashed border-gray-200 -z-0" />
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
           {steps.map((step, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.15, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="relative bg-white border border-gray-100 rounded-2xl p-8 hover:shadow-md transition-shadow"
+              transition={{ delay: index * 0.2 }}
+              className="relative z-10 bg-white p-10 rounded-[2.5rem] shadow-sm hover:shadow-xl transition-all group"
             >
-              {/* Step number */}
-              <div
-                className="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold mb-6"
-                style={{ backgroundColor: primaryColor }}
-              >
-                {index + 1}
+              <div className="w-20 h-20 mx-auto mb-8 relative bg-gray-50 rounded-3xl flex items-center justify-center p-4 group-hover:scale-110 transition-transform">
+                <div
+                  className="absolute -top-2 -right-2 w-8 h-8 rounded-full text-white font-bold flex items-center justify-center shadow-lg"
+                  style={{ backgroundColor: primaryColor }}
+                >
+                  {index + 1}
+                </div>
+                <div className="relative w-full h-full">
+                  <Image
+                    src={step.icon}
+                    alt={step.title}
+                    fill
+                    className="object-contain"
+                  />
+                </div>
               </div>
-
-              <div className="w-12 h-12 relative mb-5 opacity-80">
-                <Image src={step.icon} alt={step.title} fill className="object-contain" />
-              </div>
-
-              <h3 className="text-base font-bold text-gray-900 mb-2">{step.title}</h3>
-              <p className="text-sm text-gray-500 leading-relaxed">{step.description}</p>
-
-              {/* Connector */}
-              {index < steps.length - 1 && (
-                <div className="hidden md:block absolute top-1/2 -right-3 w-6 h-px border-t-2 border-dashed border-gray-200 z-10" />
-              )}
+              <h3 className="text-2xl font-bold text-gray-800 mb-4">{step.title}</h3>
+              <p className="text-gray-600 leading-relaxed">{step.description}</p>
             </motion.div>
           ))}
         </div>
 
-        <div className="text-center">
-          <Link href={`/${store}/products`}>
-            <motion.button
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.96 }}
-              className="text-white px-10 py-3.5 rounded-full font-bold text-sm tracking-wide shadow-lg transition-all"
-              style={{ backgroundColor: primaryColor }}
-            >
-              Order Now
-            </motion.button>
-          </Link>
-        </div>
-
+        <Link href={`/${store}/cart`}>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="mt-16 text-white px-12 py-4 rounded-full font-bold text-lg shadow-xl transition-all"
+            style={{ backgroundColor: primaryColor }}
+          >
+            Order Now
+          </motion.button>
+        </Link>
       </div>
     </section>
   );

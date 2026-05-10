@@ -18,16 +18,16 @@ const container: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.18, delayChildren: 0.2 },
+    transition: { staggerChildren: 0.2, delayChildren: 0.3 },
   },
 };
 
 const item: Variants = {
-  hidden: { opacity: 0, y: 28 },
+  hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
   },
 };
 
@@ -43,70 +43,68 @@ const BrandHero = ({
   store,
 }: BrandHeroProps) => {
   return (
-    <section className="relative min-h-screen flex items-end justify-start px-6 pb-24 md:pb-32 overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center px-6 py-20 overflow-hidden">
       {store && <FloatingCart storeSlug={store} accentColor={secondaryColor} />}
-
-      {/* Background image */}
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-[1.03]"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-1000 scale-105"
         style={{ backgroundImage: `url('${bgImage}')` }}
       />
-
-      {/* Dark gradient overlay — left-heavy for text contrast */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/10" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-white/20 to-white/60 backdrop-blur-[2px]" />
 
       <motion.div
-        className="relative z-10 max-w-2xl"
+        className="relative z-10 text-center max-w-3xl"
         variants={container}
         initial="hidden"
-        animate="visible"
+        whileInView="visible"
+        viewport={{ once: true }}
       >
         {tagline && (
           <motion.span
             variants={item}
-            className="inline-flex items-center px-4 py-1.5 mb-6 text-xs font-bold tracking-[0.2em] uppercase text-white rounded-full border border-white/30 backdrop-blur-sm"
-            style={{ backgroundColor: `${primaryColor}30` }}
+            className="inline-block px-4 py-1 mb-6 text-sm font-bold tracking-widest uppercase text-white rounded-full shadow-sm"
+            style={{ backgroundColor: secondaryColor }}
           >
             {tagline}
           </motion.span>
         )}
 
         <motion.h1
-          className="text-5xl md:text-7xl font-extrabold mb-5 leading-[1.05] tracking-tight text-white"
+          className="text-5xl md:text-7xl font-extrabold mb-6 leading-tight text-gray-900"
           variants={item}
         >
           {title}
         </motion.h1>
 
         <motion.p
-          className="text-base md:text-lg text-white/70 mb-10 max-w-md leading-relaxed font-normal"
+          className="text-lg md:text-xl text-gray-800 mb-10 max-w-xl mx-auto font-medium"
           variants={item}
         >
           {subtitle}
         </motion.p>
 
         <motion.div
-          className="flex flex-wrap items-center gap-3"
+          className="flex flex-col sm:flex-row items-center justify-center gap-4"
           variants={item}
         >
           {onOrderClick && (
             <motion.button
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.96 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={onOrderClick}
-              className="text-white px-8 py-3.5 rounded-full font-bold text-sm tracking-wide shadow-lg transition-all"
+              className="w-full sm:w-auto text-white px-10 py-4 rounded-full font-bold text-lg shadow-lg transition-all"
               style={{ backgroundColor: primaryColor }}
             >
               Order Now
             </motion.button>
           )}
+
           {onMenuClick && (
             <motion.button
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.96 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={onMenuClick}
-              className="px-8 py-3.5 rounded-full font-bold text-sm tracking-wide bg-white/10 text-white border border-white/30 backdrop-blur-sm transition-all hover:bg-white/20"
+              className="w-full sm:w-auto border-2 px-10 py-4 rounded-full font-bold text-lg bg-white/80 backdrop-blur-md transition-all"
+              style={{ borderColor: secondaryColor, color: secondaryColor }}
             >
               View Menu
             </motion.button>
@@ -114,9 +112,11 @@ const BrandHero = ({
         </motion.div>
       </motion.div>
 
-      {/* Scroll cue */}
-      <div className="absolute bottom-8 right-8 flex flex-col items-center gap-2 opacity-40">
-        <span className="text-white text-[10px] tracking-[0.2em] uppercase font-bold rotate-90 origin-center">Scroll</span>
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
+        <div
+          className="w-1 h-12 rounded-full"
+          style={{ background: `linear-gradient(to b, ${primaryColor}, transparent)` }}
+        />
       </div>
     </section>
   );

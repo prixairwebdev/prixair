@@ -1,6 +1,6 @@
 'use client';
 import React from "react";
-import { MapPin, Clock, ExternalLink } from "lucide-react";
+import { MapPin, Clock } from "lucide-react";
 import { motion } from "framer-motion";
 
 interface BrandLocationProps {
@@ -15,8 +15,32 @@ interface BrandLocationProps {
   };
 }
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
+    },
+  },
+};
+
 const BrandLocation: React.FC<BrandLocationProps> = ({
   brandName,
+  bgImage = "/iconbg.png",
   accentColor = "#F3A35C",
   location: locationProp,
   openingHours = {
@@ -27,85 +51,88 @@ const BrandLocation: React.FC<BrandLocationProps> = ({
 }) => {
   const location = locationProp ?? "Plot 688, Markus Kangye Blvd, Off Oladipo Diya Way, Gaduwa, Abuja";
 
-  const hours = [
-    { label: "Mon – Fri", value: openingHours.weekday },
-    { label: "Saturday", value: openingHours.saturday },
-    { label: "Sunday", value: openingHours.sunday },
-  ];
-
   return (
-    <section className="bg-white py-24 px-6 border-t border-gray-100">
-      <div className="max-w-5xl mx-auto">
+    <motion.section
+      className="relative bg-cover bg-center overflow-hidden"
+      style={{ backgroundImage: `url('${bgImage}')` }}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.3 }}
+    >
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+      
+      <motion.div 
+        className="relative z-10 py-24 px-6 max-w-4xl mx-auto text-center"
+        variants={containerVariants}
+      >
+        <motion.div variants={itemVariants} className="flex justify-center mb-6">
+            <div className="p-3 rounded-2xl bg-white/10 backdrop-blur-md">
+                <MapPin className="w-8 h-8" style={{ color: accentColor }} />
+            </div>
+        </motion.div>
 
-        <div className="text-center mb-14">
-          <p className="text-xs font-bold tracking-[0.2em] uppercase mb-3" style={{ color: accentColor }}>
-            Find Us
+        <motion.h2 
+          className="text-4xl md:text-5xl font-bold mb-4 text-white"
+          variants={itemVariants}
+        >
+          Visit <span style={{ color: accentColor }}>{brandName}</span>
+        </motion.h2>
+        
+        <motion.p 
+            variants={itemVariants}
+            className="text-gray-300 mb-8 text-lg"
+        >
+          We're located at a convenient spot for you to enjoy fresh meals.
+        </motion.p>
+
+        {/* Location Display */}
+        <motion.div 
+          className="bg-white/5 border border-white/10 p-8 rounded-3xl backdrop-blur-md mb-16 max-w-2xl mx-auto"
+          variants={itemVariants}
+        >
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <MapPin className="w-6 h-6" style={{ color: accentColor }} />
+            <h3 className="text-xl font-bold text-white">Our Location</h3>
+          </div>
+          <p className="text-gray-300 text-lg font-medium leading-relaxed">
+            {location}
           </p>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">
-            Visit <span style={{ color: accentColor }}>{brandName}</span>
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-          {/* Address card */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="bg-[#fafaf8] border border-gray-100 rounded-2xl p-8"
+          <motion.a
+            href={`https://maps.google.com/?q=${encodeURIComponent(location)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block mt-6 px-6 py-3 rounded-2xl text-white font-bold transition-all hover:shadow-lg"
+            style={{ backgroundColor: accentColor }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.98 }}
           >
-            <div
-              className="w-10 h-10 rounded-xl flex items-center justify-center mb-5"
-              style={{ backgroundColor: `${accentColor}20` }}
-            >
-              <MapPin className="w-5 h-5" style={{ color: accentColor }} />
-            </div>
-            <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Address</h3>
-            <p className="text-gray-900 font-medium text-base leading-relaxed mb-6">{location}</p>
-            <a
-              href={`https://maps.google.com/?q=${encodeURIComponent(location)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-sm font-bold transition-all hover:opacity-70"
-              style={{ color: accentColor }}
-            >
-              Open in Google Maps
-              <ExternalLink className="w-3.5 h-3.5" />
-            </a>
-          </motion.div>
+            Open in Google Maps
+          </motion.a>
+        </motion.div>
 
-          {/* Hours card */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
-            className="bg-[#fafaf8] border border-gray-100 rounded-2xl p-8"
-          >
-            <div
-              className="w-10 h-10 rounded-xl flex items-center justify-center mb-5"
-              style={{ backgroundColor: `${accentColor}20` }}
-            >
-              <Clock className="w-5 h-5" style={{ color: accentColor }} />
+        {/* Opening Hours */}
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center"
+          variants={containerVariants}
+        >
+            <div className="bg-white/5 border border-white/10 p-6 rounded-3xl backdrop-blur-md">
+                <Clock className="w-6 h-6 mx-auto mb-4 text-gray-400" />
+                <h4 className="text-white font-bold mb-2">Mon - Fri</h4>
+                <p className="text-gray-400 font-medium">{openingHours.weekday}</p>
             </div>
-            <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-5">Opening Hours</h3>
-            <div className="space-y-4">
-              {hours.map(({ label, value }) => (
-                <div key={label} className="flex items-center justify-between border-b border-gray-100 pb-3 last:border-0 last:pb-0">
-                  <span className="text-sm text-gray-500 font-medium">{label}</span>
-                  <span className={`text-sm font-bold ${value === 'Closed' ? 'text-gray-300' : 'text-gray-900'}`}>
-                    {value}
-                  </span>
-                </div>
-              ))}
+            <div className="bg-white/5 border border-white/10 p-6 rounded-3xl backdrop-blur-md">
+                <Clock className="w-6 h-6 mx-auto mb-4 text-gray-400" />
+                <h4 className="text-white font-bold mb-2">Saturday</h4>
+                <p className="text-gray-400 font-medium">{openingHours.saturday}</p>
             </div>
-          </motion.div>
-
-        </div>
-      </div>
-    </section>
+            <div className="bg-white/5 border border-white/10 p-6 rounded-3xl backdrop-blur-md">
+                <Clock className="w-6 h-6 mx-auto mb-4 text-gray-400" />
+                <h4 className="text-white font-bold mb-2">Sunday</h4>
+                <p className="text-gray-400 font-medium">{openingHours.sunday}</p>
+            </div>
+        </motion.div>
+      </motion.div>
+    </motion.section>
   );
 };
 
