@@ -37,7 +37,7 @@ const ShawarmaNomnowLanding = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const storeProducts = await getProductsByStore('shawarmanownow');
+        const storeProducts = await getProductsByStore('shawarmanomnow');
 
         const mappedProducts: MenuItem[] = storeProducts.map((p: Product) => ({
           id: p.id,
@@ -45,7 +45,7 @@ const ShawarmaNomnowLanding = () => {
           price: p.price,
           description: p.description,
           image: typeof p.image === 'string' ? p.image : (p.image?.url || "/logos/shawarmanomnow.jpg"),
-          store: 'shawarmanownow' as const
+          store: 'shawarmanomnow'
         }));
 
         setProducts(mappedProducts);
@@ -73,9 +73,9 @@ const ShawarmaNomnowLanding = () => {
         bgImage="/logos/shawarmanomnow.jpg"
         primaryColor="#F5A623"
         secondaryColor="#E30000"
-        store="shawarmanownow"
-        onOrderClick={() => router.push('/shawarmanownow/products')}
-        onMenuClick={() => router.push('/shawarmanownow/products')}
+        store="shawarmanomnow"
+        onOrderClick={() => router.push('/shawarmanomnow/products')}
+        onMenuClick={() => router.push('/shawarmanomnow/products')}
       />
 
       <BrandInfo
@@ -84,7 +84,6 @@ const ShawarmaNomnowLanding = () => {
         image="https://images.unsplash.com/photo-1719282431565-3b30bb7d2658?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         imageAlt="Shawarma Now Now wrap"
         buttonText="Our Story"
-        accentColor="#F5A623"
       />
 
       {loading ? (
@@ -96,7 +95,7 @@ const ShawarmaNomnowLanding = () => {
           bestSellers={bestSellers}
           dailySpecials={dailySpecials}
           accentColor="#F5A623"
-          store="shawarmanownow"
+          store="shawarmanomnow"
         />
       )}
 
@@ -113,11 +112,11 @@ const ShawarmaNomnowLanding = () => {
 
       <BrandHowToOrder
         primaryColor="#F5A623"
-        store="shawarmanownow"
+        store="shawarmanomnow"
       />
 
       <FloatingCart
-        storeSlug="shawarmanownow"
+        storeSlug="shawarmanomnow"
         accentColor="#F5A623"
       />
     </div>
