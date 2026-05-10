@@ -103,7 +103,7 @@ export function Footer() {
 
       {/* BOTTOM */}
       <div className="border-t border-gray-700 py-4 text-center text-xs">
-        © 2026 PRIXAIR GROUP. ALL RIGHTS RESERVED.
+        © 2025 PRIXAIR GROUP. ALL RIGHTS RESERVED.
       </div>
     </footer>
   );

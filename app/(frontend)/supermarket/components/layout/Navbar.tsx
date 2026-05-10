@@ -51,8 +51,8 @@ export function Navbar() {
             </div>
           </Link>
 
-          {/* Mobile: Wishlist + Cart + Burger */}
-          <div className="flex md:hidden gap-3 items-center">
+          {/* Mobile Cart/Wishlist Icons (Compact) */}
+          <div className="flex md:hidden gap-4 items-center">
             <Link href="/supermarket/account/wishlist" className="text-black relative">
               ❤️
               {wishlistItems.length > 0 && (
@@ -69,12 +69,6 @@ export function Navbar() {
                 </span>
               )}
             </Link>
-            <button
-              onClick={() => setShowUserMenu(!showUserMenu)}
-              className="text-2xl leading-none"
-            >
-              {showUserMenu ? '✕' : '☰'}
-            </button>
           </div>
         </div>
 
@@ -164,6 +158,14 @@ export function Navbar() {
             )}
           </Link>
         </nav>
+
+        {/* Mobile Menu Toggle */}
+        <button
+          onClick={() => setShowUserMenu(!showUserMenu)}
+          className="md:hidden text-2xl"
+        >
+          {showUserMenu ? '✕' : '☰'}
+        </button>
 
         {/* Mobile Dropdown Menu */}
         {showUserMenu && (

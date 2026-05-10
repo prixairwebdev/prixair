@@ -119,7 +119,7 @@ export default function Footer() {
 
       {/* Divider Line */}
       <div className="border-t border-gray-700 mt-10 pt-4 text-center text-xs text-gray-400">
-        © 2026 PRIXAIR GROUP. ALL RIGHTS RESERVED.
+        © 2025 PRIXAIR GROUP. ALL RIGHTS RESERVED.
       </div>
     </footer>
   );

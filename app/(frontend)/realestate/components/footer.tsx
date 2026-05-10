@@ -125,7 +125,7 @@ export default function Footer() {
 
       {/* Copyright */}
       <div className="mt-12 border-t border-gray-800 pt-6 text-center text-xs text-gray-400">
-        © 2026 Prixair Real Estate. All rights reserved.
+        © 2025 Prixair Real Estate. All rights reserved.
       </div>
     </footer>
   );
