@@ -63,9 +63,8 @@ export default function CheckoutView({
 
     const items = useMemo(() => getCartItems(storeSlug), [getCartItems, storeSlug]);
     const subtotal = useMemo(() => getCartTotal(storeSlug), [getCartTotal, storeSlug]);
-    console.log("the store slug", storeSlug)
     const whatsappNumber = useMemo(
-        () => sanitizeWhatsAppNumber(getRestaurantWhatsAppNumber((storeSlug==="party-jollof")?  "partyjollof": storeSlug)),
+        () => sanitizeWhatsAppNumber(getRestaurantWhatsAppNumber(storeSlug)),
         [storeSlug]
     );
 
