@@ -1,107 +1,128 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import { MapPin } from 'lucide-react';
-import { motion } from 'framer-motion';
+import Image from "next/image";
+import { MapPin } from "lucide-react";
+import { motion } from "framer-motion";
 
 const projects = [
   {
-    title: 'North Core Ridge',
-    mineral: 'Copper',
-    location: 'Northern Plateau, Africa',
-    status: 'In Production',
-    image: '/tractor.png',
+    title: "North Core Ridge",
+    mineral: "Copper",
+    location: "Northern Plateau, Nigeria",
+    status: "In Production",
+    image: "/tractor.png",
   },
   {
-    title: 'Zara Lithium Field',
-    mineral: 'Lithium',
-    location: 'Eastern Rift, Tanzania',
-    status: 'Exploration Phase',
-    image: '/images/mining2.png',
+    title: "Zara Lithium Field",
+    mineral: "Lithium",
+    location: "Eastern Rift, Tanzania",
+    status: "Exploration Phase",
+    image: "/images/mining2.png",
   },
   {
-    title: 'Kofa Gold Basin',
-    mineral: 'Gold',
-    location: 'Western Highlands, Ghana',
-    status: 'Development Stage',
-    image: '/images/mining1.png',
+    title: "Kofa Gold Basin",
+    mineral: "Gold",
+    location: "Western Highlands, Ghana",
+    status: "Development Stage",
+    image: "/images/mining1.png",
   },
 ];
 
 const container = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
+  hidden: {},
+  show: { transition: { staggerChildren: 0.14, delayChildren: 0.1 } },
 };
 
-const item = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+const cardVariant = {
+  hidden: { opacity: 0, y: 40 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" as const } },
 };
 
 export default function FeaturedProjects() {
   return (
-    <motion.section 
-      className="px-6 md:px-16 py-12 bg-white text-black"
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: false, margin: "-100px" }}
-      variants={container}
-    >
-      <div className="flex justify-between items-center mb-8">
-        <h2 className="text-2xl font-semibold">Featured Project</h2>
-        <a href="#" className="text-sm font-medium border-b-2 border-orange-500 hover:opacity-75">
-          See All Projects
-        </a>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {projects.map((project, index) => (
-          <motion.div 
-            key={index} 
-            className="bg-white text-black rounded-lg shadow-sm overflow-hidden"
-            variants={item}
+    <section className="py-20 bg-gray-50">
+      <div className="max-w-7xl mx-auto px-6 md:px-14">
+        <motion.div
+          className="flex items-end justify-between mb-12"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.55, ease: "easeOut" as const }}
+        >
+          <div>
+            <p className="text-xs uppercase tracking-widest text-gray-400 font-medium mb-3">
+              Portfolio
+            </p>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+              Featured Projects
+            </h2>
+            <div className="w-12 h-0.5 bg-gray-900 mt-4" />
+          </div>
+          <a
+            href="/mining/operations"
+            className="text-sm font-medium border-b border-gray-900 hover:opacity-60 transition-opacity hidden md:block"
           >
-            <div className="relative h-48 w-full">
-              <Image
-                src={project.image}
-                alt={project.title}
-                fill
-                className="object-cover rounded-t-lg"
-              />
-            </div>
+            See All Projects
+          </a>
+        </motion.div>
 
-            <div className="p-4">
-              <div className="flex justify-between items-center mb-1">
-                <h3 className="text-md font-semibold">{project.title}</h3>
-                <span className="text-xs border border-gray-400 rounded-full px-2 py-1">
-                  {project.status}
-                </span>
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-3 gap-6"
+          variants={container}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.15 }}
+        >
+          {projects.map((project, index) => (
+            <motion.div
+              key={index}
+              className="bg-white overflow-hidden group cursor-pointer"
+              variants={cardVariant}
+              whileHover={{ y: -8, boxShadow: "0 20px 40px -12px rgba(0,0,0,0.12)", transition: { duration: 0.25, ease: "easeOut" as const } }}
+            >
+              <div className="relative h-52 w-full overflow-hidden">
+                <Image
+                  src={project.image}
+                  alt={project.title}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                />
               </div>
 
-              <p className="text-sm">
-                <span className="font-medium">Mineral:</span> {project.mineral}
-              </p>
+              <div className="p-5 border border-t-0 border-gray-100">
+                <div className="flex justify-between items-start mb-3">
+                  <h3 className="font-bold text-gray-900">{project.title}</h3>
+                  <span className="text-xs border border-gray-300 text-gray-500 px-2 py-1 shrink-0 ml-2">
+                    {project.status}
+                  </span>
+                </div>
+                <p className="text-sm text-gray-600 mb-1">
+                  <span className="font-medium text-gray-800">Mineral:</span>{" "}
+                  {project.mineral}
+                </p>
+                <p className="text-sm text-gray-500 flex items-center mt-1">
+                  <MapPin className="w-4 h-4 text-gray-400 mr-1 shrink-0" />
+                  {project.location}
+                </p>
+                <motion.a
+                  href="#"
+                  className="mt-4 inline-block text-sm font-medium border-b border-gray-900 hover:opacity-60 transition-opacity"
+                  whileHover={{ x: 4 }}
+                  transition={{ duration: 0.15 }}
+                >
+                  View Project
+                </motion.a>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
 
-              <p className="text-sm flex items-center mt-1">
-                <MapPin className="w-4 h-4 text-orange-600 mr-1" />
-                {project.location}
-              </p>
-
-              <a
-                href="#"
-                className="mt-4 inline-block text-sm font-medium border-b-2 border-orange-500 hover:opacity-75"
-              >
-                View Project
-              </a>
-            </div>
-          </motion.div>
-        ))}
+        <div className="text-center mt-8 md:hidden">
+          <a href="/mining/operations" className="text-sm font-medium border-b border-gray-900 hover:opacity-60 transition-opacity">
+            See All Projects
+          </a>
+        </div>
       </div>
-    </motion.section>
+    </section>
   );
 }

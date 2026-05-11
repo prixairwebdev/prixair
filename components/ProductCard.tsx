@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import { Heart, Plus, Minus, ShoppingBag } from 'lucide-react';
 import { Product } from '@/app/actions/supermarket';
 import { useCart } from '@/components/CartContext';
 import { useWishlist } from '@/components/contexts/WishlistContext';
@@ -17,7 +18,6 @@ export default function ProductCard({ product, accentColor = '#f97316' }: Produc
   const { addToWishlist, isInWishlist, removeFromWishlist } = useWishlist();
   const inWishlist = isInWishlist(product.id);
 
-  // Find if item is in cart
   const storeSlug = typeof product.store === 'string' ? product.store : product.store?.slug || 'store';
   const cartItem = carts[storeSlug]?.find(item => item.id === product.id);
 
@@ -27,15 +27,13 @@ export default function ProductCard({ product, accentColor = '#f97316' }: Produc
 
   const categoryName = typeof product.category === 'string'
     ? product.category
-    : (product.category?.name || 'Uncategorized');
+    : (product.category?.name || '');
+
+  const isOutOfStock = product.stock === 0;
+  const isLowStock = typeof product.stock === 'number' && product.stock > 0 && product.stock < 10;
 
   const handleAddToCart = () => {
-    const productId = String(product.id || '').trim();
-    if (!productId) {
-      console.error('Cannot add product to cart: missing ID', product);
-      return;
-    }
-
+    if (!product.id) return;
     addItem({
       id: product.id,
       name: product.name,
@@ -47,138 +45,114 @@ export default function ProductCard({ product, accentColor = '#f97316' }: Produc
     });
   };
 
-  const handleWishlistToggle = () => {
-    if (inWishlist) {
-      removeFromWishlist(product.id);
-    } else {
-      addToWishlist(product);
-    }
+  const handleWishlistToggle = (e: React.MouseEvent) => {
+    e.preventDefault();
+    inWishlist ? removeFromWishlist(product.id) : addToWishlist(product);
   };
 
   const productLink = `/${storeSlug}/product/${product.id}`;
 
   return (
-    <div className="group bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 flex flex-col h-full">
-      <Link href={productLink} className="relative block h-56 bg-gray-50 overflow-hidden">
+    <div className="group bg-white border border-gray-100 hover:border-gray-300 transition-all duration-300 flex flex-col">
+      {/* Image */}
+      <Link href={productLink} className="relative block aspect-square bg-gray-50 overflow-hidden">
         <Image
-          src={imageUrl || '/placeholder.png'}
+          src={imageUrl}
           alt={product.name}
           fill
-          className="object-cover group-hover:scale-110 transition-transform duration-500"
+          className="object-cover group-hover:scale-105 transition-transform duration-500"
         />
 
-        {/* Badges */}
-        <div className="absolute top-3 left-3 flex flex-col gap-2">
-          {typeof product.stock === 'number' && product.stock < 10 && product.stock > 0 && (
-            <div 
-              style={{ backgroundColor: accentColor }}
-              className="text-white text-[10px] font-black px-2 py-1 rounded-lg uppercase tracking-wider shadow-lg"
-            >
-              Low Stock
-            </div>
-          )}
-          {typeof product.stock === 'number' && product.stock === 0 && (
-            <div className="bg-red-600 text-white text-[10px] font-black px-2 py-1 rounded-lg uppercase tracking-wider shadow-lg">
-              Out of Stock
-            </div>
-          )}
-        </div>
+        {/* Stock badge */}
+        {isOutOfStock && (
+          <div className="absolute top-3 left-3 bg-gray-800 text-white text-[10px] font-semibold px-2.5 py-1 tracking-wide">
+            Sold Out
+          </div>
+        )}
+        {isLowStock && !isOutOfStock && (
+          <div
+            className="absolute top-3 left-3 text-white text-[10px] font-semibold px-2.5 py-1 tracking-wide"
+            style={{ backgroundColor: accentColor }}
+          >
+            {product.stock} left
+          </div>
+        )}
 
-        {/* Wishlist Button Overlay */}
+        {/* Wishlist */}
         <button
-          onClick={(e) => {
-            e.preventDefault();
-            handleWishlistToggle();
-          }}
-          className={`absolute top-3 right-3 w-10 h-10 rounded-full shadow-md flex items-center justify-center transition-all duration-300 ${inWishlist
-              ? 'bg-red-500 text-white scale-110'
-              : 'bg-white/80 backdrop-blur-sm text-gray-600 hover:bg-white hover:scale-110'
-            }`}
+          onClick={handleWishlistToggle}
+          className={`absolute top-3 right-3 w-8 h-8 flex items-center justify-center transition-all ${
+            inWishlist
+              ? 'bg-red-500 text-white'
+              : 'bg-white/90 text-gray-400 hover:text-red-400 opacity-0 group-hover:opacity-100'
+          }`}
         >
-          {inWishlist ? '❤️' : '🤍'}
+          <Heart className={`w-3.5 h-3.5 ${inWishlist ? 'fill-white' : ''}`} />
         </button>
       </Link>
 
-      <div className="p-5 flex flex-col flex-1">
-        <div className="mb-2">
-          <span 
+      {/* Content */}
+      <div className="p-4 flex flex-col flex-1">
+        {categoryName && (
+          <span
+            className="text-[10px] font-semibold uppercase tracking-[0.15em] mb-1.5"
             style={{ color: accentColor }}
-            className="text-[10px] font-bold uppercase tracking-widest"
           >
             {categoryName}
           </span>
-          <Link href={productLink}>
-            <h3 
-              className="text-black font-extrabold text-base mb-1 transition-colors line-clamp-1"
-              onMouseEnter={(e) => e.currentTarget.style.color = accentColor}
-              onMouseLeave={(e) => e.currentTarget.style.color = 'black'}
-            >
-              {product.name}
-            </h3>
-          </Link>
-        </div>
-
-        {product.description && (
-          <p className="text-gray-500 text-xs mb-4 line-clamp-2 leading-relaxed flex-1">
-            {product.description}
-          </p>
         )}
 
-        {typeof product.rating === 'number' && (
-          <div className="flex items-center gap-1.5 mb-4">
-            <div className="flex text-xs" style={{ color: '#fbbf24' }}>
-              {[...Array(5)].map((_, i) => (
-                <span key={i}>
-                  {i < Math.floor(product.rating!) ? '★' : '☆'}
-                </span>
-              ))}
-            </div>
-            <span className="text-[10px] font-bold text-gray-400">({product.reviewCount})</span>
-          </div>
-        )}
+        <Link href={productLink}>
+          <h3
+            className="text-sm font-semibold text-gray-900 transition-colors line-clamp-2 leading-snug mb-3"
+            style={{ ['--hover-color' as string]: accentColor }}
+          >
+            {product.name}
+          </h3>
+        </Link>
 
-        <div className="flex items-center justify-between mb-5">
-          <div className="flex flex-col">
-            <span className="text-gray-400 text-[10px] font-bold uppercase tracking-tighter">Price</span>
-            <span className="text-black font-black text-xl tracking-tight">
-              <span className="text-sm mr-0.5">NGN</span>{product.price.toLocaleString()}
-            </span>
-          </div>
-        </div>
-
-        <div className="mt-auto">
-          {cartItem ? (
-            <div className="flex items-center justify-between bg-gray-50 border-2 border-gray-100 rounded-xl p-1">
-              <button
-                onClick={() => updateQty(product.id, storeSlug, cartItem.qty - 1)}
-                style={{ color: accentColor }}
-                className="w-10 h-10 flex items-center justify-center font-black text-xl hover:bg-white hover:shadow-sm rounded-lg transition-all"
-              >
-                -
-              </button>
-              <span className="font-black text-black">{cartItem.qty}</span>
-              <button
-                onClick={() => updateQty(product.id, storeSlug, cartItem.qty + 1)}
-                disabled={product.stock !== undefined && cartItem.qty >= product.stock}
-                style={{ color: accentColor }}
-                className="w-10 h-10 flex items-center justify-center font-black text-xl hover:bg-white hover:shadow-sm rounded-lg transition-all disabled:opacity-20"
-              >
-                +
-              </button>
-            </div>
-          ) : (
-            <button
-              onClick={handleAddToCart}
-              disabled={product.stock === 0}
-              style={{ backgroundColor: product.stock === 0 ? undefined : 'black' }}
-              className="w-full text-white py-3.5 rounded-xl font-black text-sm transition-all duration-300 disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed"
-              onMouseEnter={(e) => { if (product.stock !== 0) e.currentTarget.style.backgroundColor = accentColor; }}
-              onMouseLeave={(e) => { if (product.stock !== 0) e.currentTarget.style.backgroundColor = 'black'; }}
-            >
-              {product.stock === 0 ? 'SOLD OUT' : 'ADD TO BAG'}
-            </button>
+        <div className="flex items-center justify-between mt-auto mb-3">
+          <span className="text-base font-bold text-gray-900">
+            ₦{product.price.toLocaleString()}
+          </span>
+          {typeof product.rating === 'number' && product.rating > 0 && (
+            <span className="text-xs text-gray-400">{product.rating.toFixed(1)} ★</span>
           )}
         </div>
+
+        {cartItem ? (
+          <div className="flex items-center justify-between bg-gray-50 border border-gray-100 p-1">
+            <button
+              onClick={() => updateQty(product.id, storeSlug, cartItem.qty - 1)}
+              className="w-8 h-8 flex items-center justify-center bg-white border border-gray-200 text-gray-600 hover:border-gray-400 transition-colors"
+            >
+              <Minus className="w-3 h-3" />
+            </button>
+            <span className="font-bold text-sm text-gray-900 min-w-[2ch] text-center">{cartItem.qty}</span>
+            <button
+              onClick={() => updateQty(product.id, storeSlug, cartItem.qty + 1)}
+              disabled={product.stock !== undefined && cartItem.qty >= product.stock}
+              className="w-8 h-8 flex items-center justify-center text-white transition-colors disabled:opacity-30"
+              style={{ backgroundColor: accentColor }}
+            >
+              <Plus className="w-3 h-3" />
+            </button>
+          </div>
+        ) : (
+          <button
+            onClick={handleAddToCart}
+            disabled={isOutOfStock}
+            className="w-full flex items-center justify-center gap-2 py-2.5 text-xs font-semibold text-white transition-all disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed"
+            style={{ backgroundColor: isOutOfStock ? undefined : accentColor }}
+          >
+            {isOutOfStock ? 'Out of Stock' : (
+              <>
+                <ShoppingBag className="w-3.5 h-3.5" />
+                Add to Cart
+              </>
+            )}
+          </button>
+        )}
       </div>
     </div>
   );

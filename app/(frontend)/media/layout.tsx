@@ -16,9 +16,7 @@ export default function MediaLayout({
   return (
     <PageWrapper>
       <Nav />
-      <div className="pt-16">
-        {children}
-      </div>
+      {children}
       <Footer />
     </PageWrapper>
   );

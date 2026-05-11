@@ -1,162 +1,98 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import { Leaf, Users, ShieldCheck } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
+import Image from "next/image";
+import { Leaf, Users, ShieldCheck } from "lucide-react";
+import { motion } from "framer-motion";
 
-// Animation variants
+const metrics = [
+  { icon: <Leaf className="w-5 h-5 text-gray-900" />, label: "Environmental", value: "95%", sub: "water recycled" },
+  { icon: <Users className="w-5 h-5 text-gray-900" />, label: "Community", value: "500+", sub: "local jobs created" },
+  { icon: <ShieldCheck className="w-5 h-5 text-gray-900" />, label: "Safety", value: "100%", sub: "incident-free record" },
+];
+
 const container = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.3
-    }
-  }
+  hidden: {},
+  show: { transition: { staggerChildren: 0.12, delayChildren: 0.15 } },
 };
 
-const item = {
+const metricVariant = {
   hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" as const } },
 };
 
 export default function ESGSection() {
-  const [ref, inView] = useInView({
-    triggerOnce: false, // Allows animation to trigger again when scrolling back up
-    threshold: 0.1
-  });
-
   return (
-    <section className="py-16 px-6 md:px-16 bg-white" ref={ref}>
-      {/* Desktop layout */}
-      <div className="hidden md:grid max-w-7xl mx-auto grid-cols-2 gap-12 items-center">
-        <motion.div 
-          className="text-center md:text-left"
-          variants={container}
-          initial="hidden"
-          animate={inView ? "show" : "hidden"}
+    <section className="py-20 bg-white">
+      <div className="max-w-7xl mx-auto px-6 md:px-14 grid grid-cols-1 md:grid-cols-2 gap-14 items-center">
+        {/* Left: Content */}
+        <motion.div
+          initial={{ opacity: 0, x: -30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, ease: "easeOut" as const }}
         >
-          <motion.h2 className="text-2xl font-semibold mb-2" variants={item}>
+          <p className="text-xs uppercase tracking-widest text-gray-400 font-medium mb-3">
+            ESG Commitment
+          </p>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight mb-4">
             Committed to Responsible Mining
-          </motion.h2>
-          <motion.p className="text-gray-600 mb-6" variants={item}>
-            We believe that mining should enrich not only economies, but ecosystems and communities too
-          </motion.p>
+          </h2>
+          <div className="w-12 h-0.5 bg-gray-900 mb-6" />
+          <p className="text-gray-600 text-sm leading-relaxed mb-4">
+            We believe that mining should enrich not only economies, but ecosystems and communities too.
+          </p>
+          <p className="text-gray-600 text-sm leading-relaxed mb-10">
+            From water recycling and land reclamation to community healthcare and safety programs, our ESG approach is woven into every operation.
+          </p>
 
-          <motion.p className="text-gray-700 mb-8" variants={item}>
-            From water recycling and land reclamation to community healthcare and safety programs,
-            our ESG approach is woven into every operation.
-          </motion.p>
-
-          <motion.div 
-            className="flex flex-col sm:flex-row sm:justify-between text-center gap-6 mb-8"
+          <motion.div
+            className="grid grid-cols-3 gap-6 mb-10"
             variants={container}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.3 }}
           >
-            <motion.div variants={item}>
-              <Leaf className="mx-auto text-green-600 mb-1" size={24} />
-              <p className="text-xs font-medium text-gray-600">ENVIRONMENTAL</p>
-              <h3 className="text-xl font-bold">95%</h3>
-              <p className="text-sm text-gray-500">water recycled</p>
-            </motion.div>
-            <motion.div variants={item}>
-              <Users className="mx-auto text-blue-600 mb-1" size={24} />
-              <p className="text-xs font-medium text-gray-600">COMMUNITY</p>
-              <h3 className="text-xl font-bold">500+</h3>
-              <p className="text-sm text-gray-500">local jobs</p>
-            </motion.div>
-            <motion.div variants={item}>
-              <ShieldCheck className="mx-auto text-orange-600 mb-1" size={24} />
-              <p className="text-xs font-medium text-gray-600">SAFETY</p>
-              <h3 className="text-xl font-bold">100%</h3>
-              <p className="text-sm text-gray-500">incident free</p>
-            </motion.div>
+            {metrics.map((m, i) => (
+              <motion.div
+                key={i}
+                className="border-t-2 border-gray-900 pt-4 group cursor-default"
+                variants={metricVariant}
+                whileHover={{ borderColor: "#6b7280", transition: { duration: 0.2 } }}
+              >
+                <div className="mb-2 group-hover:scale-110 transition-transform duration-200">{m.icon}</div>
+                <p className="text-[10px] uppercase tracking-wider text-gray-400 font-medium mb-1">{m.label}</p>
+                <p className="text-2xl font-bold text-gray-900">{m.value}</p>
+                <p className="text-xs text-gray-500 mt-0.5">{m.sub}</p>
+              </motion.div>
+            ))}
           </motion.div>
 
           <motion.a
             href="#"
-            className="text-sm font-semibold border-b-2 border-orange-500 hover:opacity-75 inline-block"
-            variants={item}
+            className="text-sm font-medium border-b border-gray-900 hover:opacity-60 transition-opacity inline-block"
+            whileHover={{ x: 4 }}
+            transition={{ duration: 0.15 }}
           >
             View Full ESG Report
           </motion.a>
         </motion.div>
 
-        <motion.div 
-          className="relative w-full h-96"
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, delay: 0.2 }}
+        {/* Right: Image */}
+        <motion.div
+          className="relative w-full h-[420px] overflow-hidden"
+          initial={{ opacity: 0, x: 30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, ease: "easeOut" as const, delay: 0.1 }}
+          whileHover={{ scale: 1.02, transition: { duration: 0.4 } }}
         >
           <Image
             src="/images/forest.png"
-            alt="Forest Reclamation"
-            layout="fill"
-            objectFit="cover"
-            className="rounded-lg"
+            alt="Land reclamation and environmental responsibility"
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 50vw"
           />
-        </motion.div>
-      </div>
-
-      {/* Mobile layout */}
-      <div className="relative md:hidden w-full h-[750px]">
-        <Image
-          src="/images/forest.png"
-          alt="Forest Background"
-          layout="fill"
-          objectFit="cover"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        <motion.div 
-          className="relative z-10 top-16 bg-white/80 m-6 p-6 rounded-lg shadow-lg text-center"
-          variants={container}
-          initial="hidden"
-          animate={inView ? "show" : "hidden"}
-        >
-          <motion.h2 className="text-lg font-semibold mb-1" variants={item}>
-            Committed to Responsible Mining
-          </motion.h2>
-          <motion.p className="text-sm text-gray-600 mb-4" variants={item}>
-            We believe that mining should enrich not only economies, but ecosystems and communities too
-          </motion.p>
-
-          <motion.p className="text-sm text-gray-700 mb-6" variants={item}>
-            From water recycling and land reclamation to community healthcare and safety programs,
-            our ESG approach is woven into every operation.
-          </motion.p>
-
-          <motion.div 
-            className="grid grid-cols-1 gap-4 text-center"
-            variants={container}
-          >
-            <motion.div variants={item}>
-              <Leaf className="mx-auto text-green-600 mb-1" size={20} />
-              <p className="text-xs text-gray-600 font-semibold">ENVIRONMENTAL</p>
-              <h3 className="text-lg font-bold">95%</h3>
-              <p className="text-xs text-gray-500">water recycled</p>
-            </motion.div>
-            <motion.div variants={item}>
-              <Users className="mx-auto text-blue-600 mb-1" size={20} />
-              <p className="text-xs text-gray-600 font-semibold">COMMUNITY</p>
-              <h3 className="text-lg font-bold">500+</h3>
-              <p className="text-xs text-gray-500">local jobs</p>
-            </motion.div>
-            <motion.div variants={item}>
-              <ShieldCheck className="mx-auto text-orange-600 mb-1" size={20} />
-              <p className="text-xs text-gray-600 font-semibold">SAFETY</p>
-              <h3 className="text-lg font-bold">100%</h3>
-              <p className="text-xs text-gray-500">incident free</p>
-            </motion.div>
-          </motion.div>
-
-          <motion.a
-            href="#"
-            className="mt-6 inline-block text-sm font-semibold border-b-2 border-orange-500 hover:opacity-75"
-            variants={item}
-          >
-            View Full ESG Report
-          </motion.a>
         </motion.div>
       </div>
     </section>

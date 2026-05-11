@@ -4,177 +4,164 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { X, Menu } from "lucide-react";
+import SubsidiaryBar from "../../components/SubsidiaryBar";
+
+const navItems = [
+  { name: "Home", href: "/media" },
+  { name: "Equipment", href: "#equipment" },
+  { name: "Why Us", href: "#why-us" },
+  { name: "Contact", href: "#contact" },
+];
 
 function Nav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 10);
-    window.addEventListener("scroll", handleScroll);
+    const handleScroll = () => setIsScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const navItems = [
-    { name: "Home", href: "/media" },
-    { name: "Equipment", href: "#equipment" },
-    { name: "Why Us", href: "#why-us" },
-    { name: "Contact", href: "#contact" },
-  ];
-
-  const closeMobileMenu = () => setMobileMenuOpen(false);
-
-  const navLinkClass = (isScrolled: boolean) =>
-    `text-sm font-medium transition-colors duration-300 ${
-      isScrolled ? "text-gray-700 hover:text-orange-500" : "text-gray-700 hover:text-orange-500"
-    }`;
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [mobileMenuOpen]);
 
   return (
-    <nav
-      className={`flex items-center justify-between px-6 md:px-12 py-3 fixed top-0 left-0 w-full z-[60] transition-all duration-300 ${
-        isScrolled ? "bg-white shadow-md text-black" : "bg-white text-black"
-      }`}
-    >
-      {/* Logo */}
-      <div className="flex items-center">
-        <Link href="/media" onClick={closeMobileMenu}>
-          <Image
-            src="/mainlogo-dark.png" // Using mediabg.png as a placeholder if medialogo isn't found
-            alt="Prixair Media Logo"
-            width={100}
-            height={40}
-            className="cursor-pointer object-contain"
-            priority
-            onError={(e) => {
-               // Fallback if image fails
-               const target = e.target as HTMLImageElement;
-               target.src = "/media.png"; 
-            }}
-          />
-        </Link>
+    <>
+      <SubsidiaryBar name="Prixair Media" color="#b35300" />
 
-        {/* Desktop Nav */}
-        <ul className="hidden md:flex ml-8 lg:ml-10 space-x-8 lg:space-x-12">
-          {navItems.map((item) => (
-            <li key={item.name}>
-              <Link 
-                href={item.href} 
-                className={navLinkClass(isScrolled)}
-              >
-                {item.name}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <nav
+        className={`fixed top-9 left-0 w-full z-[60] transition-all duration-500 ${
+          isScrolled
+            ? "bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-100"
+            : "bg-transparent"
+        }`}
+      >
+        <div className="flex items-center justify-between px-6 md:px-12 py-4 max-w-7xl mx-auto">
 
-      {/* CTA Button */}
-      <div className="hidden md:block">
-        <Link
-          href="#contact"
-          className="px-5 py-2 rounded-md bg-orange-500 hover:bg-orange-600 text-white font-semibold transition-colors shadow-md hover:shadow-lg text-sm"
-        >
-          Request Equipment
-        </Link>
-      </div>
-
-      {/* Mobile Menu Toggle */}
-      <div className="md:hidden flex items-center">
-        <button
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="text-black hover:text-[#FB6404] transition-colors"
-          aria-label="Toggle menu"
-        >
-          {mobileMenuOpen ? (
-            <svg
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
+          {/* Logo */}
+          <Link href="/media" className="flex-shrink-0">
+            <div className="relative w-[120px] h-[36px]">
+              <Image
+                src={isScrolled ? "/blacklogo.png" : "/mainlogo.png"}
+                alt="Prixair Media"
+                fill
+                className="object-contain transition-all duration-300"
+                priority
               />
-            </svg>
-          ) : (
-            <svg
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
-          )}
-        </button>
-      </div>
+            </div>
+          </Link>
 
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, x: "100%" }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: "100%" }}
-            transition={{ type: "tween", duration: 0.3 }}
-            className="md:hidden fixed inset-0 bg-black bg-opacity-95 z-40 pt-20 px-6 overflow-y-auto"
-          >
-            <button
-              onClick={closeMobileMenu}
-              className="absolute top-5 right-6 text-gray-300 hover:text-white transition-colors"
-              aria-label="Close menu"
-            >
-              <svg
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-
-            <ul className="space-y-3">
-              {navItems.map((item) => (
-                <li key={item.name}>
-                  <Link
-                    href={item.href}
-                    className="block text-gray-300 hover:text-white text-base py-2 border-b border-gray-800 transition-colors"
-                    onClick={closeMobileMenu}
-                  >
-                    {item.name}
-                  </Link>
-                </li>
-              ))}
-
-              {/* Mobile CTA */}
-              <li className="pt-3">
+          {/* Desktop Nav Links */}
+          <ul className="hidden md:flex items-center gap-8 text-sm font-medium">
+            {navItems.map((item) => (
+              <li key={item.name}>
                 <Link
-                  href="#contact"
-                  className="inline-block w-full px-5 py-3 text-center text-white bg-orange-500 hover:bg-orange-600 rounded-lg font-semibold transition-colors text-sm"
-                  onClick={closeMobileMenu}
+                  href={item.href}
+                  className={`relative group py-1 transition-colors duration-300 ${
+                    isScrolled
+                      ? "text-gray-500 hover:text-gray-900"
+                      : "text-white/75 hover:text-white"
+                  }`}
                 >
-                  Request Equipment
+                  {item.name}
+                  <span
+                    className={`absolute bottom-0 left-0 h-px w-0 group-hover:w-full transition-[width] duration-300 ease-out ${
+                      isScrolled ? "bg-gray-900" : "bg-white"
+                    }`}
+                  />
                 </Link>
               </li>
-            </ul>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </nav>
+            ))}
+          </ul>
+
+          {/* Desktop CTA */}
+          <div className="hidden md:flex items-center gap-3">
+            <Link
+              href="#contact"
+              className={`text-sm font-medium transition-colors duration-300 ${
+                isScrolled ? "text-gray-500 hover:text-gray-900" : "text-white/75 hover:text-white"
+              }`}
+            >
+              Get a Quote
+            </Link>
+            <Link
+              href="#equipment"
+              className={`px-5 py-2 text-sm font-semibold transition-all duration-300 ${
+                isScrolled
+                  ? "bg-gray-900 text-white hover:bg-gray-700"
+                  : "bg-white text-gray-900 hover:bg-gray-100"
+              }`}
+            >
+              View Equipment
+            </Link>
+          </div>
+
+          {/* Mobile Toggle */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden focus:outline-none p-1"
+            aria-label="Toggle menu"
+          >
+            {mobileMenuOpen ? (
+              <X className={`w-6 h-6 transition-colors duration-300 ${isScrolled ? "text-gray-900" : "text-white"}`} />
+            ) : (
+              <Menu className={`w-6 h-6 transition-colors duration-300 ${isScrolled ? "text-gray-900" : "text-white"}`} />
+            )}
+          </button>
+        </div>
+
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="md:hidden overflow-hidden bg-gray-950"
+            >
+              <div className="flex flex-col px-6 py-8 space-y-1">
+                {navItems.map((item, i) => (
+                  <motion.div
+                    key={item.name}
+                    initial={{ opacity: 0, x: -12 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.06, duration: 0.25 }}
+                  >
+                    <Link
+                      href={item.href}
+                      className="block py-3 text-sm font-medium text-white/60 hover:text-white border-b border-white/5 transition-colors"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {item.name}
+                    </Link>
+                  </motion.div>
+                ))}
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: navItems.length * 0.06, duration: 0.25 }}
+                  className="pt-6"
+                >
+                  <Link
+                    href="#equipment"
+                    className="block w-full text-center px-6 py-3 bg-white text-gray-900 text-sm font-semibold hover:bg-gray-100 transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    View Equipment
+                  </Link>
+                </motion.div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </nav>
+    </>
   );
 }
 

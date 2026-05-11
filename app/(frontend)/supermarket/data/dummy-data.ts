@@ -19,48 +19,48 @@ export const dummyUsers: User[] = [
 
 export const dummyProducts: Product[] = [
   // Supermarket - Dairy & Eggs
-  { id: 'sm-1', name: 'Fresh Milk 1L', description: 'Full cream fresh milk from local farms', price: 4.5, image: '/img/foodimg/milk.jpg', category: 'Dairy & Eggs', stock: 24, rating: 4.5, reviewCount: 12, store: 'supermarket' },
-  { id: 'sm-2', name: 'Eggs (12)', description: 'Free range eggs, farm fresh', price: 6.0, image: '/img/foodimg/eggs.jpg', category: 'Dairy & Eggs', stock: 60, rating: 4.8, reviewCount: 25, store: 'supermarket' },
-  { id: 'sm-3', name: 'Butter 250g', description: 'Premium salted butter', price: 8.5, image: '/img/foodimg/butter.jpg', category: 'Dairy & Eggs', stock: 30, rating: 4.6, reviewCount: 8, store: 'supermarket' },
-  { id: 'sm-4', name: 'Yogurt 500ml', description: 'Natural yogurt, no added sugar', price: 5.2, image: '/img/foodimg/yogurt.jpg', category: 'Dairy & Eggs', stock: 40, rating: 4.4, reviewCount: 15, store: 'supermarket' },
+  { id: 'sm-1', name: 'Fresh Milk 1L', description: 'Full cream fresh milk from local farms', price: 4.5, image: '/images/tiger-coconut.png', category: 'Dairy & Eggs', stock: 24, rating: 4.5, reviewCount: 12, store: 'supermarket' },
+  { id: 'sm-2', name: 'Eggs (12)', description: 'Free range eggs, farm fresh', price: 6.0, image: '/eggs.png', category: 'Dairy & Eggs', stock: 60, rating: 4.8, reviewCount: 25, store: 'supermarket' },
+  { id: 'sm-3', name: 'Butter 250g', description: 'Premium salted butter', price: 8.5, image: '/foodimg/bestsellers/croissant.png', category: 'Dairy & Eggs', stock: 30, rating: 4.6, reviewCount: 8, store: 'supermarket' },
+  { id: 'sm-4', name: 'Yogurt 500ml', description: 'Natural yogurt, no added sugar', price: 5.2, image: '/foodimg/bestsellers/cupcakes.png', category: 'Dairy & Eggs', stock: 40, rating: 4.4, reviewCount: 15, store: 'supermarket' },
 
   // Supermarket - Bakery
-  { id: 'sm-5', name: 'Brown Bread', description: 'Whole wheat bread, freshly baked', price: 2.0, image: '/img/foodimg/bread.jpg', category: 'Bakery', stock: 40, rating: 4.7, reviewCount: 30, store: 'supermarket' },
-  { id: 'sm-6', name: 'White Bread', description: 'Soft white bread, perfect for sandwiches', price: 1.8, image: '/img/foodimg/white-bread.jpg', category: 'Bakery', stock: 50, rating: 4.5, reviewCount: 22, store: 'supermarket' },
-  { id: 'sm-7', name: 'Croissants (6)', description: 'Buttery French croissants', price: 7.5, image: '/img/foodimg/croissants.jpg', category: 'Bakery', stock: 20, rating: 4.9, reviewCount: 18, store: 'supermarket' },
+  { id: 'sm-5', name: 'Agege Bread', description: 'Classic Nigerian agege bread, freshly baked', price: 2.0, image: '/foodimg/dailyspecials/agege.png', category: 'Bakery', stock: 40, rating: 4.7, reviewCount: 30, store: 'supermarket' },
+  { id: 'sm-6', name: 'Meat Pie', description: 'Flaky pastry filled with seasoned meat', price: 1.8, image: '/foodimg/dailyspecials/meatpie.png', category: 'Bakery', stock: 50, rating: 4.5, reviewCount: 22, store: 'supermarket' },
+  { id: 'sm-7', name: 'Croissants (6)', description: 'Buttery French croissants', price: 7.5, image: '/croissants.png', category: 'Bakery', stock: 20, rating: 4.9, reviewCount: 18, store: 'supermarket' },
 
   // Supermarket - Fruits & Vegetables
-  { id: 'sm-8', name: 'Tomatoes (1kg)', description: 'Fresh farm tomatoes', price: 3.2, image: '/img/foodimg/tomatoes.jpg', category: 'Fruits & Vegetables', stock: 30, rating: 4.3, reviewCount: 10, store: 'supermarket' },
-  { id: 'sm-9', name: 'Bananas (1kg)', description: 'Ripe yellow bananas', price: 2.5, image: '/img/foodimg/bananas.jpg', category: 'Fruits & Vegetables', stock: 50, rating: 4.6, reviewCount: 20, store: 'supermarket' },
-  { id: 'sm-10', name: 'Apples (1kg)', description: 'Crisp red apples', price: 5.0, image: '/img/foodimg/apples.jpg', category: 'Fruits & Vegetables', stock: 35, rating: 4.7, reviewCount: 14, store: 'supermarket' },
-  { id: 'sm-11', name: 'Onions (1kg)', description: 'Fresh red onions', price: 2.8, image: '/img/foodimg/onions.jpg', category: 'Fruits & Vegetables', stock: 45, rating: 4.2, reviewCount: 8, store: 'supermarket' },
-  { id: 'sm-12', name: 'Carrots (1kg)', description: 'Organic carrots', price: 3.5, image: '/img/foodimg/carrots.jpg', category: 'Fruits & Vegetables', stock: 40, rating: 4.5, reviewCount: 12, store: 'supermarket' },
+  { id: 'sm-8', name: 'Tomatoes (1kg)', description: 'Fresh farm tomatoes', price: 3.2, image: '/broccoli.png', category: 'Fruits & Vegetables', stock: 30, rating: 4.3, reviewCount: 10, store: 'supermarket' },
+  { id: 'sm-9', name: 'Fresh Vegetables Mix', description: 'Seasonal vegetables, farm fresh', price: 2.5, image: '/broccoli.png', category: 'Fruits & Vegetables', stock: 50, rating: 4.6, reviewCount: 20, store: 'supermarket' },
+  { id: 'sm-10', name: 'Apples (1kg)', description: 'Crisp red apples', price: 5.0, image: '/broccoli.png', category: 'Fruits & Vegetables', stock: 35, rating: 4.7, reviewCount: 14, store: 'supermarket' },
+  { id: 'sm-11', name: 'Onions (1kg)', description: 'Fresh red onions', price: 2.8, image: '/broccoli.png', category: 'Fruits & Vegetables', stock: 45, rating: 4.2, reviewCount: 8, store: 'supermarket' },
+  { id: 'sm-12', name: 'Carrots (1kg)', description: 'Organic carrots', price: 3.5, image: '/broccoli.png', category: 'Fruits & Vegetables', stock: 40, rating: 4.5, reviewCount: 12, store: 'supermarket' },
 
   // Supermarket - Meat & Poultry
-  { id: 'sm-13', name: 'Chicken Breast (1kg)', description: 'Fresh boneless chicken breast', price: 12.0, image: '/img/foodimg/chicken.jpg', category: 'Meat & Poultry', stock: 25, rating: 4.8, reviewCount: 35, store: 'supermarket' },
-  { id: 'sm-14', name: 'Beef Steak (500g)', description: 'Premium beef steak', price: 18.5, image: '/img/foodimg/beef.jpg', category: 'Meat & Poultry', stock: 15, rating: 4.9, reviewCount: 28, store: 'supermarket' },
-  { id: 'sm-15', name: 'Pork Chops (1kg)', description: 'Fresh pork chops', price: 14.0, image: '/img/foodimg/pork.jpg', category: 'Meat & Poultry', stock: 20, rating: 4.6, reviewCount: 16, store: 'supermarket' },
+  { id: 'sm-13', name: 'Grilled Chicken (1kg)', description: 'Fresh boneless chicken, well seasoned', price: 12.0, image: '/images/grilled-turkey.png', category: 'Meat & Poultry', stock: 25, rating: 4.8, reviewCount: 35, store: 'supermarket' },
+  { id: 'sm-14', name: 'Beef (500g)', description: 'Premium fresh beef cuts', price: 18.5, image: '/images/grilled-goat.png', category: 'Meat & Poultry', stock: 15, rating: 4.9, reviewCount: 28, store: 'supermarket' },
+  { id: 'sm-15', name: 'Catfish (1kg)', description: 'Fresh catfish, market grade', price: 14.0, image: '/images/grilled-catfish.png', category: 'Meat & Poultry', stock: 20, rating: 4.6, reviewCount: 16, store: 'supermarket' },
 
   // Supermarket - Beverages
-  { id: 'sm-16', name: 'Chivita Fruit Juice 1L', description: 'Mixed fruit juice', price: 4.8, image: '/img/foodimg/juice.jpg', category: 'Beverages', stock: 50, rating: 4.7, reviewCount: 40, store: 'supermarket' },
-  { id: 'sm-17', name: 'Coca Cola 2L', description: 'Classic Coca Cola', price: 3.5, image: '/img/foodimg/coke.jpg', category: 'Beverages', stock: 60, rating: 4.8, reviewCount: 55, store: 'supermarket' },
-  { id: 'sm-18', name: 'Bottled Water 1.5L', description: 'Pure drinking water', price: 1.5, image: '/img/foodimg/water.jpg', category: 'Beverages', stock: 100, rating: 4.5, reviewCount: 30, store: 'supermarket' },
+  { id: 'sm-16', name: 'Chapman Drink', description: 'Chilled refreshing chapman', price: 4.8, image: '/images/chapman.png', category: 'Beverages', stock: 50, rating: 4.7, reviewCount: 40, store: 'supermarket' },
+  { id: 'sm-17', name: 'Soft Drinks & Water', description: 'Assorted chilled drinks', price: 3.5, image: '/images/water-softdrinks.png', category: 'Beverages', stock: 60, rating: 4.8, reviewCount: 55, store: 'supermarket' },
+  { id: 'sm-18', name: 'Zobo Drink 1L', description: 'Chilled hibiscus drink', price: 1.5, image: '/images/zobo.png', category: 'Beverages', stock: 100, rating: 4.5, reviewCount: 30, store: 'supermarket' },
 
   // Supermarket - Pantry
-  { id: 'sm-19', name: 'Rice (5kg)', description: 'Premium long grain rice', price: 15.0, image: '/img/foodimg/rice.jpg', category: 'Pantry', stock: 40, rating: 4.6, reviewCount: 45, store: 'supermarket' },
-  { id: 'sm-20', name: 'Pasta (500g)', description: 'Italian spaghetti', price: 3.8, image: '/img/foodimg/pasta.jpg', category: 'Pantry', stock: 55, rating: 4.5, reviewCount: 22, store: 'supermarket' },
-  { id: 'sm-21', name: 'Olive Oil 500ml', description: 'Premium extra virgin olive oil', price: 12.0, image: '/img/foodimg/olive_oil.jpg', category: 'Pantry', stock: 15, rating: 4.9, reviewCount: 38, store: 'supermarket' },
-  { id: 'sm-22', name: 'Sugar (1kg)', description: 'White granulated sugar', price: 2.5, image: '/img/foodimg/sugar.jpg', category: 'Pantry', stock: 70, rating: 4.3, reviewCount: 18, store: 'supermarket' },
+  { id: 'sm-19', name: 'Jollof Rice & Chicken', description: 'Premium party jollof with chicken', price: 15.0, image: '/images/jollof-chicken.png', category: 'Pantry', stock: 40, rating: 4.6, reviewCount: 45, store: 'supermarket' },
+  { id: 'sm-20', name: 'Fried Rice & Turkey', description: 'Nigerian fried rice with turkey', price: 3.8, image: '/images/fried-rice-turkey.png', category: 'Pantry', stock: 55, rating: 4.5, reviewCount: 22, store: 'supermarket' },
+  { id: 'sm-21', name: 'Ofada Rice (2kg)', description: 'Locally sourced ofada rice', price: 12.0, image: '/images/ofada.png', category: 'Pantry', stock: 15, rating: 4.9, reviewCount: 38, store: 'supermarket' },
+  { id: 'sm-22', name: 'Egusi Soup & Semovita', description: 'Rich egusi with semovita', price: 2.5, image: '/images/egusi-pounded-yam.png', category: 'Pantry', stock: 70, rating: 4.3, reviewCount: 18, store: 'supermarket' },
 
   // Pharmacy
-  { id: 'ph-1', name: 'Aspirin 100mg (20)', description: 'Pain relief tablets', price: 3.5, image: '/img/foodimg/aspirin.jpg', category: 'Medicine', stock: 120, rating: 4.7, reviewCount: 25, store: 'pharmacy' },
-  { id: 'ph-2', name: 'Paracetamol 500mg (24)', description: 'Fever and pain relief', price: 4.0, image: '/img/foodimg/paracetamol.jpg', category: 'Medicine', stock: 150, rating: 4.8, reviewCount: 40, store: 'pharmacy' },
-  { id: 'ph-3', name: 'Vitamin C Tablets', description: 'Immune support supplement', price: 8.5, image: '/img/foodimg/vitamin-c.jpg', category: 'Supplements', stock: 80, rating: 4.6, reviewCount: 30, store: 'pharmacy' },
+  { id: 'ph-1', name: 'Panadol Extra (20)', description: 'Fast acting pain & fever relief', price: 3.5, image: '/products/panadol.png', category: 'Medicine', stock: 120, rating: 4.7, reviewCount: 25, store: 'pharmacy' },
+  { id: 'ph-2', name: 'Vitamin C Tablets', description: 'Immune support supplement', price: 4.0, image: '/products/vitaminc.png', category: 'Medicine', stock: 150, rating: 4.8, reviewCount: 40, store: 'pharmacy' },
+  { id: 'ph-3', name: 'Gummies Supplement', description: 'Daily vitamin gummies', price: 8.5, image: '/products/gummies.png', category: 'Supplements', stock: 80, rating: 4.6, reviewCount: 30, store: 'pharmacy' },
 
   // Bakery
-  { id: 'bk-1', name: 'Chocolate Cake', description: 'Rich chocolate layer cake', price: 25.0, image: '/img/foodimg/chocolate-cake.jpg', category: 'Cakes', stock: 10, rating: 4.9, reviewCount: 50, store: 'bakery' },
-  { id: 'bk-2', name: 'Donuts (6)', description: 'Assorted glazed donuts', price: 8.0, image: '/img/foodimg/donuts.jpg', category: 'Pastries', stock: 30, rating: 4.7, reviewCount: 35, store: 'bakery' },
-  { id: 'bk-3', name: 'Baguette', description: 'Fresh French baguette', price: 3.5, image: '/img/foodimg/baguette.jpg', category: 'Bread', stock: 25, rating: 4.8, reviewCount: 28, store: 'bakery' },
+  { id: 'bk-1', name: 'Chocolate Cake', description: 'Rich chocolate layer cake', price: 25.0, image: '/foodimg/dailyspecials/chocolatecake.png', category: 'Cakes', stock: 10, rating: 4.9, reviewCount: 50, store: 'bakery' },
+  { id: 'bk-2', name: 'Cupcakes (6)', description: 'Assorted frosted cupcakes', price: 8.0, image: '/foodimg/bestsellers/cupcakes.png', category: 'Pastries', stock: 30, rating: 4.7, reviewCount: 35, store: 'bakery' },
+  { id: 'bk-3', name: 'Sourdough Bread', description: 'Artisan sourdough loaf', price: 3.5, image: '/foodimg/bestsellers/sourdough.png', category: 'Bread', stock: 25, rating: 4.8, reviewCount: 28, store: 'bakery' },
 ];
 
 export const dummyAddresses: Address[] = [

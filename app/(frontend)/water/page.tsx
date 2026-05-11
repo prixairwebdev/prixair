@@ -1,96 +1,71 @@
 "use client";
+
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import Link from "next/link";
 import BulkWaterSection from "./BulkWaterSection";
 import WhyChooseUsSection from "./WhyChooseUs";
 import Water from "./Water";
 
 export default function Home() {
-  const [isInView, setIsInView] = useState({
-    hero: false,
-    legacy: false,
-  });
-
-  const container = {
-    hidden: { opacity: 0 },
-    show: { opacity: 1, transition: { staggerChildren: 0.1 } },
-  };
-
-  const item = {
-    hidden: { opacity: 0, x: -50 },
-    show: { opacity: 1, x: 0, transition: { duration: 0.5 } },
-  };
-
   return (
-    <div className="">
-      {/* Hero section */}
-      <section className="relative h-screen w-full" aria-label="Prixair Group Hero Section">
-        {/* Background image with gradient overlay */}
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.7), rgba(0,0,0,0.3)), url('/mainbg.png')`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-          }}
-          role="img"
-          aria-label="Prixair Group corporate background"
-        />
-
-        {/* Content */}
-        <div className="relative z-10 h-full flex items-center justify-center sm:justify-start">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-24">
-            <motion.div
-              className="max-w-2xl lg:max-w-3xl xl:max-w-4xl text-center sm:text-left"
-              variants={container}
-              initial="hidden"
-              animate={isInView.hero ? "show" : "hidden"}
-              onViewportEnter={() => setIsInView((prev) => ({ ...prev, hero: true }))}
-              onViewportLeave={() => setIsInView((prev) => ({ ...prev, hero: false }))}
-              viewport={{ once: false }}
+    <div>
+      {/* Hero */}
+      <section className="relative h-screen min-h-[600px] w-full flex items-center">
+        <Image src="/mainbg.png" alt="Prixair Waters" fill priority className="object-cover" />
+        <div className="absolute inset-0 bg-black/60" />
+        <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-14 w-full pt-32">
+          <motion.span
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-xs tracking-[0.3em] uppercase text-white/60 font-medium mb-4 block"
+          >
+            Prixair Waters
+          </motion.span>
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.1 }}
+            className="text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-tight max-w-3xl"
+          >
+            Pure Refreshment,<br />Bottled by Nature
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="mt-6 text-base md:text-lg text-white/75 max-w-xl leading-relaxed"
+          >
+            Sourced from pristine natural springs and bottled with care for your health and hydration.
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+            className="mt-8 flex flex-wrap gap-4"
+          >
+            <Link
+              href="/water/products"
+              className="px-6 py-3 bg-white text-gray-900 text-sm font-semibold hover:bg-gray-100 transition-colors"
             >
-              <motion.h1
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-bold leading-tight tracking-tight text-white"
-                variants={item}
-              >
-                Pure Refreshment, Bottled by Nature.
-              </motion.h1>
-
-              <motion.p
-                className="mt-4 sm:mt-6 text-sm sm:text-base md:text-lg text-gray-400/90 leading-relaxed max-w-3xl mx-auto sm:mx-0"
-                variants={item}
-              >
-                Sourced from pristine natural springs and bottled with care for your health and hydration.
-              </motion.p>
-
-              {/* Buttons */}
-              <motion.div
-                className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4 items-center sm:items-start"
-                variants={item}
-              >
-                <a
-                  href="/water/products"
-                  className="w-auto px-4 py-2 sm:px-6 sm:py-3 text-xs sm:text-sm md:text-base text-white font-semibold bg-orange-500 hover:bg-orange-600 rounded-md transition-colors"
-                >
-                  Shop now
-                </a>
-                <a
-                  href="/quote"
-                  className="w-auto px-4 py-2 sm:px-6 sm:py-3 text-xs sm:text-sm md:text-base text-gray-900 font-semibold bg-white hover:bg-gray-100 rounded-md transition-colors"
-                >
-                  Request quote
-                </a>
-              </motion.div>
-            </motion.div>
-          </div>
+              Shop Now
+            </Link>
+            <Link
+              href="/water/quote"
+              className="px-6 py-3 border border-white/40 text-white text-sm font-semibold hover:bg-white/10 transition-colors"
+            >
+              Request a Quote
+            </Link>
+          </motion.div>
         </div>
-
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10 animate-bounce">
-          <Image src="/arrowdown.png" alt="Scroll down indicator" width={30} height={40} className="w-6 h-10" priority />
-        </div>
+        <motion.div
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 1.8, repeat: Infinity }}
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10"
+        >
+          <div className="w-px h-12 bg-white/30 mx-auto" />
+        </motion.div>
       </section>
 
       <Water />

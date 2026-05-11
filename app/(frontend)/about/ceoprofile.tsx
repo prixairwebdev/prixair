@@ -25,7 +25,7 @@ function CeoProfile() {
       y: 0,
       transition: {
         duration: 0.5,
-        ease: [0.42, 0, 0.58, 1] as [number, number, number, number] // Properly typed cubic-bezier
+        ease: "easeOut"
       }
     }
   };

@@ -40,23 +40,39 @@ export default function Footer() {
 
         {/* Quick Links */}
         <div>
-          <ul className="space-y-2">
-            <li><a href="/about" className="hover:text-orange-500">About Us</a></li>
-            <li><a href="/news" className="hover:text-orange-500">What we do</a></li>
-            <li><a href="/about#leadership" className="hover:text-orange-500">Investors</a></li>
-            <li><a href="/subsidiaries" className="hover:text-orange-500">Sustainability </a></li>
-        
+          <ul className="space-y-3">
+            {[
+              { label: "About Us", href: "/mining/about" },
+              { label: "Our Operations", href: "/mining/operations" },
+              { label: "Investors", href: "/mining/about" },
+              { label: "Sustainability", href: "/mining/operations" },
+            ].map(({ label, href }) => (
+              <li key={label}>
+                <a href={href} className="relative group w-fit inline-block hover:text-white transition-colors duration-200 pb-0.5">
+                  {label}
+                  <span className="absolute bottom-0 left-0 h-px w-0 bg-white group-hover:w-full transition-[width] duration-300 ease-out" />
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
 
-        {/* Subsidiaries */}
+        {/* Secondary Links */}
         <div>
-          <ul className="space-y-2">
-            <li>Careers</li>
-            <li>News</li>
-            <li>Suppliers</li>
-            <li>Contact Us </li>
-           
+          <ul className="space-y-3">
+            {[
+              { label: "Careers", href: "/mining/careers" },
+              { label: "News", href: "/mining/news" },
+              { label: "Team", href: "/mining/team" },
+              { label: "Contact Us", href: "/mining/contact" },
+            ].map(({ label, href }) => (
+              <li key={label}>
+                <a href={href} className="relative group w-fit inline-block hover:text-white transition-colors duration-200 pb-0.5">
+                  {label}
+                  <span className="absolute bottom-0 left-0 h-px w-0 bg-white group-hover:w-full transition-[width] duration-300 ease-out" />
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
 
@@ -67,7 +83,7 @@ export default function Footer() {
             <input type="text" placeholder="Enter name" className="px-4 py-2 text-black bg-white" />
             <input type="email" placeholder="Enter email address" className="px-4 py-2 text-black bg-white" />
             <textarea placeholder="Message" rows={4} className="px-4 py-2 text-black bg-white" />
-            <button type="submit" className="bg-orange-500 hover:bg-orange-600 text-white py-2 font-semibold rounded-sm">SEND</button>
+            <button type="submit" className="bg-white hover:bg-gray-100 text-gray-900 py-2 font-semibold text-sm transition-colors">SEND</button>
           </form>
         </div>
       </div>
