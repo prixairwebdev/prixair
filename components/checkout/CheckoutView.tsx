@@ -189,11 +189,6 @@ export default function CheckoutView({
     };
 
     const handleWhatsAppCheckout = async () => {
-        if (!storeId) {
-            alert('Error: Store information not found. Please try again or contact support.');
-            return;
-        }
-
         if (isValidatingPromo) {
             alert('Please wait for promotion validation.');
             return;
@@ -206,18 +201,20 @@ export default function CheckoutView({
 
         setProcessing(true);
 
-        try {
-            const message = buildWhatsAppMessage();
-            const fallbackAddress = {
-                name: selectedAddress?.name || user?.name || 'WhatsApp customer',
-                phone: selectedAddress?.phone || user?.phone || 'Not provided',
-                street: selectedAddress?.street || 'To be confirmed on WhatsApp',
-                city: selectedAddress?.city || 'To be confirmed on WhatsApp',
-                state: selectedAddress?.state || 'To be confirmed on WhatsApp',
-                zipCode: selectedAddress?.zipCode || 'Not provided',
-                country: selectedAddress?.country || 'Nigeria',
-            };
-            const result = await createOrder({
+        const message = buildWhatsAppMessage();
+        const fallbackAddress = {
+            name: selectedAddress?.name || user?.name || 'WhatsApp customer',
+            phone: selectedAddress?.phone || user?.phone || 'Not provided',
+            street: selectedAddress?.street || 'To be confirmed on WhatsApp',
+            city: selectedAddress?.city || 'To be confirmed on WhatsApp',
+            state: selectedAddress?.state || 'To be confirmed on WhatsApp',
+            zipCode: selectedAddress?.zipCode || 'Not provided',
+            country: selectedAddress?.country || 'Nigeria',
+        };
+
+        // Fire-and-forget — DB save must not block the WhatsApp redirect
+        if (storeId) {
+            createOrder({
                 userId: user?.id,
                 items: items.map(item => ({
                     product_id: item.id,
@@ -237,24 +234,13 @@ export default function CheckoutView({
                 paymentMethod: 'whatsapp' as const,
                 paymentReference: `whatsapp-${Date.now()}`,
                 storeId,
-            });
-
-            if (!result.success || !result.order) {
-                alert('Failed to prepare your order. Please try again.');
-                setProcessing(false);
-                return;
-            }
-
-            clear(storeSlug);
-            if (user) {
-                await refreshOrders();
-            }
-            window.location.href = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
-        } catch (err) {
-            console.error('Checkout error:', err);
-            alert('An error occurred while preparing your WhatsApp order.');
-            setProcessing(false);
+            })
+                .then(() => { if (user) refreshOrders(); })
+                .catch(err => console.error('Order save failed (non-blocking):', err));
         }
+
+        clear(storeSlug);
+        window.location.href = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
     };
 
     return (
