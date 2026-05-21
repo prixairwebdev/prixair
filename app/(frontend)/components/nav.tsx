@@ -218,6 +218,7 @@ function Nav() {
                                 src={subsidiary.imageUrl}
                                 alt={subsidiary.name}
                                 fill
+                                sizes="48px"
                                 className="object-cover rounded-full"
                               />
                             </div>
@@ -396,6 +397,7 @@ function Nav() {
                                     src={subsidiary.imageUrl}
                                     alt={subsidiary.name}
                                     fill
+                                    sizes="40px"
                                     className="object-cover rounded-full"
                                   />
                                 </div>

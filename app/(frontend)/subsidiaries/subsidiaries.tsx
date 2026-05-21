@@ -22,7 +22,7 @@ const businesses: Business[] = [
     href: "/mining",
   },
   {
-    name: "Prixair Resturants",
+    name: "Prixair Foods",
     imageUrl: "/subsidiaries/food.jpg",
     href: "/food",
   },
