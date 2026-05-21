@@ -1,6 +1,5 @@
 "use client";
 import { motion } from "framer-motion";
-import Image from "next/image";
 
 export default function PhilosophySection() {
   return (
@@ -16,17 +15,13 @@ export default function PhilosophySection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true, amount: 0.4 }}
-          className="w-full h-[300px] sm:h-[350px] md:h-[400px] lg:h-[500px] relative z-0 overflow-hidden rounded-lg shadow-md"
-        >
-          <Image
-            src="/bgphilosophy.png"
-            alt="Prixair Group's philosophy in action - showcasing our commitment to excellence"
-            fill
-            className="object-cover w-full h-full"
-            priority={false}
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
-          />
-        </motion.div>
+          className="w-full h-[300px] sm:h-[350px] md:h-[400px] lg:h-[500px] z-0 rounded-lg shadow-md"
+          style={{
+            backgroundImage: "url('/bgphilosophy.png')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        />
 
         {/* Text Content - Positioned Over Image */}
         <motion.div
