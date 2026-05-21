@@ -13,13 +13,13 @@ type FoodCardProps = {
 export default function FoodCard({ name, imageUrl, href }: FoodCardProps) {
   return (
     <div className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center">
-      <div className="w-28 h-28 relative mb-4">
+      <div className="w-28 h-28 flex items-center justify-center mb-4">
         <Image
           src={imageUrl}
           alt={name}
-          fill
-          sizes="112px"
-          className="object-contain"
+          width={112}
+          height={112}
+          className="object-contain w-full h-full"
         />
       </div>
       <Link
