@@ -1,6 +1,5 @@
 "use client";
 import { motion, Variants, Transition } from "framer-motion";
-import Image from "next/image";
 
 const Mission = () => {
   const container: Variants = {
@@ -50,17 +49,13 @@ const Mission = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: false, amount: 0.4 }}
-          className="hidden md:block w-full h-[300px] sm:h-[600px] relative z-0 overflow-hidden rounded-lg shadow-md"
-        >
-          <Image
-            src="/bgreplace.png"
-            alt="Prixair Group's philosophy in action - showcasing our commitment to excellence"
-            fill
-            sizes="(max-width: 768px) 0vw, 80vw"
-            className="object-cover w-full h-full"
-            priority={false}
-          />
-        </motion.div>
+          className="hidden md:block w-full h-[300px] sm:h-[600px] z-0 rounded-lg shadow-md"
+          style={{
+            backgroundImage: "url('/bgreplace.png')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        />
 
         {/* Background Image for mobile - acts as background */}
         <motion.div
@@ -68,16 +63,13 @@ const Mission = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: false, amount: 0.4 }}
-          className="md:hidden w-full h-full absolute inset-0 z-0 overflow-hidden"
+          className="md:hidden w-full h-full absolute inset-0 z-0"
+          style={{
+            backgroundImage: "url('/prixairsupermarket.jpg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
         >
-          <Image
-            src="/prixairsupermarket.jpg"
-            alt="Prixair Group's philosophy in action - showcasing our commitment to excellence"
-            fill
-            sizes="100vw"
-            className="object-cover w-full h-full"
-            priority={false}
-          />
           <div className="absolute inset-0 bg-black/20" />
         </motion.div>
 
