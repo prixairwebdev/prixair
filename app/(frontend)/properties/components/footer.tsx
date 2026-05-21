@@ -8,7 +8,7 @@ export default function Footer() {
         {/* Brand */}
         <div className="max-w-sm">
           <div className="relative h-10 mb-5" style={{ width: "140px" }}>
-            <Image src="/homeslogo.png" alt="Prixair Properties" fill className="object-contain brightness-0 invert" />
+            <Image src="/homeslogo.png" alt="Prixair Properties" fill sizes="140px" className="object-contain brightness-0 invert" />
           </div>
           <p className="text-sm leading-relaxed text-white/50">
             Specialists in premium building construction finishing and interior furnishing materials.

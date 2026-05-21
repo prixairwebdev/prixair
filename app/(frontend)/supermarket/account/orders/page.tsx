@@ -110,7 +110,7 @@ export default function OrdersPage() {
                             <div key={idx} className="flex items-center gap-3">
                               <div className="w-14 h-14 rounded-lg bg-gray-100 flex-shrink-0 overflow-hidden relative">
                                 {item.image ? (
-                                  <Image src={item.image} alt={item.name} fill className="object-cover" />
+                                  <Image src={item.image} alt={item.name} fill sizes="56px" className="object-cover" />
                                 ) : (
                                   <div className="w-full h-full flex items-center justify-center text-gray-400">
                                     <Package className="w-5 h-5" />

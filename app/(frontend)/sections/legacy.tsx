@@ -56,6 +56,7 @@ const Mission = () => {
             src="/bgreplace.png"
             alt="Prixair Group's philosophy in action - showcasing our commitment to excellence"
             fill
+            sizes="(max-width: 768px) 0vw, 80vw"
             className="object-cover w-full h-full"
             priority={false}
           />
@@ -73,6 +74,7 @@ const Mission = () => {
             src="/prixairsupermarket.jpg"
             alt="Prixair Group's philosophy in action - showcasing our commitment to excellence"
             fill
+            sizes="100vw"
             className="object-cover w-full h-full"
             priority={false}
           />

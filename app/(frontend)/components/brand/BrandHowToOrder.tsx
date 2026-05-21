@@ -69,7 +69,7 @@ const BrandHowToOrder: React.FC<BrandHowToOrderProps> = ({
               </div>
 
               <div className="w-12 h-12 relative mb-5 opacity-80">
-                <Image src={step.icon} alt={step.title} fill className="object-contain" />
+                <Image src={step.icon} alt={step.title} fill sizes="48px" className="object-contain" />
               </div>
 
               <h3 className="text-base font-bold text-gray-900 mb-2">{step.title}</h3>

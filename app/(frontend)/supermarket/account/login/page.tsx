@@ -43,7 +43,7 @@ export default function LoginPage() {
         <div className="absolute -bottom-20 -left-20 w-72 h-72 bg-white/10 rounded-full" />
         <div className="relative z-10 text-center">
           <div className="relative w-48 h-16 mx-auto mb-8">
-            <Image src="/prixairmall.png" alt="Prixair Mall" fill className="object-contain brightness-0 invert" />
+            <Image src="/prixairmall.png" alt="Prixair Mall" fill sizes="192px" className="object-contain brightness-0 invert" />
           </div>
           <h2 className="text-3xl font-bold text-white mb-4">Welcome back!</h2>
           <p className="text-orange-100 text-lg max-w-sm">
@@ -66,7 +66,7 @@ export default function LoginPage() {
           {/* Mobile logo */}
           <div className="lg:hidden flex justify-center mb-8">
             <div className="relative w-36 h-12">
-              <Image src="/prixairmall.png" alt="Prixair Mall" fill className="object-contain" />
+              <Image src="/prixairmall.png" alt="Prixair Mall" fill sizes="144px" className="object-contain" />
             </div>
           </div>
 

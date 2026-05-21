@@ -67,7 +67,7 @@ export default function ExploreAndReviews() {
               whileHover={{ y: -4 }}
               className="relative group overflow-hidden h-64"
             >
-              <Image src={space.img} alt={space.name} fill className="object-cover group-hover:scale-105 transition-transform duration-700" />
+              <Image src={space.img} alt={space.name} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
               <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors duration-300 flex items-end">
                 <p className="text-white text-sm font-semibold p-5 tracking-wide">{space.name}</p>
               </div>

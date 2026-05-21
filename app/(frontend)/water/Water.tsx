@@ -41,7 +41,7 @@ export default function WaterProducts() {
       {/* Info Banner */}
       <section className="relative">
         <div className="relative w-full h-72 md:h-80 overflow-hidden">
-          <Image src="/waterbg.png" alt="Water source" fill className="object-cover" priority />
+          <Image src="/waterbg.png" alt="Water source" fill sizes="100vw" className="object-cover" priority />
           <div className="absolute inset-0 bg-black/40" />
         </div>
 
@@ -114,7 +114,7 @@ export default function WaterProducts() {
                 className="bg-white border-t-2 border-gray-200 hover:border-sky-600 transition-all duration-300 p-8 group flex flex-col items-center text-center"
               >
                 <div className="relative w-28 h-40 mb-6 group-hover:scale-105 transition-transform duration-500">
-                  <Image src={product.img} alt={product.name} fill className="object-contain" />
+                  <Image src={product.img} alt={product.name} fill sizes="(max-width: 768px) 50vw, 25vw" className="object-contain" />
                 </div>
                 <h3 className="font-bold text-gray-900 mb-2 text-sm">{product.name}</h3>
                 <p className="text-gray-500 text-xs leading-relaxed mb-6">{product.description}</p>
