@@ -22,6 +22,11 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'plus.unsplash.com',
       },
+      {
+        // Supabase S3 storage — product/media images uploaded via PayloadCMS
+        protocol: 'https',
+        hostname: 'uxuhqftvkvaujtpsdhkz.storage.supabase.co',
+      },
     ],
   },
 };
