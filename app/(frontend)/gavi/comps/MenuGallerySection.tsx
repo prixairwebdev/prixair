@@ -145,9 +145,9 @@ const MenuGallerySection = () => (
                 <Image
                   src={item.image}
                   alt={item.name}
-                  layout="fill"
-                  objectFit="cover"
-                  className="rounded-t-lg"
+                  fill
+                  sizes="(max-width: 640px) 100vw, 25vw"
+                  className="object-cover rounded-t-lg"
                 />
               </div>
               <div className="px-4 py-3 flex-1 flex flex-col justify-between">

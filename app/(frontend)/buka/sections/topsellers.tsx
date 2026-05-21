@@ -76,8 +76,9 @@ export default function TopSellers() {
               <Image
                 src={dish.image}
                 alt={dish.name}
-                layout="fill"
-                objectFit="cover"
+                fill
+                sizes="(max-width: 640px) 100vw, 25vw"
+                className="object-cover"
               />
             </div>
             <div className="p-4 flex flex-col justify-between flex-grow">

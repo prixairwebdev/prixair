@@ -17,8 +17,9 @@ export default function FoodCard({ name, imageUrl, href }: FoodCardProps) {
         <Image
           src={imageUrl}
           alt={name}
-          layout="fill"
-          objectFit="contain"
+          fill
+          sizes="112px"
+          className="object-contain"
         />
       </div>
       <Link
