@@ -80,7 +80,7 @@ export default function ImageCarousel({ images }: ImageCarouselProps) {
                 currentIndex === idx ? 'border-orange-500 scale-105 shadow-md' : 'border-transparent opacity-60 hover:opacity-100'
               }`}
             >
-              <Image src={img} alt={`Thumbnail ${idx + 1}`} fill className="object-cover" />
+              <Image src={img} alt={`Thumbnail ${idx + 1}`} fill sizes="80px" className="object-cover" />
             </button>
           ))}
         </div>

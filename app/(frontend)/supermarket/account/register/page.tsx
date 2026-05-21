@@ -66,7 +66,7 @@ export default function RegisterPage() {
         <div className="absolute -bottom-16 -left-16 w-64 h-64 bg-orange-500/10 rounded-full" />
         <div className="relative z-10 w-full max-w-xs">
           <div className="relative w-40 h-14 mb-10">
-            <Image src="/prixairmall.png" alt="Prixair Mall" fill className="object-contain brightness-0 invert" />
+            <Image src="/prixairmall.png" alt="Prixair Mall" fill sizes="160px" className="object-contain brightness-0 invert" />
           </div>
           <h2 className="text-2xl font-bold text-white mb-3">Join Prixair Mall</h2>
           <p className="text-gray-400 text-sm mb-8">Create your free account and unlock exclusive benefits.</p>
@@ -86,7 +86,7 @@ export default function RegisterPage() {
         <div className="w-full max-w-md">
           <div className="lg:hidden flex justify-center mb-8">
             <div className="relative w-36 h-12">
-              <Image src="/prixairmall.png" alt="Prixair Mall" fill className="object-contain" />
+              <Image src="/prixairmall.png" alt="Prixair Mall" fill sizes="144px" className="object-contain" />
             </div>
           </div>
 

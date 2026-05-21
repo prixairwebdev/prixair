@@ -128,7 +128,7 @@ export default function PremiumProducts() {
               onClick={(e) => e.stopPropagation()}
             >
               <div className="relative h-64 md:h-80">
-                <Image src={selectedProduct.img} alt={selectedProduct.name} fill className="object-cover" />
+                <Image src={selectedProduct.img} alt={selectedProduct.name} fill sizes="(max-width: 768px) 100vw, 672px" className="object-cover" />
                 <button
                   onClick={() => setSelectedProduct(null)}
                   className="absolute top-4 right-4 bg-white p-1.5 hover:bg-gray-100 transition-colors"

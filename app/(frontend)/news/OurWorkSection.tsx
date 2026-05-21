@@ -61,7 +61,7 @@ const OurWorkSection = () => {
             className="relative h-56 rounded overflow-hidden shadow"
             variants={itemVariants}
           >
-            <Image src={work.image} alt={work.title} layout="fill" objectFit="cover" />
+            <Image src={work.image} alt={work.title} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" />
             <div className="absolute inset-0 bg-black/30 bg-opacity-40 flex items-end p-3">
               <p className="text-white font-semibold">{work.title}</p>
             </div>

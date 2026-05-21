@@ -7,7 +7,7 @@ import Link from "next/link";
 export default function HotelHero() {
   return (
     <section className="relative h-screen min-h-[600px] w-full flex items-center">
-      <Image src="/hotelbg.png" alt="Prixair Hotels" fill priority className="object-cover" />
+      <Image src="/hotelbg.png" alt="Prixair Hotels" fill priority sizes="100vw" className="object-cover" />
       <div className="absolute inset-0 bg-black/55" />
       <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-14 w-full pt-32">
         <motion.span

@@ -19,7 +19,7 @@ export default function AboutPage() {
 
       {/* Hero */}
       <section className="relative w-full h-[500px] md:h-[600px] flex items-center">
-        <Image src="/homesbg.png" alt="About Prixair Properties" fill className="object-cover" priority />
+        <Image src="/homesbg.png" alt="About Prixair Properties" fill sizes="100vw" className="object-cover" priority />
         <div className="absolute inset-0 bg-black/55" />
         <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-14 w-full">
           <motion.span

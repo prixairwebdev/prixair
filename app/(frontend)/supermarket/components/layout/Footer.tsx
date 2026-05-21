@@ -44,7 +44,7 @@ export function Footer() {
           {/* Brand */}
           <div className="space-y-4 lg:col-span-1">
             <div className="relative w-36 h-10">
-              <Image src="/prixairmall.png" alt="Prixair Mall" fill className="object-contain brightness-0 invert opacity-90" />
+              <Image src="/prixairmall.png" alt="Prixair Mall" fill sizes="144px" className="object-contain brightness-0 invert opacity-90" />
             </div>
             <p className="text-sm leading-relaxed">
               Your one-stop supermarket for fresh groceries, everyday essentials, and more — delivered fast across Nigeria.

@@ -9,7 +9,7 @@ const Footer = () => {
         {/* Logo & About */}
         <div>
           <div className="relative h-10 w-auto mb-4" style={{ width: '150px' }}>
-            <Image src="/farmlogo.png" alt="PrixairFarm Logo" fill className="object-contain" />
+            <Image src="/farmlogo.png" alt="PrixairFarm Logo" fill sizes="150px" className="object-contain" />
           </div>
           <p className="text-sm mb-6">
             Nurturing the land, feeding the future. Farm-fresh produce, poultry, and more — grown with care right here in Prixair Farms.

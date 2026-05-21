@@ -89,7 +89,7 @@ const WhatWeDoSection = () => {
             className="relative w-40 h-40 overflow-hidden rounded shadow"
             variants={itemVariants}
           >
-            <Image src={service.image} alt={service.title} layout="fill" objectFit="cover" />
+            <Image src={service.image} alt={service.title} fill sizes="160px" className="object-cover" />
             <div className="absolute inset-0 bg-black/30 bg-opacity-40 flex items-end p-2">
               <p className="text-white text-xs">{service.title}</p>
             </div>

@@ -317,7 +317,7 @@ export default function CheckoutView({
                                 {items.map(item => (
                                     <div key={item.id} className="flex gap-4">
                                         <div className="relative w-16 h-16 flex-shrink-0">
-                                            <Image src={item.image || '/placeholder.png'} alt={item.name} fill className="object-cover rounded-lg" />
+                                            <Image src={item.image || '/placeholder.png'} alt={item.name} fill sizes="64px" className="object-cover rounded-lg" />
                                         </div>
                                         <div className="flex-1 min-w-0">
                                             <h4 className="text-black font-medium text-sm line-clamp-2">{item.name}</h4>

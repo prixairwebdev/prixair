@@ -67,7 +67,7 @@ export default function HomeCategories() {
                   className="flex flex-col items-center gap-2.5 py-5 px-3 bg-gray-50 hover:bg-white border border-gray-100 hover:border-gray-300 transition-all duration-200 cursor-pointer group"
                 >
                   <div className="w-9 h-9 relative group-hover:scale-110 transition-transform duration-300">
-                    <Image src={cat.icon} alt={cat.name} fill className="object-contain" />
+                    <Image src={cat.icon} alt={cat.name} fill sizes="36px" className="object-contain" />
                   </div>
                   <span className="text-[11px] text-center text-gray-600 font-medium leading-tight">{cat.name}</span>
                 </motion.div>

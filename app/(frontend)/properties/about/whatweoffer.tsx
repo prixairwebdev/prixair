@@ -59,7 +59,7 @@ export default function WhatWeOffer() {
             variants={itemVariants}
           >
             <div className="relative w-full h-28 rounded overflow-hidden">
-              <Image src={item.img} alt={item.title} fill className="object-cover" />
+              <Image src={item.img} alt={item.title} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" />
             </div>
             <p className="text-xs mt-2 font-medium">{item.title}</p>
           </motion.div>
