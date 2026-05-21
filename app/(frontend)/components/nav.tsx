@@ -213,13 +213,13 @@ function Nav() {
                             }`}
                             onClick={closeMobileMenu}
                           >
-                            <div className="w-12 h-12 mb-2 relative">
+                            <div className="w-12 h-12 mb-2 overflow-hidden rounded-full">
                               <Image
                                 src={subsidiary.imageUrl}
                                 alt={subsidiary.name}
-                                fill
-                                sizes="48px"
-                                className="object-cover rounded-full"
+                                width={48}
+                                height={48}
+                                className="object-cover w-full h-full"
                               />
                             </div>
                             <span className="text-xs font-medium text-center leading-tight">
@@ -392,13 +392,13 @@ function Nav() {
                                 className="flex flex-col items-center p-2 rounded-lg hover:bg-gray-800 transition-colors duration-200"
                                 onClick={closeMobileMenu}
                               >
-                                <div className="w-10 h-10 mb-1 relative">
+                                <div className="w-10 h-10 mb-1 overflow-hidden rounded-full">
                                   <Image
                                     src={subsidiary.imageUrl}
                                     alt={subsidiary.name}
-                                    fill
-                                    sizes="40px"
-                                    className="object-cover rounded-full"
+                                    width={40}
+                                    height={40}
+                                    className="object-cover w-full h-full"
                                   />
                                 </div>
                                 <span className="text-xs text-gray-300 text-center leading-tight">
