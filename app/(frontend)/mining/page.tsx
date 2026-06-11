@@ -11,7 +11,7 @@ export default function Home() {
         label="Prixair Resources"
         title="Powering the Future with Responsible Mining"
         subtitle="Developing critical resources while protecting people, planet, and prosperity."
-        bg="/mininglandingbg.png"
+        bg="/mininglandingbg.jpg"
         cta={{ text: "Explore Our Operations", href: "/mining/operations" }}
       />
       <Whoweare />

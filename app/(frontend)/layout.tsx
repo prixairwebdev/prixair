@@ -20,6 +20,7 @@ import { CartProvider } from "@/components/CartContext";
 import { WishlistProvider } from "@/components/contexts/WishlistContext";
 import { AuthProvider } from "@/components/contexts/AuthContext";
 import { OrderProvider } from "@/components/contexts/OrderContext";
+import AccessRestriction from "./components/AccessRestriction";
 
 // Configure the font subset, weight, and style
 const montserrat = Montserrat({
@@ -53,16 +54,17 @@ export default function RootLayout({
                 s1.charset='UTF-8';
                 s1.setAttribute('crossorigin','*');
                 s0.parentNode.insertBefore(s1,s0);
-              })();
-            `,
-          }}
-        />
-      </head>
-      <body
-        className="overflow-x-hidden bg-white font-sans" // font-sans will use Montserrat
-        suppressHydrationWarning
-      >
-        <AuthProvider>
+                })();
+                `,
+              }}
+            />
+          </head>
+          <body
+            className="overflow-x-hidden bg-white font-sans" // font-sans will use Montserrat
+            suppressHydrationWarning
+          >
+            <AccessRestriction />
+            <AuthProvider>
           <CartProvider>
             <WishlistProvider>
               <OrderProvider>

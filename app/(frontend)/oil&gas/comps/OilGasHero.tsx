@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 interface HeroProps {
   label: string;
@@ -13,16 +14,22 @@ export default function OilGasHero({
   label,
   title,
   subtitle,
-  bg = "/oil&gasbg.png",
+  bg = "/oil&gasbg.jpg",
   ctas,
   short = false,
 }: HeroProps) {
   return (
     <section className={`relative w-full ${short ? "h-[52vh] min-h-[380px]" : "h-screen min-h-[600px]"}`}>
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url('${bg}')` }}
-      />
+      <div className="absolute inset-0 overflow-hidden">
+        <Image
+          src={bg}
+          alt={title}
+          fill
+          priority={!short}
+          sizes="100vw"
+          style={{ objectFit: "cover" }}
+        />
+      </div>
       <div className="absolute inset-0 bg-black/65" />
 
       <div className="relative z-10 h-full flex flex-col justify-end px-5 sm:px-8 md:px-16 pb-14 sm:pb-16 md:pb-20 max-w-7xl mx-auto w-full">

@@ -2,15 +2,20 @@
 import React from "react";
 import { motion } from "framer-motion";
 import FAQAccordion from "./FAQAccordion";
+import Image from "next/image";
+
 export default function HeroSection() {
   return (
     <>
-      <section
-        className="relative h-screen w-full flex items-center justify-center text-center bg-cover bg-center"
-        style={{
-          backgroundImage: "url('/trackbr.png')", // Replace with your map+package hero image
-        }}
-      >
+      <section className="relative h-screen w-full flex items-center justify-center text-center">
+        <Image
+          src="/trackbr.jpg"
+          alt="Track shipment background"
+          fill
+          priority
+          sizes="100vw"
+          style={{ objectFit: "cover" }}
+        />
         {/* Overlay */}
         <div className="absolute inset-0 bg-black/40 bg-opacity-50" />
 
