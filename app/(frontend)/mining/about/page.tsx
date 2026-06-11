@@ -10,7 +10,7 @@ export default function AboutPage() {
         label="About Us"
         title="Driven By Purpose. Grounded In Responsibility."
         subtitle="Discover our history, leadership, and commitment to sustainable mining across Nigeria and beyond."
-        bg="/mininglandingbg.png"
+        bg="/mininglandingbg.jpg"
         short
       />
       <About />

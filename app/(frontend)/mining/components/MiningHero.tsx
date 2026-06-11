@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 interface MiningHeroProps {
   label: string;
@@ -13,17 +14,23 @@ export default function MiningHero({
   label,
   title,
   subtitle,
-  bg = "/mininglandingbg.png",
+  bg = "/mininglandingbg.jpg",
   cta,
   short = false,
 }: MiningHeroProps) {
   return (
     <section className={`relative w-full ${short ? "h-[52vh] min-h-[380px]" : "h-screen min-h-[600px]"}`}>
       {/* Background */}
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url('${bg}')` }}
-      />
+      <div className="absolute inset-0 overflow-hidden">
+        <Image
+          src={bg}
+          alt={title}
+          fill
+          priority={!short}
+          sizes="100vw"
+          style={{ objectFit: "cover" }}
+        />
+      </div>
       <div className="absolute inset-0 bg-black/65" />
 
       {/* Content — anchored to bottom-left, padded from nav at top */}

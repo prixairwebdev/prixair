@@ -5,15 +5,20 @@ import ServicesSection from "../comps/ServicesSection";
 import HowItWorksSection from "../comps/HowItWorksSection";
 import Ship from "../comps/Ship";
 
+import Image from "next/image";
+
 export default function HeroSection() {
   return (
     <>
-    <section
-      className="relative h-screen w-full flex items-center justify-center text-center bg-cover bg-center"
-      style={{
-        backgroundImage: "url('/landingbg.png')", // replace with your hero image
-      }}
-    >
+    <section className="relative h-screen w-full flex items-center justify-center text-center">
+      <Image
+        src="/landingbg.jpg"
+        alt="Logistics background"
+        fill
+        priority
+        sizes="100vw"
+        style={{ objectFit: "cover" }}
+      />
       {/* Overlay */}
       <div className="absolute inset-0 bg-black/40 bg-opacity-50" />
 

@@ -42,17 +42,17 @@ function Page() {
         aria-label="Prixair Group Hero Section"
       >
         {/* Background image with gradient overlay */}
-       <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.7), rgba(0,0,0,0.3)), url('/landingpagebg.png')`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              backgroundRepeat: "no-repeat",
-            }}
-            role="img"
-            aria-label="Prixair Group corporate background"
-          />
+          <div className="absolute inset-0 overflow-hidden" role="img" aria-label="Prixair Group corporate background">
+            <Image
+              src="/landingpagebg.jpg"
+              alt="Prixair Group corporate background"
+              fill
+              priority
+              sizes="100vw"
+              style={{ objectFit: "cover" }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/30" />
+          </div>
 
         {/* Content container */}
         <div className="relative z-10 h-full flex items-center justify-center sm:justify-start">

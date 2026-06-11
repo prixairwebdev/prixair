@@ -1,5 +1,6 @@
 "use client";
 import { motion, Variants, Transition } from "framer-motion";
+import Image from "next/image";
 
 const Mission = () => {
   const container: Variants = {
@@ -49,13 +50,17 @@ const Mission = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: false, amount: 0.4 }}
-          className="hidden md:block w-full h-[300px] sm:h-[600px] z-0 rounded-lg shadow-md"
-          style={{
-            backgroundImage: "url('/bgreplace.png')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        />
+          className="hidden md:block relative w-full h-[300px] sm:h-[600px] z-0 rounded-lg shadow-md overflow-hidden"
+        >
+          <Image
+            src="/bgreplace.jpg"
+            alt="Prixair legacy background"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 80vw"
+            style={{ objectFit: "cover" }}
+            className="rounded-lg"
+          />
+        </motion.div>
 
         {/* Background Image for mobile - acts as background */}
         <motion.div
@@ -63,13 +68,15 @@ const Mission = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: false, amount: 0.4 }}
-          className="md:hidden w-full h-full absolute inset-0 z-0"
-          style={{
-            backgroundImage: "url('/prixairsupermarket.jpg')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
+          className="md:hidden absolute inset-0 z-0 overflow-hidden"
         >
+          <Image
+            src="/prixairsupermarket.jpg"
+            alt="Prixair supermarket background"
+            fill
+            sizes="100vw"
+            style={{ objectFit: "cover" }}
+          />
           <div className="absolute inset-0 bg-black/20" />
         </motion.div>
 
