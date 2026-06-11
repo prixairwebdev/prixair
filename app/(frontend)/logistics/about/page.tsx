@@ -4,15 +4,20 @@ import { motion } from "framer-motion";
 import AboutSection from "./AboutSection";
 import Ship from "./Ship";
 
+import Image from "next/image";
+
 export default function HeroSection() {
   return (
     <>
-    <section
-      className="relative h-screen w-full flex items-center justify-center text-center bg-cover bg-center"
-      style={{
-        backgroundImage: "url('/aboutlgs.png')", // replace with your hero image
-      }}
-    >
+    <section className="relative h-screen w-full flex items-center justify-center text-center">
+      <Image
+        src="/aboutlgs.jpg"
+        alt="About logistics background"
+        fill
+        priority
+        sizes="100vw"
+        style={{ objectFit: "cover" }}
+      />
       {/* Overlay */}
       <div className="absolute inset-0 bg-black/40 bg-opacity-50" />
 
