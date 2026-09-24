@@ -20,7 +20,6 @@ import { CartProvider } from "@/components/CartContext";
 import { WishlistProvider } from "@/components/contexts/WishlistContext";
 import { AuthProvider } from "@/components/contexts/AuthContext";
 import { OrderProvider } from "@/components/contexts/OrderContext";
-import AccessRestriction from "./components/AccessRestriction";
 
 // Configure the font subset, weight, and style
 const montserrat = Montserrat({
@@ -63,7 +62,6 @@ export default function RootLayout({
             className="overflow-x-hidden bg-white font-sans" // font-sans will use Montserrat
             suppressHydrationWarning
           >
-            <AccessRestriction />
             <AuthProvider>
           <CartProvider>
             <WishlistProvider>

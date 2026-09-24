@@ -69,7 +69,9 @@ const NoodleliciousLanding = () => {
         }
         subtitle="The ultimate noodle experience. Stir-fried, saucy, and absolutely delicious."
         tagline="Noodle Excellence"
-        bgImage="/logos/noodlel.png"
+        images={["/foodhero/noodle-1.jpg", "/foodhero/noodle-2.jpg", "/foodhero/noodle-3.jpg"]}
+        logo="/logos/noodlel.png"
+        brandName="Noodlelicious"
         primaryColor="#F3A35C"
         secondaryColor="#373435"
         onOrderClick={() => router.push('/noodlelicious/products')}

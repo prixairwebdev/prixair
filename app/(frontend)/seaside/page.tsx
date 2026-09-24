@@ -75,7 +75,10 @@ const SeasideLanding = () => {
         }
         subtitle="Fresh seafood and breathtaking views. Experience the best of the ocean at Seaside."
         tagline="Premium Seafood Experience"
-        bgImage="/logos/seaside.png"
+        bgImage="/foodhero/seaside.jpg"
+        layout="cover"
+        logo="/logos/seaside.png"
+        brandName="Seaside Restaurant"
         primaryColor="#0077CC"
         secondaryColor="#F3A35C"
         onMenuClick={() => router.push('/seaside/products')}

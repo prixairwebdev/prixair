@@ -70,7 +70,9 @@ const IyanVillageLanding = () => {
         }
         subtitle="Authentic pounded yam and rich indigenous soups. A taste of home in every bite."
         tagline="Authentic Nigerian Cuisine"
-        bgImage="/logos/iyanvillage.png"
+        images={["/foodhero/iyan-1.jpg", "/foodhero/iyan-2.jpg", "/foodhero/iyan-3.jpg"]}
+        logo="/logos/iyanvillage.png"
+        brandName="Iyan Village"
         primaryColor="#FE0000"
         secondaryColor="#F3A35C"
         store="iyanvillage"

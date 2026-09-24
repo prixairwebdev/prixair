@@ -70,7 +70,9 @@ const ShawarmaNomnowLanding = () => {
         }
         subtitle="Juicy, flame-grilled shawarma wraps made fresh to order. Your favourite street flavour, elevated."
         tagline="Abuja's Favourite Shawarma Spot"
-        bgImage="/logos/shawarmanomnow.jpg"
+        images={["https://images.unsplash.com/photo-1719282431565-3b30bb7d2658?q=80&w=1100&auto=format&fit=crop"]}
+        logo="/logos/shawarmanomnow.jpg"
+        brandName="Shawarma Now Now"
         primaryColor="#F5A623"
         secondaryColor="#E30000"
         store="shawarmanownow"
