@@ -1,151 +1,46 @@
-"use client";
-import { motion, easeInOut } from "framer-motion";
-import Image from "next/image";
-import OurCategories from "../sections/ourcategories";
-import { menuItems } from "./data/menu";
-import MenuSection from "./menu";
+import { getProductsAndCategories } from "@/app/actions/products";
+import BukaMenu, { BukaMenuItem, BukaMenuCategory } from "./menu";
 
-export default function Home() {
+export const dynamic = "force-dynamic";
 
-  const container = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.3,
-      },
-    },
-  };
+export default async function BukaMenuPage() {
+  const { products, categories } = await getProductsAndCategories("buka");
 
-  const item = {
-    hidden: { opacity: 0, y: 20 },
-    show: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        type: "spring" as const,
-        stiffness: 100,
-        damping: 10,
-        duration: 0.7,
-      },
-    },
-  };
+  // Group by the category each product points to (populated at depth 1), so dishes
+  // whose category isn't linked to the Buka store in the CMS still land in the right section.
+  const categoryKey = (name: string) => name.trim().toLowerCase().replace(/s$/, "");
+  const categoryNames = new Map<string, string>();
+  const items: BukaMenuItem[] = products.map((p) => {
+    const category = typeof p.category === "object" && p.category ? p.category : null;
+    // Key by name so near-duplicate CMS categories ("Soup", "Soups", "Soups ") merge
+    const categoryId = category ? categoryKey(category.name) : "other";
+    const name = category?.name.trim() ?? "";
+    // Prefer the plural spelling for the section title
+    if (category && (categoryNames.get(categoryId)?.length ?? 0) < name.length) categoryNames.set(categoryId, name);
+    return {
+      id: String(p.id),
+      name: p.name.trim(),
+      description: p.description ?? "",
+      price: Number(p.price) || 0,
+      image: (typeof p.image === "object" ? p.image?.url : p.image) || "/restaurantplaceholder.jpg",
+      stock: typeof p.stock === "number" ? p.stock : undefined,
+      categoryId,
+    };
+  });
 
-  const scrollIndicator = {
-    animate: {
-      y: [0, 15, 0],
-      transition: {
-        duration: 1.5,
-        repeat: Infinity,
-        ease: easeInOut, // ✅ fixed typing
-      },
-    },
-  };
+  // Follow the store's category order from the CMS, then any others alphabetically
+  const order = new Map<string, number>();
+  categories.forEach((c, i) => {
+    const key = categoryKey(c.name);
+    if (!order.has(key)) order.set(key, i);
+  });
+  const menuCategories: BukaMenuCategory[] = [...categoryNames.entries()]
+    .map(([id, name]) => ({ id, name }))
+    .sort((a, b) => (order.get(a.id) ?? 999) - (order.get(b.id) ?? 999) || a.name.localeCompare(b.name));
 
-  return (
-    <div className="overflow-hidden">
-        <>
-          <section
-            className="relative h-screen w-full overflow-hidden"
-            aria-label="Prixair Group Hero Section"
-          >
-            <motion.div
-              className="absolute inset-0 bg-black/30"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1 }}
-            >
-              <Image
-                src="/bgbuka.png"
-                alt="Prixair Group corporate background"
-                fill
-                priority
-                quality={100}
-                className="object-cover object-center"
-                sizes="100vw"
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/30" />
-            </motion.div>
+  if (items.some((i) => i.categoryId === "other")) {
+    menuCategories.push({ id: "other", name: "More" });
+  }
 
-            <div className="relative z-10 h-full flex items-center justify-center sm:justify-start px-4 sm:px-6 lg:px-8">
-              <div className="container mx-auto">
-                <motion.div
-                  className="max-w-2xl lg:max-w-3xl xl:max-w-4xl mx-auto text-center"
-                  variants={container}
-                  initial="hidden"
-                  animate="show"
-                  viewport={{ once: true, margin: "-100px" }}
-                >
-                  <motion.h1
-                    className="text-4xl sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl font-bold leading-tight tracking-tight text-white"
-                    variants={item}
-                  >
-                    Our Menu
-                  </motion.h1>
-
-                  <motion.p
-                    className="mt-4 sm:mt-6 text-lg sm:text-xl md:text-2xl text-white/90 leading-relaxed max-w-3xl mx-auto"
-                    variants={item}
-                  >
-                    Every dish tells a story. At Prixair Buka, we bring you the
-                    rich, authentic flavors of Nigerian home cooking — prepared
-                    with care, tradition, and love
-                  </motion.p>
-                </motion.div>
-              </div>
-            </div>
-
-            <motion.div
-              className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10"
-              variants={scrollIndicator}
-              animate="animate"
-            >
-              <Image
-                src="/arrowdown.png"
-                alt="Scroll down indicator"
-                width={30}
-                height={40}
-                className="w-6 h-10"
-                priority
-              />
-            </motion.div>
-          </section>
-
-          <OurCategories />
-
-          <main className="bg-white min-h-screen sm:px-10">
-            <MenuSection
-              title="Top Sellers"
-              color="bg-black"
-              items={menuItems.filter((item) => item.category === "top-sellers")}
-            />
-
-            <MenuSection
-              title="Rice Dishes"
-              color="bg-[#FE0000]"
-              items={menuItems.filter((item) => item.category === "rice")}
-            />
-
-            <MenuSection
-              title="Soups & Swallow"
-              color="bg-[#004F1D]"
-              items={menuItems.filter((item) => item.category === "soups")}
-            />
-
-            <MenuSection
-              title="Grilled Foods"
-              color="bg-[#450A0A]"
-              items={menuItems.filter((item) => item.category === "grilled")}
-            />
-
-            <MenuSection
-              title="Drinks"
-              color="bg-[#450A0A]"
-              items={menuItems.filter((item) => item.category === "drinks")}
-            />
-          </main>
-        </>
-    </div>
-  );
+  return <BukaMenu items={items} categories={menuCategories} />;
 }

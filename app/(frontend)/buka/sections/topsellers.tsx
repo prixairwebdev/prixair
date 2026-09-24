@@ -1,7 +1,9 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
+import { Plus } from "lucide-react";
 
 const dishes = [
   {
@@ -30,91 +32,73 @@ const dishes = [
   },
 ];
 
-// Animation variants
-const container = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
+const container: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.1 } },
 };
 
-const item = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+const item: Variants = {
+  hidden: { opacity: 0, y: 24 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
 };
 
 export default function TopSellers() {
   return (
-    <section className="w-full bg-white py-12 flex flex-col items-center sm:text-start text-black">
-      <motion.h2 
-        className="text-xl sm:text-2xl font-semibold mb-8 px-4 text-center sm:text-start"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        viewport={{ once: false, margin: "-100px" }}
-      >
-        Top Sellers – Most Loved Dishes
-      </motion.h2>
-
-      <motion.div 
-        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 px-4 max-w-7xl w-full"
-        variants={container}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: false, margin: "-50px" }}
-      >
-        {dishes.map((dish, index) => (
-          <motion.div
-            key={index}
-            className="bg-gray-50 shadow-md rounded-md overflow-hidden flex flex-col"
-            variants={item}
+    <section className="w-full bg-[#faf7f2] py-20 md:py-24 px-5 md:px-10 text-gray-900">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+          <div>
+            <p className="text-sm font-semibold text-[#FE0000] mb-2">Most loved dishes</p>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Top Sellers</h2>
+          </div>
+          <Link
+            href="/buka/products"
+            className="text-sm font-bold text-gray-500 hover:text-gray-900 underline underline-offset-4 transition-colors"
           >
-            <div className="w-full h-[180px] relative">
-              <Image
-                src={dish.image}
-                alt={dish.name}
-                fill
-                sizes="(max-width: 640px) 100vw, 25vw"
-                className="object-cover"
-              />
-            </div>
-            <div className="p-4 flex flex-col justify-between flex-grow">
-              <div>
-                <div className="flex items-center justify-between mb-1">
-                  <h3 className="font-semibold text-sm">{dish.name}</h3>
-                  <span className="text-red-600 text-sm font-medium">
-                    From {dish.price}
-                  </span>
-                </div>
-                <p className="text-xs text-gray-600">{dish.desc}</p>
-              </div>
-              <a 
-                href="/buka/products"
-                className="mt-4 bg-red-600 hover:bg-red-700 text-white text-xs font-medium py-4 px-4 w-fit self-end text-center"
-              >
-                Order Now
-              </a>
-            </div>
-          </motion.div>
-        ))}
-      </motion.div>
+            View full menu
+          </Link>
+        </div>
 
-      <motion.a
-        href="/buka/products"
-        className="mt-10 bg-red-600 hover:bg-red-700 text-white px-6 py-3 text-sm font-semibold flex items-center gap-2"
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.4 }}
-        viewport={{ once: false, margin: "-50px" }}
-      >
-        <span className="material-symbols-outlined">call</span>
-        Start Your Order Now
-      </motion.a>
+        <motion.div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+          variants={container}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.15 }}
+        >
+          {dishes.map((dish) => (
+            <motion.div key={dish.name} variants={item}>
+              <Link
+                href="/buka/products"
+                className="group flex flex-col h-full bg-white rounded-3xl overflow-hidden border border-black/5 hover:shadow-[0_20px_40px_-20px_rgba(0,0,0,0.25)] transition-shadow duration-300"
+              >
+                <div className="relative w-full aspect-[4/3] overflow-hidden bg-gray-100">
+                  <Image
+                    src={dish.image}
+                    alt={dish.name}
+                    fill
+                    sizes="(min-width:1024px) 25vw, (min-width:640px) 50vw, 100vw"
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                </div>
+                <div className="p-5 flex flex-col flex-grow">
+                  <h3 className="font-bold text-base leading-snug">{dish.name}</h3>
+                  <p className="mt-1.5 text-sm text-gray-500 leading-relaxed flex-grow">{dish.desc}</p>
+                  <div className="mt-5 flex items-center justify-between">
+                    <span className="text-lg font-extrabold text-gray-900">
+                      <span className="text-xs font-semibold text-gray-400 mr-1">from</span>
+                      {dish.price}
+                    </span>
+                    <span className="w-10 h-10 rounded-full bg-[#FE0000] text-white flex items-center justify-center transition-transform group-hover:scale-110">
+                      <Plus className="w-4 h-4" />
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
     </section>
   );
 }

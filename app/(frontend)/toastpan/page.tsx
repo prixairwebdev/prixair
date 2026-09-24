@@ -76,7 +76,11 @@ const ToastPanLanding = () => {
         }
         subtitle="Golden, crispy, and filled with love. Discover the craft behind the perfect toast with Toast Pan."
         tagline="The Ultimate Toast Experience"
-        bgImage="/toastpanimg/toastpan.jpeg"
+        bgImage="/foodhero/toastpan.jpg"
+        bgPosition="72% center"
+        layout="cover"
+        logo="/logos/toastpan.png"
+        brandName="Toast Pan"
         primaryColor="#B5D04E"
         secondaryColor="#F3A35C"
         onMenuClick={() => router.push('/toastpan/products')}

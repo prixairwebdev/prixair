@@ -70,7 +70,9 @@ const PartyJollofLanding = () => {
         }
         subtitle="That unmistakable smoky taste that brings every celebration to life. Authentic, spicy, and always fresh."
         tagline="The King of Jollof"
-        bgImage="/partyjollof/pjhm.jpeg"
+        images={["/foodhero/pj-1.jpg", "/foodhero/pj-2.jpg", "/foodhero/pj-3.jpg"]}
+        logo="/partyjollof/pjlogo.jpeg"
+        brandName="Party Jollof"
         primaryColor="#FF4500"
         secondaryColor="#FFA500"
         store="party-jollof"

@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { useSwipeable } from "react-swipeable";
+import { motion, Variants } from "framer-motion";
+import { Star } from "lucide-react";
 
 type Testimonial = {
   name: string;
@@ -14,7 +13,7 @@ const testimonials: Testimonial[] = [
   {
     name: "Amina O.",
     review:
-      "The egusi soup was exactly how my grandmother used to make it — thick, flavorful, and packed with perfectly seasoned meat. The pounded yam was soft and fresh, and it felt like eating at home again. I&apos;ll definitely be ordering weekly!",
+      "The egusi soup was exactly how my grandmother used to make it — thick, flavorful, and packed with perfectly seasoned meat. The pounded yam was soft and fresh, and it felt like eating at home again. I'll definitely be ordering weekly!",
     rating: 5,
   },
   {
@@ -31,90 +30,61 @@ const testimonials: Testimonial[] = [
   },
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      when: "beforeChildren",
-    },
-  },
+const container: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.12 } },
 };
 
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+const item: Variants = {
+  hidden: { opacity: 0, y: 24 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
 };
 
 export default function TestimonialCarousel() {
-  const [index, setIndex] = useState(0);
-
-  const swipeHandlers = useSwipeable({
-    onSwipedLeft: () => setIndex((i) => (i + 1) % testimonials.length),
-    onSwipedRight: () => setIndex((i) => (i - 1 + testimonials.length) % testimonials.length),
-    trackMouse: true,
-  });
-
   return (
-    <motion.section
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: false, margin: "-100px" }}
-      variants={containerVariants}
-      className="w-full bg-[#FFFBEF] py-12 px-4 flex flex-col items-center text-center"
-    >
-      <motion.h2 
-        variants={itemVariants}
-        className="text-2xl sm:text-3xl font-semibold text-[#990000] mb-2"
-      >
-        What Our Customers Say
-      </motion.h2>
-      <motion.p 
-        variants={itemVariants}
-        className="text-sm text-gray-500 mb-8"
-      >
-        Real stories from real plates served.
-      </motion.p>
+    <section className="w-full bg-[#1a0f0b] py-20 md:py-24 px-5 md:px-10 text-white">
+      <div className="max-w-7xl mx-auto">
+        <div className="max-w-2xl mb-12">
+          <p className="text-sm font-semibold text-[#FF4D4D] mb-2">From our customers</p>
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
+            &ldquo;It felt like eating at home again.&rdquo;
+          </h2>
+        </div>
 
-      <motion.div 
-        variants={itemVariants}
-        {...swipeHandlers} 
-        className="w-full max-w-3xl relative overflow-hidden"
-      >
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, x: 100 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -100 }}
-            transition={{ duration: 0.4 }}
-            className="bg-white rounded-lg shadow p-6 text-left min-h-[180px]"
-          >
-            <p className="text-sm sm:text-base text-gray-800 mb-4">&quot;{testimonials[index].review}&quot;</p>
-            <div className="flex justify-between items-center">
-              <span className="font-semibold text-gray-800">{testimonials[index].name}</span>
-              <div className="flex space-x-1 text-yellow-500 text-lg">
-                {Array.from({ length: testimonials[index].rating }).map((_, i) => (
-                  <span key={i}>★</span>
-                ))}
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-3 gap-5"
+          variants={container}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.2 }}
+        >
+          {testimonials.map((t) => (
+            <motion.figure
+              key={t.name}
+              variants={item}
+              className="flex flex-col justify-between rounded-3xl bg-white/[0.06] border border-white/10 p-7"
+            >
+              <div>
+                <div className="flex gap-1 mb-5" aria-label={`${t.rating} out of 5 stars`}>
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star
+                      key={i}
+                      className={`w-4 h-4 ${i < t.rating ? "fill-[#FFB800] text-[#FFB800]" : "text-white/20"}`}
+                    />
+                  ))}
+                </div>
+                <blockquote className="text-white/85 leading-relaxed">{t.review}</blockquote>
               </div>
-            </div>
-          </motion.div>
-        </AnimatePresence>
-      </motion.div>
-
-      <motion.div 
-        variants={itemVariants}
-        className="flex mt-8 gap-4"
-      >
-        <button className="border border-red-400 text-red-600 text-sm px-4 py-2 rounded hover:bg-red-50 transition">
-          See More Reviews
-        </button>
-        <button className="bg-red-600 text-white text-sm px-4 py-2 rounded hover:bg-red-700 transition">
-          Leave Feedback
-        </button>
-      </motion.div>
-    </motion.section>
+              <figcaption className="mt-7 flex items-center gap-3">
+                <span className="w-10 h-10 rounded-full bg-[#FE0000] flex items-center justify-center font-bold text-sm">
+                  {t.name.charAt(0)}
+                </span>
+                <span className="font-semibold">{t.name}</span>
+              </figcaption>
+            </motion.figure>
+          ))}
+        </motion.div>
+      </div>
+    </section>
   );
 }

@@ -73,7 +73,8 @@ const Landing = () => {
       <BrandHero
         title={<>Baked Fresh. <br />Loved Daily.</>}
         subtitle="From flaky meat pies to melt-in-your-mouth cakes, GAVI brings oven-fresh goodness right to your doorstep."
-        bgImage="/gavibg.png"
+        bgImage="/foodhero/gavi.jpg"
+        layout="frame"
         primaryColor="#373435"
         secondaryColor="#F3A35C"
         tagline="Baked with Heart"
